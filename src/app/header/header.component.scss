@@ -1,0 +1,9 @@
+.navbar {
+  background: linear-gradient(var(--color-primary) 0%, var(--color-primary-light) 100%);
+}
+
+.nav-link,
+.nav-link.active,
+.navbar-brand{
+  color: white;
+}
