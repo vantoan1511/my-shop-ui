@@ -3,6 +3,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .product-card:hover {
@@ -40,7 +41,6 @@
   height: 3em;
   line-height: 1.5;
   font-size: .875rem;
-  font-weight: lighter;
 }
 
 .product-card .product-rating {
@@ -58,6 +58,7 @@
 }
 
 .product-price del {
+  font-size: 0.85rem;
   color: rgb(191, 191, 191);
 }
 
