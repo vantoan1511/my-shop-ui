@@ -199,6 +199,20 @@ textarea:not([rows]) {
   scroll-margin-block: 5ex;
 }
 
+.btn,
+.btn-primary,
+.btn-outline-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:active:focus,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus,
+.btn-outline-primary:active:focus {
+  border: 1px solid var(--color-primary-button);
+}
+
 .btn-primary {
   background: var(--color-primary-button);
 }
@@ -213,11 +227,9 @@ textarea:not([rows]) {
 .btn-outline-primary:active:focus {
   opacity: .9;
   background: var(--color-primary-button);
-  border: 1px solid var(--color-primary-button);
 }
 
 .btn-outline-primary {
-  border: 1px solid var(--color-primary-button);
   color: var(--color-primary-button);
 }
 
