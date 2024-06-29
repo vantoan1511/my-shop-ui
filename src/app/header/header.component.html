@@ -6,26 +6,29 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="search-bar d-flex">
-                <input class="form-control me-2" placeholder="Type here to search for products, brands,...">
-                <button class="btn btn-gradient-primary search-icon" type="button">
-                    <fa-icon [icon]="faMagnifyingGlass"/>
-                </button>
+            <form class="search-bar">
+                <div class="input-wrapper">
+                    <input type="text"
+                           class="search-input"
+                           placeholder="Type here to search for products, brands,..."
+                           aria-label="Search">
+                    <button type="submit" class="search-button">
+                        <fa-icon [icon]="faMagnifyingGlass" class="search-icon"></fa-icon>
+                    </button>
+                </div>
             </form>
-            <div class="header-cart-wrapper">
-                <div class="cart-icon">
-                    <fa-icon [icon]="faCartShopping"/>
-                </div>
+
+            <div class="header-cart">
+                <button class="cart-button" aria-label="View Cart">
+                    <fa-icon [icon]="faCartShopping" class="cart-icon"/>
+                    <span class="cart-count">3</span>
+                </button>
             </div>
-            <div class="profile">
-                <div class="profile-icon">
-                    <img src="avatar-placeholder.png"
-                         alt="Profile Image"
-                         class="profile-image">
-                </div>
-                <div class="profile-name">
-                    nvtoan123
-                </div>
+            <div class="profile-avatar">
+                <img src="assets/images/avatar-placeholder.png"
+                     alt="Profile Image"
+                     class="profile-image">
+                <span class="profile-name">nvtoan123</span>
             </div>
         </div>
     </div>
