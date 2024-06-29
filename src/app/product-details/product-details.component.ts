@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
+import {faStar, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
     selector: 'app-product-details',
     standalone: true,
-    imports: [],
+    imports: [
+        FaIconComponent
+    ],
     templateUrl: './product-details.component.html',
     styleUrl: './product-details.component.scss'
 })
@@ -25,4 +29,6 @@ export class ProductDetailsComponent {
         this.selectedIndex = index;
     }
 
+    protected readonly faStarHalfAlt = faStarHalfAlt;
+    protected readonly faStar = faStar;
 }
