@@ -79,6 +79,7 @@
   --color-primary-button: rgb(240, 93, 64);
 
   --color-light-gray: rgb(191, 191, 191);
+  --color-bg-gray: rgb(245, 245, 245);
   --color-text-dark: #373737;
   --color-text-light: #fff;
 
@@ -128,6 +129,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: "Roboto", sans-serif;
+  background-color: var(--color-bg-gray);
 }
 
 /*

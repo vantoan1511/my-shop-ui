@@ -1,0 +1,28 @@
+<div class="product-details container">
+    <div class="row">
+        <div class="col-md-5">
+            <picture>
+                <img [src]="heroImage"
+                     alt="Product Image"
+                     class="img-fluid">
+            </picture>
+            <div class="thumbnails d-flex">
+                @for (thumbnail of images; track $index) {
+
+                    <img [src]="thumbnail"
+                         alt="Product Image"
+                         class="thumbnail-img"
+                         [class.selected]="selectedIndex === $index"
+                         (mouseover)="changeHeroImage(thumbnail, $index)">
+
+                }
+            </div>
+            <div class="favourite">
+
+            </div>
+        </div>
+        <div class="col-md-7">
+            product details
+        </div>
+    </div>
+</div>
