@@ -39,13 +39,21 @@
   line-height: 1.5;
 }
 
+.product-statistic {
+  margin: 1rem 0;
+}
+
+.product-statistic button {
+  background: transparent;
+  min-height: 2rem;
+}
+
 .product-rating {
   display: flex;
   align-items: center;
-  margin-right: 10px;
-  padding: .2rem .5rem;
+  padding-right: 1rem;
   color: var(--color-primary);
-  border-right: 1px solid var(--color-light-gray);
+  border: none;
 }
 
 .product-rating .rating-avg {
@@ -63,12 +71,18 @@
 .report {
   color: var(--color-text-dark);
   margin-right: 10px;
-  padding: .2rem .5rem;
 }
 
-.total-rating,
-.total-sold {
+.total-rating {
+  border-left: 1px solid var(--color-light-gray);
   border-right: 1px solid var(--color-light-gray);
+  border-top: none;
+  border-bottom: none;
+  padding: 0 1rem;
+}
+
+.total-sold {
+  border: none;
 }
 
 .spacer {
