@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {faStar, faStarHalfAlt} from "@fortawesome/free-solid-svg-icons";
+import {faStar, faStarHalfAlt, faCartPlus} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
@@ -15,6 +15,10 @@ export class ProductDetailsComponent {
 
     selectedIndex = 0;
 
+    selectedColor = -1;
+
+    selectedSize = -1;
+
     images = [
         'assets/images/product-01.jpg',
         'assets/images/product-01__01.jpg',
@@ -29,6 +33,16 @@ export class ProductDetailsComponent {
         this.selectedIndex = index;
     }
 
+    changeSelectedColor(thumbnailUrl: string, index: number) {
+        this.changeHeroImage(thumbnailUrl, index);
+        this.selectedColor = index;
+    }
+
+    changeSelectedSize(index: number) {
+        this.selectedSize = index;
+    }
+
     protected readonly faStarHalfAlt = faStarHalfAlt;
     protected readonly faStar = faStar;
+    protected readonly faCartPlus = faCartPlus;
 }

@@ -13,7 +13,8 @@
                          alt="Product Image"
                          class="thumbnail-img"
                          [class.selected]="selectedIndex === $index"
-                         (mouseover)="changeHeroImage(thumbnail, $index)">
+                         (mouseover)="changeHeroImage(thumbnail, $index)"
+                         (focus)="changeHeroImage(thumbnail, $index)">
 
                 }
             </div>
@@ -59,7 +60,8 @@
                     <div class="color-container">
                         @for (image of images; track $index) {
 
-                            <button>
+                            <button (click)="changeSelectedColor(image, $index)"
+                                    [class.selected]="selectedColor === $index">
                                 <img [src]="image" alt="Product Color">
                                 {{ 'Color ' + $index }}
                             </button>
@@ -72,7 +74,10 @@
                     <div class="type-buttons">
                         @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
 
-                            <button>{{ 35 + i }}</button>
+                            <button (click)="changeSelectedSize($index)"
+                                    [class.selected]="selectedSize === $index">
+                                {{ 35 + i }}
+                            </button>
 
                         }
                     </div>
@@ -89,7 +94,10 @@
                 </div>
             </div>
             <div class="product-actions">
-                <button class="btn btn-outline-primary to-cart">Add to Cart</button>
+                <button class="btn btn-outline-primary to-cart">
+                    <fa-icon [icon]="faCartPlus"></fa-icon>
+                    Add to Cart
+                </button>
                 <button class="btn btn-primary buy-now">Buy Now</button>
             </div>
         </div>
