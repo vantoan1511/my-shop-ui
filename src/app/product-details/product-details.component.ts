@@ -1,12 +1,15 @@
 import {Component} from '@angular/core';
-import {faStar, faStarHalfAlt, faCartPlus} from "@fortawesome/free-solid-svg-icons";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {ProductImageComponent} from "./product-image/product-image.component";
+import {ProductInfoComponent} from "./product-info/product-info.component";
+import {ProductActionComponent} from "./product-action/product-action.component";
 
 @Component({
     selector: 'app-product-details',
     standalone: true,
     imports: [
-        FaIconComponent
+        ProductImageComponent,
+        ProductInfoComponent,
+        ProductActionComponent
     ],
     templateUrl: './product-details.component.html',
     styleUrl: './product-details.component.scss'
@@ -42,7 +45,4 @@ export class ProductDetailsComponent {
         this.selectedSize = index;
     }
 
-    protected readonly faStarHalfAlt = faStarHalfAlt;
-    protected readonly faStar = faStar;
-    protected readonly faCartPlus = faCartPlus;
 }
