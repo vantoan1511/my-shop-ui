@@ -1,0 +1,19 @@
+<picture>
+    <img [src]="heroImage || 'assets/images/product-01.png'"
+         alt="Product Image"
+         class="img-fluid">
+</picture>
+<div class="thumbnails d-flex">
+    @for (thumbnail of images; track $index) {
+
+        <img [src]="thumbnail"
+             alt="Product Image"
+             class="thumbnail-img"
+             [class.selected]="selectedIndex === $index"
+             (mouseover)="changeHeroImage(thumbnail, $index)"
+             (focus)="changeHeroImage(thumbnail, $index)">
+
+    }
+</div>
+<div class="favourite">
+</div>
