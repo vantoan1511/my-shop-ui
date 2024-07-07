@@ -24,17 +24,26 @@
                     <span class="cart-count">3</span>
                 </button>
             </div>
-            <div class="profile-avatar">
-                <img src="assets/images/avatar-placeholder.png"
-                     alt="Profile Image"
-                     class="profile-image">
-                <span class="profile-name">{{ authService.username }}</span>
-            </div>
-            <div>
-                <button class="btn btn-sm btn-outline-secondary"
-                        (click)="authService.logout()">Logout
-                </button>
-            </div>
+
+            @if (authService.authenticated) {
+                <div class="profile-avatar">
+                    <img src="assets/images/avatar-placeholder.png"
+                         alt="Profile Image"
+                         class="profile-image">
+                    <span class="profile-name">{{ authService.username }}</span>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary"
+                            (click)="authService.logout()">Logout
+                    </button>
+                </div>
+            } @else {
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary"
+                            (click)="authService.login()">Log in
+                    </button>
+                </div>
+            }
         </div>
     </div>
 </nav>

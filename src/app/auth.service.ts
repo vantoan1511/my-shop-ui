@@ -13,6 +13,14 @@ export class AuthService {
         return this.keycloakService.getUsername();
     }
 
+    get authenticated(): boolean {
+        return this.keycloakService.isLoggedIn();
+    }
+
+    async login() {
+        await this.keycloakService.login();
+    }
+
     async logout() {
         await this.keycloakService.logout();
     }

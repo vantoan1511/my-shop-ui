@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductImageComponent} from "./product-image/product-image.component";
 import {ProductInfoComponent} from "./product-info/product-info.component";
 import {ProductActionComponent} from "./product-action/product-action.component";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
     selector: 'app-product-details',

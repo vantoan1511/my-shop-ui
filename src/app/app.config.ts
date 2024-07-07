@@ -15,14 +15,12 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
         },
         loadUserProfileAtStartUp: true,
         initOptions: {
-            onLoad: 'login-required',
-            // flow: 'standard',
+            onLoad: 'check-sso',
+            flow: 'standard',
             enableLogging: true,
             checkLoginIframe: false,
             silentCheckSsoRedirectUri:
                 window.location.origin + '/silent-check-sso.html',
-            // checkLoginIframe: false,
-            // redirectUri: environment.keycloak.redirectUri,
         },
     });
 
