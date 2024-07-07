@@ -2,8 +2,25 @@ import {APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection} from '@a
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
-import {initializeKeycloak} from "./keycloak.config";
 import {KeycloakService} from "keycloak-angular";
+import {environment} from "../environments/environment";
+
+export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
+    keycloak.init({
+        config: {
+            url: environment.keycloak.authority,
+            realm: environment.keycloak.realm,
+            clientId: environment.keycloak.clientId,
+        },
+        loadUserProfileAtStartUp: true,
+        initOptions: {
+            onLoad: 'login-required',
+            silentCheckSsoRedirectUri:
+                window.location.origin + '/silent-check-sso.html',
+            checkLoginIframe: false,
+            // redirectUri: environment.keycloak.redirectUri,
+        },
+    });
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -15,6 +32,6 @@ export const appConfig: ApplicationConfig = {
             multi: true,
             deps: [KeycloakService],
         },
-        KeycloakService
+        KeycloakService,
     ]
 };
