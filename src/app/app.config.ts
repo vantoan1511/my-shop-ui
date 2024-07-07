@@ -4,6 +4,7 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {KeycloakService} from "keycloak-angular";
 import {environment} from "../environments/environment";
+import {provideHttpClient} from "@angular/common/http";
 
 export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
     keycloak.init({
@@ -15,9 +16,10 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
         loadUserProfileAtStartUp: true,
         initOptions: {
             onLoad: 'login-required',
-            silentCheckSsoRedirectUri:
-                window.location.origin + '/silent-check-sso.html',
-            checkLoginIframe: false,
+            flow: 'standard',
+            // silentCheckSsoRedirectUri:
+            //     window.location.origin + '/silent-check-sso.html',
+            // checkLoginIframe: false,
             // redirectUri: environment.keycloak.redirectUri,
         },
     });
@@ -33,5 +35,6 @@ export const appConfig: ApplicationConfig = {
             deps: [KeycloakService],
         },
         KeycloakService,
+        provideHttpClient()
     ]
 };

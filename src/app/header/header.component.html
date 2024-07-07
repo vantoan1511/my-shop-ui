@@ -28,7 +28,12 @@
                 <img src="assets/images/avatar-placeholder.png"
                      alt="Profile Image"
                      class="profile-image">
-                <span class="profile-name">nvtoan123</span>
+                <span class="profile-name">{{ authService.username }}</span>
+            </div>
+            <div>
+                <button class="btn btn-sm btn-outline-secondary"
+                        (click)="authService.logout()">Logout
+                </button>
             </div>
         </div>
     </div>
