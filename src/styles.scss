@@ -74,14 +74,14 @@
 }
 
 :root {
-  --color-primary: rgb(245, 61, 45);
-  --color-primary-light: rgb(255, 102, 51);
-  --color-primary-button: rgb(240, 93, 64);
+  --light-gray: #EEEEEE;
+  --gray: #686D76;
+  --black: #282828;
+  --light-black: #45474B;
+  --white: #fafafa;
 
-  --color-light-gray: rgb(191, 191, 191);
-  --color-bg-gray: rgb(245, 245, 245);
-  --color-text-dark: #373737;
-  --color-text-light: #fff;
+  --primary-brand: #f63e2e;
+  --light-primary-brand: #ff6533;
 
 }
 
@@ -91,18 +91,18 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--white);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: var(--gray);
   border-radius: 10px;
-  border: 2px solid #f1f1f1;
+  border: 2px solid var(--light-gray);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--light-black);
 }
 
 /*
@@ -129,7 +129,6 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: "Roboto", sans-serif;
-  background-color: var(--color-bg-gray);
 }
 
 /*
@@ -197,42 +196,4 @@ textarea:not([rows]) {
 /* Anything that has been anchored to should have extra scroll margin */
 :target {
   scroll-margin-block: 5ex;
-}
-
-.btn,
-.btn-primary,
-.btn-outline-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
-.btn-primary:active:focus,
-.btn-outline-primary:hover,
-.btn-outline-primary:active,
-.btn-outline-primary:focus,
-.btn-outline-primary:active:focus {
-  border: 1px solid var(--color-primary-button);
-}
-
-.btn-primary {
-  background: var(--color-primary-button);
-}
-
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:focus,
-.btn-primary:active:focus,
-.btn-outline-primary:hover,
-.btn-outline-primary:active,
-.btn-outline-primary:focus,
-.btn-outline-primary:active:focus {
-  opacity: .9;
-  background: var(--color-primary-button);
-}
-
-.btn-outline-primary {
-  color: var(--color-primary-button);
-}
-
-.btn-outline-primary:focus {
-  color: var(--color-text-light);
 }

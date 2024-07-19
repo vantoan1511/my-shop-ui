@@ -1,49 +1,37 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container">
-        <a class="navbar-brand" [routerLink]="['']">MyStore</a>
+<nav class="navbar fixed-top navbar-expand-lg ">
+    <div class="container flex-wrap">
+        <div class="w-100 text-end">
+            <a [routerLink]="['login']" class="log-in">Log in</a>
+            <span class="vertical-line"></span>
+            <a [routerLink]="['signup']" class="sign-up">Sign up</a>
+        </div>
+        <a class="navbar-brand d-flex align-items-center" [routerLink]="['']">
+            <img src="assets/images/logo.svg"
+                 width="48"
+                 height="52"
+                 class="d-inline-block align-text-top"
+                 alt="MyStore Logo">
+            Storee
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="search-bar">
-                <div class="input-wrapper">
-                    <input type="text"
-                           class="search-input"
-                           placeholder="Type here to search for products, brands,..."
-                           aria-label="Search">
-                    <button type="submit" class="search-button">
-                        <fa-icon [icon]="faMagnifyingGlass" class="search-icon"></fa-icon>
-                    </button>
-                </div>
+        <div class="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
+            <form class="d-flex search-form" role="search">
+                <input class="search-input form-control"
+                       type="search"
+                       placeholder="Search for products, brands, ..."
+                       aria-label="Search">
             </form>
-
-            <div class="header-cart">
-                <button class="cart-button" aria-label="View Cart">
-                    <fa-icon [icon]="faCartShopping" class="cart-icon"/>
-                    <span class="cart-count">3</span>
-                </button>
-            </div>
-
-            @if (authService.authenticated) {
-                <div class="profile-avatar">
-                    <img src="assets/images/avatar-placeholder.png"
-                         alt="Profile Image"
-                         class="profile-image">
-                    <span class="profile-name">{{ authService.username }}</span>
-                </div>
-                <div>
-                    <button class="btn btn-sm btn-outline-secondary"
-                            (click)="authService.logout()">Logout
-                    </button>
-                </div>
-            } @else {
-                <div>
-                    <button class="btn btn-sm btn-outline-secondary"
-                            (click)="authService.login()">Log in
-                    </button>
-                </div>
-            }
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item position-relative">
+                    <a class="nav-link" [routerLink]="['cart']">
+                        <img src="assets/images/cart.svg" width="40" alt="Cart">
+                    </a>
+                    <span class="badge">99+</span>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

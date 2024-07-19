@@ -22,8 +22,8 @@
 
 .selected,
 .thumbnail-img:hover {
-  color: var(--color-primary) !important;
-  border: 1px solid var(--color-primary) !important;
+  color: var(--primary-color) !important;
+  border: 1px solid var(--primary-color) !important;
 }
 
 .product-details {
@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   padding-right: 1rem;
-  color: var(--color-primary);
+  color: var(--primary-color);
   border: none;
 }
 
@@ -106,14 +106,14 @@
 
 .discounted-price {
   padding: 0 20px;
-  color: var(--color-primary);
+  color: var(--primary-color);
   font-size: 1.75rem;
 }
 
 .discount-rate {
   font-size: .75rem;
   font-weight: bold;
-  background-color: var(--color-primary);
+  background-color: var(--primary-color);
   color: var(--color-text-light);
   padding: 2px 5px;
   border-radius: 2px;
@@ -174,8 +174,8 @@
 .product-color button:hover,
 .product-color button:focus,
 {
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .label {
@@ -214,11 +214,11 @@
 
 .to-cart:hover,
 .to-cart:focus {
-  color: var(--color-primary);
+  color: var(--primary-color);
   background: rgba(255, 245, 241, .5);
 }
 
 .to-cart:active {
-  color: var(--color-primary);
+  color: var(--primary-color);
   background: var(--color-bg-gray);
 }
