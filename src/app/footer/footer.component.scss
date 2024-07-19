@@ -1,8 +1,8 @@
 .footer.container {
-  color: rgb(117, 117, 117);
+  color: var(--gray);
   padding: 2rem 0;
 }
 
 .heart-icon {
-  color: red;
+  color: var(--primary-brand);
 }
