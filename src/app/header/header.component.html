@@ -2,9 +2,9 @@
     <div class="container flex-wrap">
         <div class="w-100 text-end">
             @if (!authService.authenticated) {
-                <a [routerLink]="['login']" class="log-in" (click)="authService.login()">Log in</a>
+                <a href="#" class="log-in" (click)="authService.login()">Log in</a>
                 <span class="vertical-line"></span>
-                <a [routerLink]="['signup']" class="sign-up">Sign up</a>
+                <a href="#" class="sign-up" (click)="authService.register()">Sign up</a>
             } @else {
                 <div class="dropdown">
                     <a class="user-btn"

@@ -12,14 +12,6 @@ import {AuthService} from "./auth.service";
     styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    constructor(private authService: AuthService) {
-    }
-
-    async login() {
-        await this.authService.login();
-    }
-
-    async logout() {
-        await this.authService.logout();
+    constructor(protected readonly authService: AuthService) {
     }
 }

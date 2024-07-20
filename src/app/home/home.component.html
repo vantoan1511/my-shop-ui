@@ -1,12 +1,4 @@
+<app-header></app-header>
 <div class="home-page container">
-    <h1>All products</h1>
-    <div class="row ">
-        @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
-
-            <div class="column-gap-0 col-xl-2 col-lg-3 col-md-4 col-sm-6">
-                <app-product-card></app-product-card>
-            </div>
-
-        }
-    </div>
+    <router-outlet></router-outlet>
 </div>

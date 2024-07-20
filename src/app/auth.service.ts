@@ -17,11 +17,19 @@ export class AuthService {
         return this.keycloakService.isLoggedIn();
     }
 
+    get hasAdminPermission(): boolean {
+        return this.keycloakService.isUserInRole("admin");
+    }
+
     async login() {
         await this.keycloakService.login();
     }
 
     async logout() {
         await this.keycloakService.logout();
+    }
+
+    async register() {
+        await this.keycloakService.register();
     }
 }
