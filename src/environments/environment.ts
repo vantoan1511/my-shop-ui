@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     keycloak: {
-        authority: 'http://localhost:8080',
+        authority: 'https://18.136.204.36:8443',
         redirectUri: 'http://localhost:4200',
         postLogoutRedirectUri: 'http://localhost:4200/logout',
         realm: 'my-store',

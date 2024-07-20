@@ -15,12 +15,12 @@ export const authGuard: CanActivateFn = (route, state) => {
         keycloakService.login();
     }
 
-    // if (!expectedRoles || expectedRoles.length === 0) {
-    //     return true;
-    // }
+    if (!expectedRoles || expectedRoles.length === 0) {
+        return true;
+    }
 
     if (!expectedRoles.every(role => currentRoles.includes(role.toUpperCase()))) {
-        router.navigate(['']);
+        router.navigate(['forbidden']);
         return false;
     }
 
