@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="toolbar d-flex">
+    <div class="toolbar d-flex align-items-center">
         <div class="search-bar flex-grow-1">
             <input type="text"
                    placeholder="Search user"
@@ -7,6 +7,19 @@
             <button class="search-btn btn btn-outline-secondary">
                 <fa-icon [icon]="faSearch"/>
             </button>
+        </div>
+        <div class="dropdown">
+            <button class="sort-btn btn btn-outline-secondary dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                Sort by: Default
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+                <li><button class="dropdown-item" href="#">First Name</button></li>
+                <li><button class="dropdown-item" href="#">Last Name</button></li>
+                <li><button class="dropdown-item" href="#">Email</button></li>
+            </ul>
         </div>
     </div>
     <div class="users-table">
