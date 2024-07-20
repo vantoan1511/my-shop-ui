@@ -30,8 +30,11 @@
                         </td>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        <td><textarea cdkTextareaAutosize
-                                      class="textarea-inline-control">{{ user.firstName }}</textarea></td>
+                        <td>
+                            <input appEditable
+                                   type="text"
+                                   value="{{ user.firstName }}">
+                        </td>
                         <td>{{ user.lastName }}</td>
                     </tr>
                 }

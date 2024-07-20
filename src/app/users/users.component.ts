@@ -4,6 +4,7 @@ import {UserService} from "./user.service";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
+import {EditableDirective} from "../editable.directive";
 
 @Component({
     selector: 'app-users',
@@ -11,6 +12,7 @@ import {CdkTextareaAutosize} from "@angular/cdk/text-field";
     imports: [
         FaIconComponent,
         CdkTextareaAutosize,
+        EditableDirective,
     ],
     templateUrl: './users.component.html',
     styleUrl: './users.component.scss'
