@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {faMagnifyingGlass, faCartShopping} from "@fortawesome/free-solid-svg-icons";
+import {faArrowRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {AuthService} from "../auth.service";
 import {RouterLink} from "@angular/router";
@@ -15,8 +15,8 @@ import {RouterLink} from "@angular/router";
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-    faMagnifyingGlass = faMagnifyingGlass;
-    faCartShopping = faCartShopping;
+    faLogout = faArrowRightFromBracket;
+    faUser = faUser;
 
     constructor(protected readonly authService: AuthService) {
     }

@@ -1,9 +1,41 @@
 <nav class="navbar fixed-top navbar-expand-lg ">
     <div class="container flex-wrap">
         <div class="w-100 text-end">
-            <a [routerLink]="['login']" class="log-in">Log in</a>
-            <span class="vertical-line"></span>
-            <a [routerLink]="['signup']" class="sign-up">Sign up</a>
+            @if (!authService.authenticated) {
+                <a [routerLink]="['login']" class="log-in" (click)="authService.login()">Log in</a>
+                <span class="vertical-line"></span>
+                <a [routerLink]="['signup']" class="sign-up">Sign up</a>
+            } @else {
+                <div class="dropdown">
+                    <a class="user-btn"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img src="assets/images/default-avatar.svg"
+                             class="avatar"
+                             alt="User Avatar">
+                        {{ authService.username }}
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item">
+                                <fa-icon [icon]="faUser"/>
+                                Profile
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" (click)="authService.logout()">
+                                <fa-icon [icon]="faLogout"/>
+                                Log out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
         </div>
         <a class="navbar-brand d-flex align-items-center" [routerLink]="['']">
             <img src="assets/images/logo.svg"

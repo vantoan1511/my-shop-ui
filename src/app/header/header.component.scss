@@ -20,6 +20,19 @@
   border-right: 1px solid var(--light-gray);
 }
 
+.user-btn {
+  color: var(--white);
+}
+
+.avatar {
+  display: inline-block;
+  width: 30px;
+}
+
+.dropdown-item:active{
+  background-color: var(--light-primary-brand);
+}
+
 .badge {
   position: absolute;
   top: 0;
