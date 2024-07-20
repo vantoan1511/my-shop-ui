@@ -9,13 +9,18 @@
 .search-btn {
   position: absolute;
   top: 50%;
-  right: .5rem;
+  left: .5rem;
   width: 5rem;
-  line-height: 2;
+  font-size: .5rem;
   transform: translateY(-50%);
 }
 
+.search-icon {
+  font-size: 1.5rem;
+}
+
 .search-form {
+  text-indent: 5.5rem;
   line-height: 3;
 }
 

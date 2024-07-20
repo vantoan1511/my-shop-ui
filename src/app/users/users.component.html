@@ -2,11 +2,17 @@
     <div class="toolbar d-flex align-items-center">
         <div class="search-bar flex-grow-1">
             <input type="text"
+                   [formControl]="keyword"
                    placeholder="Search user"
                    class="form-control search-form">
-            <button class="search-btn btn btn-outline-secondary">
-                <fa-icon [icon]="faSearch"/>
-            </button>
+            <div class="search-btn d-flex justify-content-center align-items-center">
+                @if (isFetching) {
+                    <div class="spinner-border text-dark" role="status">
+                    </div>
+                } @else {
+                    <fa-icon class="search-icon" [icon]="faSearch"/>
+                }
+            </div>
         </div>
         <div class="dropdown">
             <button class="sort-btn btn btn-outline-secondary dropdown-toggle"
@@ -16,9 +22,15 @@
                 Sort by: Default
             </button>
             <ul class="dropdown-menu dropdown-menu-lg-end">
-                <li><button class="dropdown-item" href="#">First Name</button></li>
-                <li><button class="dropdown-item" href="#">Last Name</button></li>
-                <li><button class="dropdown-item" href="#">Email</button></li>
+                <li>
+                    <button class="dropdown-item" href="#">First Name</button>
+                </li>
+                <li>
+                    <button class="dropdown-item" href="#">Last Name</button>
+                </li>
+                <li>
+                    <button class="dropdown-item" href="#">Email</button>
+                </li>
             </ul>
         </div>
     </div>
@@ -34,7 +46,7 @@
             </tr>
             </thead>
             <tbody>
-                @for (user of users; track $index) {
+                @for (user of filteredUsers; track $index) {
                     <tr>
                         <td class="avatar-cell">
                             <img src="{{user.avatar}}"
@@ -54,7 +66,13 @@
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="7" class="text-center">Showing 20 of 1234</td>
+                <td colspan="7" class="text-center">
+                    @if (filteredUsers.length > 0) {
+                        Showing {{ filteredUsers.length }} of {{ users.length }}
+                    } @else {
+                        No result.
+                    }
+                </td>
             </tr>
             </tfoot>
         </table>
