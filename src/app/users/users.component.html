@@ -1,1 +1,46 @@
-<p>users works!</p>
+<div class="container">
+    <div class="toolbar d-flex">
+        <div class="search-bar flex-grow-1">
+            <input type="text"
+                   placeholder="Search user"
+                   class="form-control search-form">
+            <button class="search-btn btn btn-outline-secondary">
+                <fa-icon [icon]="faSearch"/>
+            </button>
+        </div>
+    </div>
+    <div class="users-table">
+        <table class="table table-borderless table-striped table-hover align-middle">
+            <thead>
+            <tr>
+                <th></th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (user of users; track $index) {
+                    <tr>
+                        <td class="avatar-cell">
+                            <img src="{{user.avatar}}"
+                                 class="avatar"
+                                 alt="User Avatar">
+                        </td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td><textarea cdkTextareaAutosize
+                                      class="textarea-inline-control">{{ user.firstName }}</textarea></td>
+                        <td>{{ user.lastName }}</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="7" class="text-center">Showing 20 of 1234</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
