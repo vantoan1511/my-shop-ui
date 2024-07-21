@@ -1,4 +1,4 @@
-<nav class="navbar bg-body-tertiary sticky-top">
+<nav class="navbar sticky-top">
     <div class="container-fluid">
         <button class="navbar-toggler"
                 type="button"
@@ -8,7 +8,7 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" routerLink="/admin">Admin Dashboard</a>
+        <a class="navbar-brand" routerLink="/admin">My Store Admin</a>
         <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle"
                href="#" role="button"
@@ -40,19 +40,41 @@
                         data-bs-dismiss="offcanvas"
                         aria-label="Close">
                 </button>
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Admin Dashboard</h5>
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">My Store Admin</h5>
             </div>
             <div class="sidebar-items list-group list-group-flush">
+                <a routerLink="dashboard"
+                   routerLinkActive="active"
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faDashboard"></fa-icon>
+                    </div>
+                    Dashboard
+                </a>
                 <a routerLink="users"
                    routerLinkActive="active"
-                   class="list-group-item list-group-item-action"
-                   aria-current="true">Users</a>
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faUsers"></fa-icon>
+                    </div>
+                    Users
+                </a>
                 <a routerLink="products"
                    routerLinkActive="active"
-                   class="list-group-item list-group-item-action">Products</a>
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faProducts"></fa-icon>
+                    </div>
+                    Products
+                </a>
                 <a routerLink="orders"
                    routerLinkActive="active"
-                   class="list-group-item list-group-item-action">Orders</a>
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faOrders"></fa-icon>
+                    </div>
+                    Orders
+                </a>
             </div>
             <div class="sidebar-footer">Ver 1.0.0</div>
         </aside>

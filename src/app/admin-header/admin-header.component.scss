@@ -1,5 +1,16 @@
+.navbar {
+  background: linear-gradient(to right, var(--primary-brand), var(--light-primary-brand));
+  color: var(--white);
+}
+
 .navbar-brand {
   font-size: 2rem;
+  font-weight: 700;
+  color: inherit;
+}
+
+.dropdown-item:active {
+  background: linear-gradient(to right, var(--primary-brand), var(--light-primary-brand));
 }
 
 .btn-close {
@@ -24,8 +35,15 @@
 }
 
 .list-group > .list-group-item {
+  display: flex;
+  gap: .45rem;
   line-height: 3;
   padding-inline: 1.5rem;
+
+  & .icon {
+    width: 1.75rem;
+    text-align: center;
+  }
 }
 
 .active {
