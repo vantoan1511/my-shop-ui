@@ -1,0 +1,38 @@
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.btn-close {
+  margin-left: 0;
+}
+
+.offcanvas-body {
+  border-top: 1px solid var(--light-gray);
+}
+
+.offcanvas-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary-brand), var(--light-primary-brand));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidebar-items {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.list-group > .list-group-item {
+  line-height: 3;
+  padding-inline: 1.5rem;
+}
+
+.active {
+  border: none;
+  background: linear-gradient(to right, var(--primary-brand) 0%, var(--light-primary-brand) 100%);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
