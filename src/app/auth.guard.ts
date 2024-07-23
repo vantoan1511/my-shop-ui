@@ -19,7 +19,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         return true;
     }
 
-    if (!expectedRoles.every(role => currentRoles.includes(role))) {
+    if (!currentRoles.some(role => expectedRoles.includes(role.toLowerCase()))) {
         router.navigate(['forbidden']);
         return false;
     }

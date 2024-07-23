@@ -13,12 +13,15 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminHomeComponent,
-        canActivateChild: [authGuard],
-        data: {expectedRoles: [Role.ADMIN]},
+        canActivate: [authGuard],
+        data: {
+            expectedRoles: [Role.ADMIN]
+        },
         children: [
             {
                 path: '',
-                component: UsersComponent,
+                redirectTo: 'users',
+                pathMatch: 'full'
             },
             {
                 path: 'users',

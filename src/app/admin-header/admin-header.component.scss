@@ -1,12 +1,13 @@
 .navbar {
-  background: linear-gradient(to right, var(--primary-brand), var(--light-primary-brand));
-  color: var(--white);
+  background: var(--white);
 }
 
 .navbar-brand {
   font-size: 2rem;
   font-weight: 700;
-  color: inherit;
+  background: linear-gradient(to right, var(--primary-brand), var(--light-primary-brand));
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .dropdown-item:active {
