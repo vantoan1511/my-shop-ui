@@ -11,6 +11,6 @@ import {RouterLink} from "@angular/router";
     styleUrl: './product-card.component.scss'
 })
 export class ProductCardComponent {
-    faStar = faStar;
-    faStarHalfAlt = faStarHalfAlt;
+    protected readonly faStar = faStar;
+    protected readonly faStarHalfAlt = faStarHalfAlt;
 }
