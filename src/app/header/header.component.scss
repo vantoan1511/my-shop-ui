@@ -5,10 +5,28 @@
 .navbar-brand,
 .nav-link {
   color: var(--white);
+  cursor: pointer;
+  line-height: 3;
+  background-color: transparent;
 }
 
 .navbar-brand {
   font-size: 1.85rem;
+}
+
+.offcanvas-title {
+  display: flex;
+  align-items: center;
+  color: var(--white);
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+
+.logo {
+}
+
+.offcanvas-body {
+  overflow-x: hidden;
 }
 
 .log-in, .sign-up {
@@ -29,14 +47,14 @@
   width: 30px;
 }
 
-.dropdown-item:active{
+.dropdown-item:active {
   background-color: var(--light-primary-brand);
 }
 
 .badge {
   position: absolute;
   top: 0;
-  left: 100%;
+  left: 45px;
   transform: translateX(-50%);
   border: 2px solid var(--white);
   border-radius: 50rem;
@@ -45,7 +63,7 @@
 }
 
 .search-form {
-  width: max(32rem, 90%);
+  flex-grow: 1;
   border-radius: 5px;
 }
 
@@ -63,4 +81,10 @@
 .search-input:focus {
   box-shadow: none;
   outline: none;
+}
+
+@media (max-width: 991px) {
+  .sidebar {
+    background: linear-gradient(to left, var(--primary-brand) 0%, var(--light-primary-brand) 100%);
+  }
 }

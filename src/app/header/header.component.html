@@ -1,42 +1,5 @@
 <nav class="navbar sticky-top navbar-expand-lg ">
     <div class="container flex-wrap">
-        <div class="w-100 text-end">
-            @if (!authService.authenticated) {
-                <a href="#" class="log-in" (click)="authService.login()">Log in</a>
-                <span class="vertical-line"></span>
-                <a href="#" class="sign-up" (click)="authService.register()">Sign up</a>
-            } @else {
-                <div class="dropdown">
-                    <a class="user-btn"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        <img src="assets/images/default-avatar.svg"
-                             class="avatar"
-                             alt="User Avatar">
-                        {{ authService.username }}
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item">
-                                <fa-icon [icon]="faUser"/>
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item" (click)="authService.logout()">
-                                <fa-icon [icon]="faLogout"/>
-                                Log out
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            }
-        </div>
         <a class="navbar-brand d-flex align-items-center" [routerLink]="['']">
             <img src="assets/images/logo.svg"
                  width="48"
@@ -45,25 +8,89 @@
                  alt="MyStore Logo">
             Storee
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#sidebar"
+                aria-controls="sidebar"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-around" id="navbarSupportedContent">
-            <form class="d-flex search-form" role="search">
-                <input class="search-input form-control"
-                       type="search"
-                       placeholder="Search for products, brands, ..."
-                       aria-label="Search">
-            </form>
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item position-relative">
-                    <a class="nav-link" [routerLink]="['cart']">
-                        <img src="assets/images/cart.svg" width="40" alt="Cart">
-                    </a>
-                    <span class="badge">99+</span>
-                </li>
-            </ul>
+
+        <div class="sidebar offcanvas offcanvas-end"
+             tabindex="-1"
+             id="sidebar"
+             aria-labelledby="sidebarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="sidebarLabel">
+                    <img src="assets/images/logo.svg"
+                         width="48"
+                         height="52"
+                         class="logo d-inline-block align-text-top"
+                         alt="MyStore Logo">
+                    Storee
+                </h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                </button>
+            </div>
+            <div class="offcanvas-body">
+                <form class="d-flex search-form" role="search">
+                    <input class="search-input form-control"
+                           type="search"
+                           placeholder="Search for products, brands, ..."
+                           aria-label="Search">
+                </form>
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" [routerLink]="['cart']">
+                            <img src="assets/images/cart.svg" width="40" alt="Cart">
+                            <span class="badge">99+</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @if (!authService.authenticated) {
+                            <a class="nav-link"
+                               (click)="authService.login()">
+                                Log in
+                            </a>
+                        } @else {
+                            <div class="dropdown">
+                                <a class="user-btn"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+                                    <img src="assets/images/default-avatar.svg"
+                                         class="avatar"
+                                         alt="User Avatar">
+                                    {{ authService.username }}
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <button class="dropdown-item">
+                                            <fa-icon [icon]="faUser"/>
+                                            Profile
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item" (click)="authService.logout()">
+                                            <fa-icon [icon]="faLogout"/>
+                                            Log out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
