@@ -3,7 +3,7 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCartShopping, faMinus, faPlus, faStar} from "@fortawesome/free-solid-svg-icons";
 import {Product} from "../product-list/product";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CurrencyPipe, NgForOf} from "@angular/common";
+import {CurrencyPipe, DecimalPipe, NgForOf} from "@angular/common";
 import {ProductService} from "../product-list/product.service";
 import {ActivatedRoute} from "@angular/router";
 import {switchMap} from "rxjs";
@@ -16,7 +16,8 @@ import {switchMap} from "rxjs";
         FormsModule,
         NgForOf,
         CurrencyPipe,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DecimalPipe
     ],
     templateUrl: './product-details.component.html',
     styleUrl: './product-details.component.scss'
@@ -55,12 +56,10 @@ export class ProductDetailsComponent {
     }
 
     validateQuantity() {
-        const currentQuantity = this.quantity.value;
-        if (currentQuantity == null) {
+        if (this.quantity.value == null || this.quantity.value < 1) {
             this.quantity.setValue(1)
         } else {
-            const newQuantity = Math.floor(currentQuantity) < 1 ? 1 : Math.floor(currentQuantity);
-            this.quantity.setValue(newQuantity);
+            this.quantity.setValue(Math.floor(this.quantity.value));
         }
     }
 

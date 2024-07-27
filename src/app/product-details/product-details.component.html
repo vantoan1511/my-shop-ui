@@ -35,7 +35,7 @@
             <div class="product-price mb-4 d-flex align-items-center p-2">
                 <span class="text-muted me-2"><del>{{ product.originalPrice|currency }}</del></span>
                 <span class="fs-3 fw-bold me-2">{{ product.discountedPrice|currency }}</span>
-                <span class="badge">{{ product.discountedPercentage }}% OFF</span>
+                <span class="badge">{{ product.discountedPercentage | number:'0.0-0' }}% OFF</span>
             </div>
             <div class="row mb-4">
                 <div class="col-2 d-flex align-items-baseline">
