@@ -26,7 +26,12 @@ export class Product implements IProduct {
                     id,
                     title,
                     mainImage = 'assets/images/product-01__01.jpg',
-                    thumbnails = [mainImage],
+                    thumbnails = [
+                        mainImage,
+                        'assets/images/product-01__02.jpg',
+                        'assets/images/product-01__03.jpg',
+                        'assets/images/product-01__04.jpg',
+                    ],
                     originalPrice = 0,
                     discountedPrice = 0,
                     rating = 0,

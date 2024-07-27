@@ -11,6 +11,8 @@
   & .img-thumbnail {
     max-width: 25%;
   }
+
+  & .active,
   & .img-thumbnail:hover {
     border-color: var(--light-primary-brand);
   }
