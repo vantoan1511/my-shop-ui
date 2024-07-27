@@ -22,13 +22,6 @@
   font-weight: 700;
 }
 
-.logo {
-}
-
-.offcanvas-body {
-  overflow-x: hidden;
-}
-
 .log-in, .sign-up {
   color: var(--white);
 }
@@ -47,8 +40,10 @@
   width: 30px;
 }
 
+.dropdown-item:hover,
 .dropdown-item:active {
   background-color: var(--light-primary-brand);
+  color: var(--white);
 }
 
 .badge {
@@ -83,8 +78,20 @@
   outline: none;
 }
 
+.navbar-nav {
+  align-items: center;
+  gap: 1.5rem;
+}
+
 @media (max-width: 991px) {
   .sidebar {
     background: linear-gradient(to left, var(--primary-brand) 0%, var(--light-primary-brand) 100%);
+  }
+  .search-form {
+    margin-bottom: 1rem;
+  }
+  .navbar-nav {
+    align-items: start;
+    gap: 1.5rem;
   }
 }
