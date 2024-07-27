@@ -10,7 +10,7 @@ export class UserService {
     constructor(protected readonly http: HttpClient) {
     }
 
-    fetchAll() {
+    public fetchAll() {
         return this.http.get<User[]>('assets/json/users.json');
     }
 }
