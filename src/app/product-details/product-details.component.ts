@@ -1,48 +1,48 @@
-import {Component} from '@angular/core';
-import {ProductImageComponent} from "./product-image/product-image.component";
-import {ProductInfoComponent} from "./product-info/product-info.component";
-import {ProductActionComponent} from "./product-action/product-action.component";
+import {Component, Input} from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {faCartShopping, faMinus, faPlus, faStar} from "@fortawesome/free-solid-svg-icons";
+import {Product} from "../product-list/product";
+import {FormsModule} from "@angular/forms";
+import {CurrencyPipe, NgForOf} from "@angular/common";
+import {ProductService} from "../product-list/product.service";
+import {ActivatedRoute} from "@angular/router";
+import {switchMap} from "rxjs";
 
 @Component({
     selector: 'app-product-details',
     standalone: true,
     imports: [
-        ProductImageComponent,
-        ProductInfoComponent,
-        ProductActionComponent
+        FaIconComponent,
+        FormsModule,
+        NgForOf,
+        CurrencyPipe
     ],
     templateUrl: './product-details.component.html',
     styleUrl: './product-details.component.scss'
 })
 export class ProductDetailsComponent {
+    @Input() product!: Product;
 
-    selectedIndex = 0;
+    quantity: number = 1;
 
-    selectedColor = -1;
-
-    selectedSize = -1;
-
-    images = [
-        'assets/images/product-01.jpg',
-        'assets/images/product-01__01.jpg',
-        'assets/images/product-01__02.jpg',
-        'assets/images/product-01__03.jpg',
-    ]
-
-    heroImage = this.images[this.selectedIndex];
-
-    changeHeroImage(thumbnailUrl: string, index: number) {
-        this.heroImage = thumbnailUrl;
-        this.selectedIndex = index;
+    constructor(protected readonly productService: ProductService, protected route: ActivatedRoute) {
+        this.route.params.pipe(
+            switchMap(params => this.productService.fetchById(+params['id']))
+        ).subscribe(product => {
+            if (product) this.product = product;
+        })
     }
 
-    changeSelectedColor(thumbnailUrl: string, index: number) {
-        this.changeHeroImage(thumbnailUrl, index);
-        this.selectedColor = index;
+    decreaseQuantity(): void {
+        if (this.quantity > 1) this.quantity--;
     }
 
-    changeSelectedSize(index: number) {
-        this.selectedSize = index;
+    increaseQuantity(): void {
+        this.quantity++;
     }
 
+    protected readonly faStar = faStar;
+    protected readonly faCart = faCartShopping;
+    protected readonly faMinus = faMinus;
+    protected readonly faPlus = faPlus;
 }

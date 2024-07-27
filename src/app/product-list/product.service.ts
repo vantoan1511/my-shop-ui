@@ -16,4 +16,13 @@ export class ProductService {
             .get<Product[]>('assets/json/products.json')
             .pipe(map((products) => products.map((product) => new Product(product))));
     }
+
+    public fetchById(id: number) {
+        return this.http
+            .get<Product[]>('assets/json/products.json')
+            .pipe(
+                map((products) => products.map((product) => new Product(product))),
+                map(products => products.find(product => product.id === id))
+            );
+    }
 }

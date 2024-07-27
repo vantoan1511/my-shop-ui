@@ -1,10 +1,72 @@
 <div class="product-page container">
-    <div class="row">
-        <ng-container>
-            <app-product-image [images]="images" [heroImage]="images[0]"></app-product-image>
-        </ng-container>
-        <ng-container>
-            <app-product-info [images]="images"></app-product-info>
-        </ng-container>
+    <div class="row g-3">
+        <div class="col-lg-4">
+            <div class="product-hero mb-3">
+                <img [src]="product.mainImage"
+                     class="img-fluid rounded"
+                     [alt]="product.title">
+            </div>
+            <div class="product-thumbnails gap-1">
+                <img *ngFor="let thumb of product.thumbnails"
+                     [src]="thumb"
+                     [alt]="product.title"
+                     class="img-thumbnail"/>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <h1 class="mb-3 product-title">{{ product.title }}</h1>
+            <div class="product-rating d-flex align-items-center mb-3">
+                <span class="me-2">{{ product.rating }}</span>
+                <div class="stars text-warning me-2">
+                    <fa-icon [icon]="faStar"></fa-icon>
+                    <fa-icon [icon]="faStar"></fa-icon>
+                    <fa-icon [icon]="faStar"></fa-icon>
+                    <fa-icon [icon]="faStar"></fa-icon>
+                    <fa-icon [icon]="faStar"></fa-icon>
+                </div>
+                <div class="vr mx-2"></div>
+                <span class="text-muted">({{ product.votes }} votes)</span>
+                <div class="vr mx-2"></div>
+                <span class="text-muted me-auto">{{ product.sold }} Sold</span>
+                <span class="text-muted">Report</span>
+            </div>
+            <div class="product-price mb-4 d-flex align-items-center p-2">
+                <span class="text-muted me-2"><del>{{ product.originalPrice|currency }}</del></span>
+                <span class="fs-3 fw-bold me-2">{{ product.discountedPrice|currency }}</span>
+                <span class="badge">{{ product.discountedPercentage }}% OFF</span>
+            </div>
+            <div class="row mb-4">
+                <div class="col-2 d-flex align-items-baseline">
+                    <label for="quantity" class="form-label mb-0 text-muted">Quantity</label>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group">
+                        <button (click)="decreaseQuantity()"
+                                class="btn btn-outline-secondary"
+                                type="button">
+                            <fa-icon [icon]="faMinus"></fa-icon>
+                        </button>
+                        <input type="number"
+                               class="form-control text-center"
+                               id="quantity"
+                               [(ngModel)]="quantity"
+                               min="1">
+                        <button (click)="increaseQuantity()"
+                                class="btn btn-outline-secondary"
+                                type="button">
+                            <fa-icon [icon]="faPlus"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <button class="add-to-cart-btn btn btn-outline-primary btn-lg px-4 me-md-2"
+                        type="button">
+                    <fa-icon [icon]="faCart"></fa-icon>
+                    Add to Cart
+                </button>
+                <button class="buy-now-btn btn btn-primary btn-lg px-4" type="button">Buy Now</button>
+            </div>
+        </div>
     </div>
 </div>

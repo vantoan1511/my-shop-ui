@@ -1,12 +1,15 @@
 <div class="card product-card">
     <div class="card-image">
-        <img [src]="product.image" class="card-img-top" alt="{{product.title}}">
+        <img [src]="product.mainImage"
+             class="card-img-top"
+             alt="{{product.title}}"
+             loading="lazy">
     </div>
     <div [routerLink]="['products', product.id]" class="card-body" [title]="product.title">
         <h5 class="card-title roboto-light">{{ product.title }}</h5>
         <div class="d-flex justify-content-between align-items-center">
-            <span class="product-price">{{ product.netPrice | currency }}</span>
-            <span class="product-price"><del>{{ product.grossPrice | currency }}</del></span>
+            <span class="product-price">{{ product.discountedPrice | currency }}</span>
+            <span class="product-price"><del>{{ product.originalPrice | currency }}</del></span>
         </div>
         <div class="product-rating">
             <fa-icon [icon]="faStar"></fa-icon>

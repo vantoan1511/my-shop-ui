@@ -129,6 +129,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   font-family: "Roboto", sans-serif;
+  background-color: var(--white);
 }
 
 /*
@@ -197,3 +198,25 @@ textarea:not([rows]) {
 :target {
   scroll-margin-block: 5ex;
 }
+
+/*Focus ring*/
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus {
+  border-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.075) inset, 0 0 0 rgba(0, 0, 0, 0.6);
+  outline: 0 none;
+}
+
