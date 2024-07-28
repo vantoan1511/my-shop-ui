@@ -8,6 +8,7 @@ import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {ProductListComponent} from "./product-list/product-list.component";
 import {AdminHomeComponent} from "./admin-home/admin-home.component";
 import {Role} from "./role";
+import {CartComponent} from "./cart/cart.component";
 
 export const routes: Routes = [
     {
@@ -40,6 +41,10 @@ export const routes: Routes = [
             {
                 path: '',
                 component: ProductListComponent,
+            },
+            {
+                path: 'cart',
+                component: CartComponent,
             },
             {
                 path: 'products/:id',
