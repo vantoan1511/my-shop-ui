@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {faArrowRightFromBracket, faUser} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../../../core/auth.service";
 import {RouterLink} from "@angular/router";
 import {NgOptimizedImage} from "@angular/common";
 

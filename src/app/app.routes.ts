@@ -1,14 +1,14 @@
 import {Routes} from '@angular/router';
-import {HomeComponent} from "./home/home.component";
-import {ProductDetailsComponent} from "./product-details/product-details.component";
-import {authGuard} from "./auth.guard";
-import {UsersComponent} from "./users/users.component";
-import {ForbiddenComponent} from "./forbidden/forbidden.component";
-import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
-import {ProductListComponent} from "./product-list/product-list.component";
-import {AdminHomeComponent} from "./admin-home/admin-home.component";
-import {Role} from "./role";
-import {CartComponent} from "./cart/cart.component";
+import {HomeComponent} from "./feature/home/home.component";
+import {ProductDetailsComponent} from "./feature/product-details/product-details.component";
+import {authGuard} from "./guard/auth.guard";
+import {UsersComponent} from "./feature/user-list/users.component";
+import {ForbiddenComponent} from "./feature/forbidden/forbidden.component";
+import {PageNotFoundComponent} from "./feature/page-not-found/page-not-found.component";
+import {ProductListComponent} from "./feature/product-list/product-list.component";
+import {AdminHomeComponent} from "./feature/admin-home/admin-home.component";
+import {Role} from "./shared/model/role";
+import {CartComponent} from "./feature/cart/cart.component";
 
 export const routes: Routes = [
     {

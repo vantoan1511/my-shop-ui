@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {HeaderComponent} from "./header/header.component";
-import {FooterComponent} from "./footer/footer.component";
-import {AuthService} from "./auth.service";
+import {HeaderComponent} from "./shared/component/header/header.component";
+import {FooterComponent} from "./shared/component/footer/footer.component";
 
 @Component({
     selector: 'app-root',
@@ -12,6 +11,4 @@ import {AuthService} from "./auth.service";
     styleUrl: './app.component.scss'
 })
 export class AppComponent {
-    constructor(protected readonly authService: AuthService) {
-    }
 }

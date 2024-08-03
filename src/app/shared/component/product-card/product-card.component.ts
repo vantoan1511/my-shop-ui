@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {faStar, faStarHalfAlt} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {RouterLink} from "@angular/router";
-import {Product} from "../product-list/product";
+import {Product} from "../../../feature/product-list/product";
 import {CurrencyPipe} from "@angular/common";
 
 @Component({

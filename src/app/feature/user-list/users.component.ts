@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "./user";
-import {UserService} from "./user.service";
+import {User} from "../../shared/model/user";
+import {UserService} from "../../core/user.service";
 import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {CdkTextareaAutosize} from "@angular/cdk/text-field";
-import {EditableDirective} from "../editable.directive";
-import {SorterComponent} from "../sorter/sorter.component";
+import {EditableDirective} from "../../shared/directive/editable.directive";
+import {SorterComponent} from "../../shared/component/sorter/sorter.component";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {debounceTime, distinctUntilChanged, of, switchMap} from "rxjs";
 
 @Component({
-    selector: 'app-users',
+    selector: 'app-user-list',
     standalone: true,
     imports: [
         FaIconComponent,

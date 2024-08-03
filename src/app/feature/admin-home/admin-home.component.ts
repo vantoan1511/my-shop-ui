@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterOutlet} from "@angular/router";
-import {AdminHeaderComponent} from "../admin-header/admin-header.component";
+import {AdminHeaderComponent} from "../../shared/component/admin-header/admin-header.component";
 
 @Component({
   selector: 'app-admin-home',
