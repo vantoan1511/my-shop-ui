@@ -6,16 +6,12 @@
                    placeholder="Search user"
                    class="form-control search-form">
             <div class="search-btn d-flex justify-content-center align-items-center">
-                @if (isFetching) {
-                    <app-spinner/>
-                } @else {
-                    <fa-icon class="search-icon" [icon]="faSearch"/>
-                }
+                <fa-icon class="search-icon" [icon]="faSearch"/>
             </div>
         </div>
         <div class="d-flex gap-1">
             <div class="dropdown">
-                <button class="sort-btn btn  "
+                <button class="sort-btn btn"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -34,10 +30,10 @@
                     </li>
                 </ul>
             </div>
-            <a [class.disabled]="!(users$|async)?.hasPrev" class="btn" (click)="onToPrevPage()">
+            <a [class.disabled]="!(users$ | async)?.data?.hasPrev" class="btn" (click)="onToPrevPage()">
                 <fa-icon [icon]="faPrev"/>
             </a>
-            <a [class.disabled]="!(users$|async)?.hasNext" class="btn" (click)="onToNextPage()">
+            <a [class.disabled]="!(users$|async)?.data?.hasNext" class="btn" (click)="onToNextPage()">
                 <fa-icon [icon]="faNext"/>
             </a>
         </div>
@@ -46,17 +42,17 @@
         <table class="table table-responsive table-borderless table-striped table-hover align-middle">
             <thead>
             <tr>
-                <th></th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
+                <th class="avatar-cell"></th>
+                <th scope="col" class="username-cell">Username</th>
+                <th scope="col" class="email-cell">Email</th>
+                <th scope="col" class="name-cell">First Name</th>
+                <th scope="col" class="name-cell">Last Name</th>
             </tr>
             </thead>
             <tbody>
-                @for (user of (users$ | async)?.items; track $index) {
+                @for (user of (users$ | async)?.data?.items; track $index) {
                     <tr>
-                        <td class="avatar-cell">
+                        <td>
                             <img src="{{user.avatar}}"
                                  class="avatar"
                                  alt="User Avatar">
@@ -74,9 +70,12 @@
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="7" class="text-center">
-                    @if (isFetching) {
-                        <app-spinner/>
+                <td colspan="7"
+                    class="text-center">
+                    @if (users$ | async; as users) {
+                        @if (users.loading) {
+                            <app-spinner/>
+                        }
                     }
                 </td>
             </tr>

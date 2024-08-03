@@ -3,7 +3,7 @@ export interface PageResponse<T = unknown> {
     numberOfItems: number;
     page: number;
     size: number;
-    hasNext: boolean;
+    hasNext?: boolean;
     hasPrev: boolean;
     items: T[];
 }

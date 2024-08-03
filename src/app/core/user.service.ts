@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../shared/model/user";
-import {delay, map} from "rxjs";
+import {delay, map, startWith} from "rxjs";
 import {PageRequest} from "../shared/model/page-request";
 import {PageResponse} from "../shared/model/page-response";
 
@@ -48,7 +48,7 @@ export class UserService {
                         hasPrev: hasPrev,
                         items: items,
                     }
-                })
+                }),
             );
     }
 }
