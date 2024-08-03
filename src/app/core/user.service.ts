@@ -22,6 +22,8 @@ export class UserService {
                     numberOfItems: users.length,
                     page: 1,
                     size: users.length,
+                    hasNext: false,
+                    hasPrev: false,
                     items: users
                 } as PageResponse<User>))
             );
@@ -34,12 +36,16 @@ export class UserService {
                     const start = (pageRequest.pageNumber - 1) * pageRequest.pageSize;
                     const end = start + pageRequest.pageSize;
                     const items = resp.items.slice(start, end);
+                    const hasNext = pageRequest.pageNumber * pageRequest.pageSize < resp.totalOfItems;
+                    const hasPrev = pageRequest.pageNumber > 1;
 
                     return {
                         ...resp,
                         numberOfItems: items.length,
                         page: pageRequest.pageNumber,
                         size: pageRequest.pageSize,
+                        hasNext: hasNext,
+                        hasPrev: hasPrev,
                         items: items,
                     }
                 })

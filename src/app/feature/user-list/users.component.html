@@ -19,7 +19,7 @@
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    1 - 10
+                    {{ pageRequest$.value.pageNumber }} - 10
                     <fa-icon [icon]="faAngleDown"/>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-lg-end">
@@ -34,16 +34,16 @@
                     </li>
                 </ul>
             </div>
-            <a class="btn">
+            <a [class.disabled]="!(users$|async)?.hasPrev" class="btn" (click)="onToPrevPage()">
                 <fa-icon [icon]="faPrev"/>
             </a>
-            <a class="btn">
+            <a [class.disabled]="!(users$|async)?.hasNext" class="btn" (click)="onToNextPage()">
                 <fa-icon [icon]="faNext"/>
             </a>
         </div>
     </div>
     <div class="users-table">
-        <table class="table table-borderless table-striped table-hover align-middle">
+        <table class="table table-responsive table-borderless table-striped table-hover align-middle">
             <thead>
             <tr>
                 <th></th>
