@@ -1,5 +1,5 @@
 import {catchError, map, Observable, of, OperatorFunction, scan, startWith, switchMap} from "rxjs";
-import {LoadingState} from "../shared/model/loading-state";
+import {LoadingState} from "./shared/model/loading-state";
 
 export function switchMapWithLoading<T>(observableFunction: (value: any) => Observable<T>): OperatorFunction<any, LoadingState<T>> {
     return (source: Observable<any>) =>

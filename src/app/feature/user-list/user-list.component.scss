@@ -38,7 +38,7 @@
   box-shadow: 0 .5rem 1rem rgba(183, 185, 190, .8);
 
   .avatar-cell {
-    width: 8%;
+    width: 5%;
 
     .avatar {
       margin: auto;
@@ -51,6 +51,6 @@
   .username-cell,
   .email-cell,
   .name-cell {
-    width: 23%;
+    width: calc(95% / 4);
   }
 }

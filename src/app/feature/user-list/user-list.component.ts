@@ -6,13 +6,14 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {EditableDirective} from "../../shared/directive/editable.directive";
 import {SorterComponent} from "../../shared/component/sorter/sorter.component";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {BehaviorSubject, Observable} from "rxjs";
-import {AsyncPipe} from "@angular/common";
+import {BehaviorSubject, Observable, shareReplay, take, takeUntil} from "rxjs";
+import {AsyncPipe, NgIf} from "@angular/common";
 import {PageResponse} from "../../shared/model/page-response";
 import {PageRequest} from "../../shared/model/page-request";
 import {SpinnerComponent} from "../../shared/component/spinner/spinner.component";
-import {switchMapWithLoading} from "../../core/switch-map-with-loading";
+import {switchMapWithLoading} from "../../switch-map-with-loading";
 import {LoadingState} from "../../shared/model/loading-state";
+import {RandomColSizePipe} from "../../shared/pipe/RandomColSize.pipe";
 
 @Component({
     selector: 'app-user-list',
@@ -24,16 +25,18 @@ import {LoadingState} from "../../shared/model/loading-state";
         AsyncPipe,
         ReactiveFormsModule,
         SpinnerComponent,
+        NgIf,
+        RandomColSizePipe,
     ],
-    templateUrl: './users.component.html',
-    styleUrl: './users.component.scss'
+    templateUrl: './user-list.component.html',
+    styleUrl: './user-list.component.scss'
 })
-export class UsersComponent implements OnInit {
+export class UserListComponent implements OnInit {
     keyword = new FormControl('');
     protected users$!: Observable<LoadingState<PageResponse<User>>>;
     protected pageRequest$: BehaviorSubject<PageRequest> = new BehaviorSubject<PageRequest>({
-        pageNumber: 1,
-        pageSize: 10
+        page: 1,
+        size: 10
     });
 
     constructor(private userService: UserService) {
@@ -43,19 +46,20 @@ export class UsersComponent implements OnInit {
         this.users$ =
             this.pageRequest$.pipe(
                 switchMapWithLoading((pageRequest) => this.userService.fetchBy(pageRequest)),
+                shareReplay(1)
             )
     }
 
     onToPrevPage() {
-        const prevPage = this.pageRequest$.value.pageNumber - 1;
+        const prevPage = this.pageRequest$.value.page - 1;
         if (prevPage >= 1) {
-            this.pageRequest$.next({...this.pageRequest$.value, pageNumber: prevPage});
+            this.pageRequest$.next({...this.pageRequest$.value, page: prevPage});
         }
     }
 
     onToNextPage() {
-        const nextPage = this.pageRequest$.value.pageNumber + 1;
-        this.pageRequest$.next({...this.pageRequest$.value, pageNumber: nextPage});
+        const nextPage = this.pageRequest$.value.page + 1;
+        this.pageRequest$.next({...this.pageRequest$.value, page: nextPage});
     }
 
     protected readonly faSearch = faMagnifyingGlass;

@@ -2,7 +2,7 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from "./feature/home/home.component";
 import {ProductDetailsComponent} from "./feature/product-details/product-details.component";
 import {authGuard} from "./guard/auth.guard";
-import {UsersComponent} from "./feature/user-list/users.component";
+import {UserListComponent} from "./feature/user-list/user-list.component";
 import {ForbiddenComponent} from "./feature/forbidden/forbidden.component";
 import {PageNotFoundComponent} from "./feature/page-not-found/page-not-found.component";
 import {ProductListComponent} from "./feature/product-list/product-list.component";
@@ -26,7 +26,7 @@ export const routes: Routes = [
             },
             {
                 path: 'users',
-                component: UsersComponent,
+                component: UserListComponent,
             },
             {
                 path: '**',

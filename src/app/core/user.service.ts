@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../shared/model/user";
-import {delay, map, startWith} from "rxjs";
+import {delay, map, tap} from "rxjs";
 import {PageRequest} from "../shared/model/page-request";
 import {PageResponse} from "../shared/model/page-response";
 
@@ -13,42 +13,32 @@ export class UserService {
     constructor(protected readonly http: HttpClient) {
     }
 
-    public fetchAll() {
+    public fetchBy(pageRequest: PageRequest) {
+        return this.prepareMockData(pageRequest);
+    }
+
+    private prepareMockData(pageRequest: PageRequest) {
         return this.http.get<User[]>('assets/json/users.json')
             .pipe(
                 delay(1000),
-                map((users) => ({
-                    totalOfItems: users.length,
-                    numberOfItems: users.length,
-                    page: 1,
-                    size: users.length,
-                    hasNext: false,
-                    hasPrev: false,
-                    items: users
-                } as PageResponse<User>))
-            );
-    }
-
-    public fetchBy(pageRequest: PageRequest) {
-        return this.fetchAll()
-            .pipe(
-                map(resp => {
-                    const start = (pageRequest.pageNumber - 1) * pageRequest.pageSize;
-                    const end = start + pageRequest.pageSize;
-                    const items = resp.items.slice(start, end);
-                    const hasNext = pageRequest.pageNumber * pageRequest.pageSize < resp.totalOfItems;
-                    const hasPrev = pageRequest.pageNumber > 1;
+                map((users) => {
+                    const totalPages = Math.round(users.length / pageRequest.size);
+                    const hasPrev = pageRequest.page > 1;
+                    const hasNext = pageRequest.page < totalPages;
+                    const start = (pageRequest.page - 1) * pageRequest.page;
+                    const end = start + pageRequest.size;
+                    const items = users.slice(start, end);
 
                     return {
-                        ...resp,
+                        ...pageRequest,
+                        totalOfItems: users.length,
                         numberOfItems: items.length,
-                        page: pageRequest.pageNumber,
-                        size: pageRequest.pageSize,
-                        hasNext: hasNext,
-                        hasPrev: hasPrev,
-                        items: items,
-                    }
+                        hasPrev,
+                        hasNext,
+                        items,
+                    } as PageResponse<User>;
                 }),
+                tap((resp) => console.log(resp))
             );
     }
 }
