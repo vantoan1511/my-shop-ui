@@ -7,31 +7,39 @@
                    class="form-control search-form">
             <div class="search-btn d-flex justify-content-center align-items-center">
                 @if (isFetching) {
-                    <div class="spinner-border text-dark" role="status">
-                    </div>
+                    <app-spinner/>
                 } @else {
                     <fa-icon class="search-icon" [icon]="faSearch"/>
                 }
             </div>
         </div>
-        <div class="dropdown">
-            <button class="sort-btn btn btn-outline-secondary dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                Sort by: Default
-            </button>
-            <ul class="dropdown-menu dropdown-menu-lg-end">
-                <li>
-                    <button class="dropdown-item" href="#">First Name</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" href="#">Last Name</button>
-                </li>
-                <li>
-                    <button class="dropdown-item" href="#">Email</button>
-                </li>
-            </ul>
+        <div class="d-flex gap-1">
+            <div class="dropdown">
+                <button class="sort-btn btn  "
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    1 - 10
+                    <fa-icon [icon]="faAngleDown"/>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li>
+                        <button class="dropdown-item" href="#">10 per page</button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" href="#">20 per page</button>
+                    </li>
+                    <li>
+                        <button class="dropdown-item" href="#">50 per page</button>
+                    </li>
+                </ul>
+            </div>
+            <a class="btn">
+                <fa-icon [icon]="faPrev"/>
+            </a>
+            <a class="btn">
+                <fa-icon [icon]="faNext"/>
+            </a>
         </div>
     </div>
     <div class="users-table">
@@ -46,7 +54,7 @@
             </tr>
             </thead>
             <tbody>
-                @for (user of filteredUsers; track $index) {
+                @for (user of (users$ | async)?.items; track $index) {
                     <tr>
                         <td class="avatar-cell">
                             <img src="{{user.avatar}}"
@@ -67,10 +75,8 @@
             <tfoot>
             <tr>
                 <td colspan="7" class="text-center">
-                    @if (filteredUsers.length > 0) {
-                        Showing {{ filteredUsers.length }} of {{ users.length }}
-                    } @else {
-                        No result.
+                    @if (isFetching) {
+                        <app-spinner/>
                     }
                 </td>
             </tr>
