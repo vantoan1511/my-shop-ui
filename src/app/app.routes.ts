@@ -1,13 +1,13 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from "./feature/home/home.component";
-import {ProductDetailsComponent} from "./feature/product-details/product-details.component";
-import {authGuard} from "./guard/auth.guard";
-import {UserListComponent} from "./feature/user-list/user-list.component";
-import {ForbiddenComponent} from "./feature/forbidden/forbidden.component";
-import {PageNotFoundComponent} from "./feature/page-not-found/page-not-found.component";
-import {ProductListComponent} from "./feature/product-list/product-list.component";
-import {AdminHomeComponent} from "./feature/admin-home/admin-home.component";
-import {Role} from "./shared/model/role";
+import {ProductDetailsComponent} from "./feature/products/product-details/product-details.component";
+import {authGuard} from "./core/guard/auth.guard";
+import {UserListComponent} from "./feature/admin/users/user-list/user-list.component";
+import {ForbiddenComponent} from "./core/components/forbidden/forbidden.component";
+import {PageNotFoundComponent} from "./core/components/page-not-found/page-not-found.component";
+import {ProductListComponent} from "./feature/products/product-list/product-list.component";
+import {AdminHomeComponent} from "./feature/admin/home/admin-home.component";
+import {RoleEnum} from "./types/role.enum";
 import {CartComponent} from "./feature/cart/cart.component";
 
 export const routes: Routes = [
@@ -16,7 +16,7 @@ export const routes: Routes = [
         component: AdminHomeComponent,
         canActivate: [authGuard],
         data: {
-            expectedRoles: [Role.ADMIN]
+            expectedRoles: [RoleEnum.ADMIN]
         },
         children: [
             {
@@ -26,6 +26,7 @@ export const routes: Routes = [
             },
             {
                 path: 'users',
+                title: 'User Management - Shopbee Admin Dashboard',
                 component: UserListComponent,
             },
             {
@@ -37,6 +38,7 @@ export const routes: Routes = [
     {
 
         path: '', component: HomeComponent,
+        title: 'Shopbee',
         children: [
             {
                 path: '',
@@ -44,6 +46,7 @@ export const routes: Routes = [
             },
             {
                 path: 'cart',
+                title: 'Cart',
                 component: CartComponent,
             },
             {

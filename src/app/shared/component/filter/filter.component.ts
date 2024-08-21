@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {NgSelectModule} from "@ng-select/ng-select";
 import {FormsModule} from "@angular/forms";
-import {Product} from "../../../feature/product-list/product";
+import {Product} from "../../../types/product";
 
 @Component({
     selector: 'app-filter',

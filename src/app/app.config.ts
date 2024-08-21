@@ -2,8 +2,8 @@ import {APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection} from '@a
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
-import {KeycloakService} from "keycloak-angular";
-import {provideHttpClient} from "@angular/common/http";
+import {KeycloakBearerInterceptor, KeycloakService} from "keycloak-angular";
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 import {initializeKeycloak} from "./keycloak.config";
 
 export const appConfig: ApplicationConfig = {
@@ -16,7 +16,12 @@ export const appConfig: ApplicationConfig = {
             multi: true,
             deps: [KeycloakService],
         },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: KeycloakBearerInterceptor,
+            multi: true,
+        },
         KeycloakService,
-        provideHttpClient()
+        provideHttpClient(withInterceptorsFromDi())
     ]
 };

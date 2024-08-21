@@ -1,0 +1,7 @@
+package.json
+package-lock.json
+dist
+/.angular/cache
+lint-*
+.github
+.vscode

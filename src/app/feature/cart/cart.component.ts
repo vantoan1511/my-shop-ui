@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {FilterComponent} from "../../shared/component/filter/filter.component";
 import {delay, Observable, of} from "rxjs";
 import {AsyncPipe} from "@angular/common";
-import {ProductService} from "../product-list/product.service";
-import {Product} from "../product-list/product";
+import {ProductService} from "../../apis/product.service";
+import {Product} from "../../types/product";
 
 @Component({
     selector: 'app-cart',

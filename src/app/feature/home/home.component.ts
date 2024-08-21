@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {HeaderComponent} from "../../shared/component/header/header.component";
-import {ProductCardComponent} from "../../shared/component/product-card/product-card.component";
-import {ProductListComponent} from "../product-list/product-list.component";
+import {HeaderComponent} from "../../core/components/header/header.component";
+import {ProductCardComponent} from "../products/product-card/product-card.component";
+import {ProductListComponent} from "../products/product-list/product-list.component";
 import {RouterOutlet} from "@angular/router";
 
 @Component({
