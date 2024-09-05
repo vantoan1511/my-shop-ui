@@ -1,1 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+:root,
+.light,
+.light-theme {
+  --red-1: #faf7f7;
+  --red-2: #f9f2f1;
+  --red-3: #f9e5e4;
+  --red-4: #ffd5d3;
+  --red-5: #fdc6c4;
+  --red-6: #f6b6b4;
+  --red-7: #eda2a0;
+  --red-8: #e48786;
+  --red-9: #dd3647;
+  --red-10: #ce203a;
+  --red-11: #c71935;
+  --red-12: #66151d;
+
+  --red-a1: #fa3b3b04;
+  --red-a2: #e12e150a;
+  --red-a3: #ef120717;
+  --red-a4: #ffd5d3;
+  --red-a5: #ffa4a099;
+  --red-a6: #ec0a0348;
+  --red-a7: #d606015c;
+  --red-a8: #cb040277;
+  --red-a9: #d50016c8;
+  --red-a10: #c8011fdf;
+  --red-a11: #c1001fe6;
+  --red-a12: #580009ea;
+
+  --red-contrast: #fff;
+  --red-surface: #f9f0efcc;
+  --red-indicator: #dd3647;
+  --red-track: #dd3647;
+
+  --purple-1: #f9f6fa;
+  --purple-2: #f7f1f9;
+  --purple-3: #f5e4fb;
+  --purple-4: #f2d6fb;
+  --purple-5: #ecc8f8;
+  --purple-6: #e4b7f3;
+  --purple-7: #d9a0ec;
+  --purple-8: #cc81e4;
+  --purple-9: #b936dd;
+  --purple-10: #a92acb;
+  --purple-11: #9416b4;
+  --purple-12: #58006d;
+
+  --purple-a1: #c82ffb05;
+  --purple-a2: #ae15e10a;
+  --purple-a3: #e18cff33;
+  --purple-a4: #d246ff33;
+  --purple-a5: #b400f033;
+  --purple-a6: #a903e145;
+  --purple-a7: #9f01d45c;
+  --purple-a8: #9c02cd7c;
+  --purple-a9: #a700d5c8;
+  --purple-a10: #9901c2d5;
+  --purple-a11: #8a00ade9;
+  --purple-a12: #58006d;
+
+  --purple-contrast: #fff;
+  --purple-surface: #f6eff9cc;
+  --purple-indicator: #b936dd;
+  --purple-track: #b936dd;
+
+  --color-background: #fafafa;
+}
