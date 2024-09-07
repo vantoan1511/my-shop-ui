@@ -22,17 +22,52 @@
           <thead>
             <tr>
               <th style="width: 5%">ID</th>
-              <th style="width: 20%">User</th>
-              <th style="width: 25%">Email</th>
-              <th style="width: 15%">First name</th>
-              <th style="width: 15%">Last name</th>
+              <th
+                style="width: 20%"
+                appSortable
+                [sortField]="sortableFields.USERNAME"
+                (sortChange)="onSortChange($event)"
+              >
+                User
+              </th>
+              <th
+                style="width: 25%"
+                appSortable
+                [sortField]="sortableFields.EMAIL"
+                (sortChange)="onSortChange($event)"
+              >
+                Email
+              </th>
+              <th
+                style="width: 15%"
+                appSortable
+                [sortField]="sortableFields.FIRST_NAME"
+                (sortChange)="onSortChange($event)"
+              >
+                First name
+              </th>
+              <th
+                style="width: 15%"
+                appSortable
+                [sortField]="sortableFields.LAST_NAME"
+                (sortChange)="onSortChange($event)"
+              >
+                Last name
+              </th>
               <th style="width: 5%">Status</th>
-              <th style="width: 15%">Created at</th>
+              <th
+                style="width: 15%"
+                appSortable
+                [sortField]="sortableFields.CREATED_AT"
+                (sortChange)="onSortChange($event)"
+              >
+                Created at
+              </th>
             </tr>
           </thead>
           <tbody>
-            @if (users.isLoading) { @for (item of
-            [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track item) {
+            @if (users.isLoading) { @for (item of [1,2,3,4,5,6,7,8,9,10]; track
+            item) {
             <tr class="skeleton-row">
               <td><div class="skeleton-loader" style="width: 30px"></div></td>
               <td>
