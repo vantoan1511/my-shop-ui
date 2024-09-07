@@ -4,11 +4,17 @@ import { DashboardComponent } from './features/admin/dashboard/dashboard.compone
 import { OrdersComponent } from './features/admin/orders/orders.component';
 import { ProductsComponent } from './features/admin/products/products.component';
 import { UsersComponent } from './features/admin/users/users.component';
+import { authGuard } from './guard/auth.guard';
+import { Role } from './types/role.type';
 
 export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [authGuard],
+    data: {
+      expectedRoles: [Role.ADMIN],
+    },
     children: [
       {
         path: '',
