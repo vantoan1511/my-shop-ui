@@ -1,0 +1,9 @@
+.dropdown-item {
+  &:hover {
+    background: var(--purple-3);
+  }
+
+  &:active {
+    background: var(--purple-9);
+  }
+}

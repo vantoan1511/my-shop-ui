@@ -17,4 +17,6 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
       silentCheckSsoRedirectUri:
         window.location.origin + '/silent-check-sso.html',
     },
+    enableBearerInterceptor: true,
+    bearerPrefix: 'Bearer',
   });
