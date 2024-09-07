@@ -1,1 +1,168 @@
-<p>users works!</p>
+<main class="container my-5">
+  <div class="card border-0 shadow">
+    <div
+      class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3"
+    >
+      <h2 class="mb-0 text-white">Users</h2>
+      <button class="new-user-btn btn btn-sm rounded-pill px-3">
+        <i class="bi bi-plus-lg me-1"></i>New
+      </button>
+    </div>
+    <div
+      class="card-footer border-0 d-flex justify-content-between align-items-center"
+    >
+      <span class="text-muted">Showing 1 to 2 of 2 entries</span>
+      <div class="d-flex align-items-center">
+        <div class="dropdown me-3">
+          <button
+            class="btn border-0 bg-transparent"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="text-nowrap me-3">1 - 10</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end">
+            <li>
+              <button class="dropdown-item">10 per page</button>
+            </li>
+            <li>
+              <button class="dropdown-item">20 per page</button>
+            </li>
+            <li>
+              <button class="dropdown-item">50 per page</button>
+            </li>
+          </ul>
+        </div>
+        <nav aria-label="User list pagination">
+          <div class="btn-group">
+            <button
+              class="btn btn-light btn-sm border-0 bg-transparent"
+              disabled
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="btn btn-light btn-sm border-0 bg-transparent">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (true) { @for (item of
+            [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]; track item) {
+            <tr class="skeleton-row">
+              <td><div class="skeleton-loader" style="width: 30px"></div></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="skeleton-loader rounded-circle me-3"
+                    style="width: 40px; height: 40px"
+                  ></div>
+                  <div class="skeleton-loader" style="width: 100px"></div>
+                </div>
+              </td>
+              <td><div class="skeleton-loader" style="width: 150px"></div></td>
+              <td><div class="skeleton-loader" style="width: 60px"></div></td>
+            </tr>
+            } } @else {
+            <tr>
+              <td>#1</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://via.placeholder.com/50"
+                    alt="John Doe"
+                    width="40"
+                    height="40"
+                    class="rounded-circle me-3 user-avatar"
+                  />
+                  <span class="fw-bold">John Doe</span>
+                </div>
+              </td>
+              <td>john.doe&#64;example.com</td>
+              <td>
+                <span class="badge bg-primary rounded-pill">Enabled</span>
+              </td>
+            </tr>
+            <tr>
+              <td>#2</td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <img
+                    src="https://via.placeholder.com/50"
+                    alt="Jane Doe"
+                    width="40"
+                    height="40"
+                    class="rounded-circle me-3 user-avatar"
+                  />
+                  <span class="fw-bold">Jane Doe</span>
+                </div>
+              </td>
+              <td>jane.doe&#64;example.com</td>
+              <td>
+                <span class="badge bg-secondary rounded-pill">Disabled</span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="card-footer border-0 d-flex justify-content-between align-items-center"
+    >
+      <span class="text-muted">Showing 1 to 2 of 2 entries</span>
+      <div class="d-flex align-items-center">
+        <div class="dropdown me-3">
+          <button
+            class="btn border-0 bg-transparent"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="text-nowrap me-3">1 - 10</span>
+            <i class="bi bi-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end">
+            <li>
+              <button class="dropdown-item">10 per page</button>
+            </li>
+            <li>
+              <button class="dropdown-item">20 per page</button>
+            </li>
+            <li>
+              <button class="dropdown-item">50 per page</button>
+            </li>
+          </ul>
+        </div>
+        <nav aria-label="User list pagination">
+          <div class="btn-group">
+            <button
+              class="btn btn-light btn-sm border-0 bg-transparent"
+              disabled
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="btn btn-light btn-sm border-0 bg-transparent">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</main>
