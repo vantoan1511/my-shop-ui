@@ -1,0 +1,25 @@
+.control-btn {
+  color: var(--purple-9);
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: var(--purple-12);
+  }
+}
+
+.dropdown-item {
+  
+  &:hover {
+    background: var(--purple-3);
+  }
+
+  &:active {
+    background: var(--purple-9);
+  }
+}
+
+@media (max-width: 768px) {
+  .pagination-info {
+    display: none;
+  }
+}

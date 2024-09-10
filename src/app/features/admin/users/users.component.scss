@@ -6,7 +6,8 @@
   .card-header {
     color: var(--purple-contrast);
 
-    .new-user-btn {
+    .new-user-btn,
+    .refresh-btn {
       color: var(--purple-9);
       background: var(--purple-1);
       transition: all 0.3s ease;
@@ -57,4 +58,17 @@
       background-position: -200% 0;
     }
   }
+}
+
+.custom-checkbox {
+  border-color: var(--purple-9);
+}
+
+.custom-checkbox:checked {
+  background-color: var(--purple-9);
+  border-color: var(--purple-9);
+}
+
+.custom-checkbox:focus {
+  box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
 }

@@ -5,11 +5,11 @@ import { Response } from '../../../types/response.type';
 import { User } from '../../../types/user.type';
 
 @Component({
-  selector: 'app-data-table-footer',
+  selector: 'app-pagination',
   standalone: true,
   imports: [],
-  templateUrl: './data-table-footer.component.html',
-  styleUrl: './data-table-footer.component.scss',
+  templateUrl: './pagination.component.html',
+  styleUrl: './pagination.component.scss',
 })
 export class DataTableFooterComponent {
   @Input() pageRequest!: PageRequest;

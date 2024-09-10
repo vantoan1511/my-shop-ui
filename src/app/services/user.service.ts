@@ -19,4 +19,10 @@ export class UserService {
       },
     });
   }
+
+  delete(ids: number[]) {
+    return this.http.delete('http://localhost:8081/api/users', {
+      body: ids,
+    });
+  }
 }
