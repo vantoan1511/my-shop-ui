@@ -1,0 +1,82 @@
+<nav class="navbar bg-white sticky-top">
+    <div class="container-fluid">
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" routerLink="/admin"> Shopbee Admin</a>
+        <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               href="#" role="button"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+                Logged in as {{ authService.username }}
+            </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item">Account</a></li>
+                <li><a class="dropdown-item">Settings</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <button class="dropdown-item" (click)="authService.logout()">
+                        <fa-icon [icon]="faLogout"/>
+                        Logout
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <aside class="sidebar-menu offcanvas offcanvas-start"
+               tabindex="-1"
+               id="offcanvasNavbar"
+               aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header justify-content-between">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close">
+                </button>
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shopbee Admin</h5>
+            </div>
+            <div class="sidebar-items list-group list-group-flush">
+                <a routerLink="dashboard"
+                   routerLinkActive="active"
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faDashboard"></fa-icon>
+                    </div>
+                    Dashboard
+                </a>
+                <a routerLink="users"
+                   routerLinkActive="active"
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faUsers"></fa-icon>
+                    </div>
+                    Users
+                </a>
+                <a routerLink="products"
+                   routerLinkActive="active"
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faProducts"></fa-icon>
+                    </div>
+                    Products
+                </a>
+                <a routerLink="orders"
+                   routerLinkActive="active"
+                   class="list-group-item list-group-item-action">
+                    <div class="icon">
+                        <fa-icon [icon]="faOrders"></fa-icon>
+                    </div>
+                    Orders
+                </a>
+            </div>
+            <div class="sidebar-footer">Ver 1.0.0</div>
+        </aside>
+    </div>
+</nav>

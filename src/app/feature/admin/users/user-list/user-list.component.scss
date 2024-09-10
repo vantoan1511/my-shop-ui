@@ -1,0 +1,56 @@
+.toolbar {
+  padding: 1rem 0;
+
+  .search-bar {
+    position: relative;
+
+    .search-form {
+      text-indent: 5.5rem;
+    }
+
+    .search-btn {
+      position: absolute;
+      top: 50%;
+      left: .5rem;
+      width: 5rem;
+      font-size: .5rem;
+      transform: translateY(-50%);
+
+      .search-icon {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .disabled {
+    border: none;
+  }
+
+  .sort-btn {
+    margin-left: 1rem;
+  }
+}
+
+.users-table {
+  margin-bottom: 2rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 .5rem 1rem rgba(183, 185, 190, .8);
+
+  .avatar-cell {
+    width: 5%;
+
+    .avatar {
+      margin: auto;
+      width: 3rem;
+      background-color: var(--black);
+      border-radius: 50%;
+    }
+  }
+
+  .username-cell,
+  .email-cell,
+  .name-cell {
+    width: calc(95% / 4);
+  }
+}

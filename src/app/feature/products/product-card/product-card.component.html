@@ -1,0 +1,26 @@
+<div class="card product-card">
+    <div class="card-image">
+        <img [src]="product.mainImage"
+             class="card-img-top"
+             alt="{{product.title}}"
+             loading="lazy">
+    </div>
+    <div [routerLink]="['products', product.id]" class="card-body" [title]="product.title">
+        <h5 class="card-title roboto-light">{{ product.title }}</h5>
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="product-price">{{ product.discountedPrice | currency }}</span>
+            <span class="product-price"><del>{{ product.originalPrice | currency }}</del></span>
+        </div>
+        <div class="product-rating">
+            <fa-icon [icon]="faStar"></fa-icon>
+            <fa-icon [icon]="faStar"></fa-icon>
+            <fa-icon [icon]="faStar"></fa-icon>
+            <fa-icon [icon]="faStar"></fa-icon>
+            <fa-icon [icon]="faStarHalfAlt"></fa-icon>
+        </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a class="add-to-cart-btn btn btn-outline-primary btn-sm">Add to Cart</a>
+        <a class="buy-now-btn btn btn-primary btn-sm">Buy Now</a>
+    </div>
+</div>

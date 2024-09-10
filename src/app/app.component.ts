@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-interface MenuItem {
-  icon: string;
-  text: string;
-}
-
 @Component({
   selector: 'app-root',
   standalone: true,
