@@ -3,14 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SortableDirective } from '../../../directives/sortable.directive';
 import { UserService } from '../../../services/user.service';
-import { DataTableFooterComponent } from '../../../shared/components/data-table-footer/pagination.component';
 import { ListControlsComponent } from '../../../shared/components/list-controls/list-controls.component';
+import { DataTableFooterComponent } from '../../../shared/components/pagination/pagination.component';
 import { PageRequest } from '../../../types/page-request.type';
 import { Perform } from '../../../types/perform.type';
 import { Response } from '../../../types/response.type';
 import { Sort, SortField } from '../../../types/sort.type';
 import { User } from '../../../types/user.type';
 import { DetailsComponent } from './details/details.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -37,7 +39,7 @@ export class UsersComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+    this.refresh();
   }
 
   onSelectAll(event: Event) {
@@ -82,14 +84,14 @@ export class UsersComponent implements OnInit {
   nextPage() {
     if (this.users.data?.hasNext) {
       this.pageRequest.page++;
-      this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+      this.refresh();
     }
   }
 
   previousPage() {
     if (this.users.data?.hasPrevious) {
       this.pageRequest.page--;
-      this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+      this.refresh();
     }
   }
 
@@ -104,23 +106,48 @@ export class UsersComponent implements OnInit {
   onPageSizeChange(size: number) {
     this.pageRequest.size = size;
     this.validatePageRequest();
-    this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+    this.refresh();
   }
 
   onSortChange(sort: Sort) {
     this.sort = sort;
-    this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+    this.refresh();
+  }
+
+  onDeleteSelected() {
+    console.log('Start deleting', this.getSelectedUserIds());
+    this.userService.delete(this.getSelectedUserIds()).subscribe({
+      next: () => {
+        console.log('Deleted', this.getSelectedUserIds());
+        this.showSuccess();
+        this.refresh();
+      },
+      error: (error: HttpErrorResponse) => this.showError(error),
+    });
   }
 
   refresh() {
     this.users.load(this.userService.getBy(this.pageRequest, this.sort));
   }
 
-  onDeleteSelected() {
-    console.log('Start deleting', this.getSelectedUserIds());
-    this.userService.delete(this.getSelectedUserIds()).subscribe(() => {
-      console.log('Deleted', this.getSelectedUserIds());
-      this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+  private showSuccess() {
+    Swal.fire({
+      text: `${this.selectedUserIds.length} users deleted`,
+      icon: 'success',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
+  private showError(error: HttpErrorResponse) {
+    Swal.fire({
+      text: error.error?.errorMessage,
+      icon: 'error',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
     });
   }
 
