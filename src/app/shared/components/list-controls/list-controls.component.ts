@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-list-controls',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './list-controls.component.html',
   styleUrl: './list-controls.component.scss',
 })

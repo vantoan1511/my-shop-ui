@@ -1,0 +1,146 @@
+<main class="container my-5">
+  <div class="card border-0 shadow">
+    <div
+      class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3"
+    >
+      <h2 class="mb-0 text-white">New user</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="userForm">
+        <div class="row">
+          <div class="col">
+            <div class="row g-3 align-items-center mt-1">
+              <div class="col-3">
+                <label for="firstName" class="col-form-label">First name</label>
+              </div>
+              <div class="col-auto">
+                <input
+                  formControlName="firstName"
+                  type="text"
+                  id="firstName"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="lastName" class="col-form-label">Last name</label>
+              </div>
+              <div class="col-auto">
+                <input
+                  formControlName="lastName"
+                  type="text"
+                  id="lastName"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="email" class="col-form-label">Email</label>
+              </div>
+              <div class="col-auto">
+                <input
+                  formControlName="email"
+                  type="email"
+                  id="email"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="emailVerified" class="col-form-label">
+                  Email verified
+                </label>
+              </div>
+              <div class="col">
+                <div class="form-check form-switch">
+                  <input
+                    formControlName="emailVerified"
+                    class="form-check-input custom-checkbox"
+                    type="checkbox"
+                    role="switch"
+                    aria-checked="true"
+                    id="emailVerified"
+                  />
+                  <label for="">True</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="enabled" class="col-form-label"> Enabled </label>
+              </div>
+              <div class="col">
+                <div class="form-check form-switch">
+                  <input
+                    formControlName="enabled"
+                    class="form-check-input custom-checkbox"
+                    type="checkbox"
+                    role="switch"
+                    aria-checked="true"
+                    id="enabled"
+                  />
+                  <label for="">True</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="password" class="col-form-label">Password</label>
+              </div>
+              <div class="col-auto">
+                <input
+                  formControlName="password"
+                  type="password"
+                  id="password"
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="row g-3 align-items-center my-1">
+              <div class="col-3">
+                <label for="re-password" class="col-form-label">
+                  Re-password
+                </label>
+              </div>
+              <div class="col-auto">
+                <input
+                  formControlName="rePassword"
+                  type="password"
+                  id="re-password"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+<footer
+  class="controls-bar z-0 fixed-bottom d-flex justify-content-between align-items-center p-3 mt-3 bg-gradient"
+>
+  <button routerLink=".." class="btn border-0 fs-5 fw-bold bg-transparent">
+    <i class="bi bi-arrow-return-left me-3"></i>
+    <span>Cancel</span>
+  </button>
+
+  <button
+    class="btn border-0 fs-5 fw-bold bg-transparent"
+    (click)="onCreateButtonClick()"
+  >
+    <i class="bi bi-floppy me-3"></i>
+    <span>Create</span>
+  </button>
+</footer>

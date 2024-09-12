@@ -74,15 +74,6 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  getSelectedUserIds(): number[] {
-    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      '.custom-checkbox:not(#selectAll)'
-    );
-    return Array.from(selectBoxes)
-      .filter((box) => box.checked)
-      .map((box) => parseInt(box.id));
-  }
-
   min(...values: number[]) {
     return Math.min(...values);
   }
@@ -130,7 +121,7 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  fetchUsers() {
+  private fetchUsers() {
     this.users.load(this.userService.getBy(this.pageRequest, this.sort));
   }
 
@@ -142,6 +133,15 @@ export class UsersComponent implements OnInit {
       },
       error: (error: HttpErrorResponse) => this.showError(error),
     });
+  }
+
+  private getSelectedUserIds(): number[] {
+    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      '.custom-checkbox:not(#selectAll)'
+    );
+    return Array.from(selectBoxes)
+      .filter((box) => box.checked)
+      .map((box) => parseInt(box.id));
   }
 
   private showSuccess() {
