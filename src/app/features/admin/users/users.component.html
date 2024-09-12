@@ -10,6 +10,7 @@
       class="card-footer border-0 d-flex align-items-center justify-content-between"
     >
       <app-list-controls
+        (refreshButtonClick)="onRefreshButtonClick()"
         (deleteSelected)="onDeleteSelected()"
       ></app-list-controls>
       <app-pagination

@@ -1,7 +1,9 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SortableDirective } from '../../../directives/sortable.directive';
+import { AlertService } from '../../../services/alert.service';
 import { UserService } from '../../../services/user.service';
 import { ListControlsComponent } from '../../../shared/components/list-controls/list-controls.component';
 import { DataTableFooterComponent } from '../../../shared/components/pagination/pagination.component';
@@ -11,8 +13,6 @@ import { Response } from '../../../types/response.type';
 import { Sort, SortField } from '../../../types/sort.type';
 import { User } from '../../../types/user.type';
 import { DetailsComponent } from './details/details.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -36,27 +36,33 @@ export class UsersComponent implements OnInit {
   sortableFields = SortField;
   selectAllChecked = false;
   selectedUserIds: number[] = [];
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
-    this.refresh();
+    this.fetchUsers();
+  }
+
+  onRefreshButtonClick() {
+    this.fetchUsers();
   }
 
   onSelectAll(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     this.selectAllChecked = checkbox.checked;
-    const selectBoxes = document.querySelectorAll(
-      '.custom-checkbox'
-    ) as NodeListOf<HTMLInputElement>;
+    const selectBoxes: NodeListOf<HTMLInputElement> =
+      document.querySelectorAll('.custom-checkbox');
     selectBoxes.forEach((box) => {
       box.checked = this.selectAllChecked;
     });
   }
 
   onSelect() {
-    const selectBoxes = document.querySelectorAll(
+    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       '.custom-checkbox:not(#selectAll)'
-    ) as NodeListOf<HTMLInputElement>;
+    );
     const allChecked = Array.from(selectBoxes).every((box) => box.checked);
     this.selectAllChecked = allChecked;
 
@@ -69,9 +75,9 @@ export class UsersComponent implements OnInit {
   }
 
   getSelectedUserIds(): number[] {
-    const selectBoxes = document.querySelectorAll(
+    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
       '.custom-checkbox:not(#selectAll)'
-    ) as NodeListOf<HTMLInputElement>;
+    );
     return Array.from(selectBoxes)
       .filter((box) => box.checked)
       .map((box) => parseInt(box.id));
@@ -84,14 +90,14 @@ export class UsersComponent implements OnInit {
   nextPage() {
     if (this.users.data?.hasNext) {
       this.pageRequest.page++;
-      this.refresh();
+      this.fetchUsers();
     }
   }
 
   previousPage() {
     if (this.users.data?.hasPrevious) {
       this.pageRequest.page--;
-      this.refresh();
+      this.fetchUsers();
     }
   }
 
@@ -106,49 +112,47 @@ export class UsersComponent implements OnInit {
   onPageSizeChange(size: number) {
     this.pageRequest.size = size;
     this.validatePageRequest();
-    this.refresh();
+    this.fetchUsers();
   }
 
   onSortChange(sort: Sort) {
     this.sort = sort;
-    this.refresh();
+    this.fetchUsers();
   }
 
   onDeleteSelected() {
-    console.log('Start deleting', this.getSelectedUserIds());
+    const selectedUsers = this.getSelectedUserIds();
+    const title = `Delete ${selectedUsers.length}?`;
+    const text =
+      'Those users will be deleted forever! Do you want to continue?';
+    this.alertService.showConfirmationAlert(title, text, 'warning', () =>
+      this.doDeleteSelectedUsers()
+    );
+  }
+
+  fetchUsers() {
+    this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+  }
+
+  private doDeleteSelectedUsers() {
     this.userService.delete(this.getSelectedUserIds()).subscribe({
       next: () => {
-        console.log('Deleted', this.getSelectedUserIds());
         this.showSuccess();
-        this.refresh();
+        this.fetchUsers();
       },
       error: (error: HttpErrorResponse) => this.showError(error),
     });
   }
 
-  refresh() {
-    this.users.load(this.userService.getBy(this.pageRequest, this.sort));
+  private showSuccess() {
+    const text = `${this.selectedUserIds.length} users deleted`;
+    this.alertService.showSuccessToast(text);
   }
 
-  private showSuccess() {
-    Swal.fire({
-      text: `${this.selectedUserIds.length} users deleted`,
-      icon: 'success',
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-    });
-  }
-  private showError(error: HttpErrorResponse) {
-    Swal.fire({
-      text: error.error?.errorMessage,
-      icon: 'error',
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-    });
+  private showError(errorResponse: HttpErrorResponse) {
+    const { error } = errorResponse;
+    const errorMessage = error.errorMessage || 'Some server issues occurred';
+    this.alertService.showErrorToast(errorMessage);
   }
 
   private validatePageRequest() {

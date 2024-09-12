@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-list-controls',
@@ -9,26 +8,14 @@ import Swal from 'sweetalert2';
   styleUrl: './list-controls.component.scss',
 })
 export class ListControlsComponent {
-  @Output() deleteSelected = new EventEmitter();
+  @Output() refreshButtonClick = new EventEmitter();
+  @Output() deleteButtonClick = new EventEmitter();
 
-  onDeleteSelected() {
-    this.showAlert(() => this.deleteSelected.emit());
+  onRefreshButtonClick() {
+    this.refreshButtonClick.emit();
   }
 
-  private showAlert(callback: () => void) {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will not be able to recover these items!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: 'var(--purple-9)',
-      cancelButtonColor: 'var(--gray-6)',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        callback();
-      }
-    });
+  onDeleteButtonClick() {
+    this.deleteButtonClick.emit();
   }
 }
