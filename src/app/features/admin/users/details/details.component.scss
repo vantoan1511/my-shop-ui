@@ -18,6 +18,15 @@
   }
 }
 
+.invalid-input {
+  border-color: var(--red-9);
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 0.25rem var(--red-a6);
+  }
+}
+
 input {
   &:focus,
   &:active {

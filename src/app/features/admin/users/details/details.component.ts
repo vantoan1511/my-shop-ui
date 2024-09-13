@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { ValidationService } from '../../../../services/validation.service';
 
 @Component({
   selector: 'app-user-details',
@@ -17,7 +18,7 @@ import { RouterLink } from '@angular/router';
 export class DetailsComponent implements OnInit {
   userForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private validator: ValidationService) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -26,12 +27,24 @@ export class DetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       emailVerified: [false],
       enabled: [false],
+      username: ['', Validators.required],
       password: ['', Validators.required],
       rePassword: ['', Validators.required],
     });
+
+    this.userForm.addValidators(this.validator.passwordMatchValidator);
+  }
+
+  get rePasswordNotMatched() {
+    return this.userForm.errors?.['mismatch'];
+  }
+
+  isInvalid(fieldName: string) {
+    const field = this.userForm.get(fieldName);
+    return field?.invalid && (field?.dirty || field?.touched);
   }
 
   onCreateButtonClick() {
-    console.log('INFO - USER: ',this.userForm.value);
+    console.log('INFO - USER: ', this.userForm.value);
   }
 }
