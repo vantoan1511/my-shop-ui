@@ -3,7 +3,7 @@ import { AdminComponent } from './features/admin/admin.component';
 import { DashboardComponent } from './features/admin/dashboard/dashboard.component';
 import { OrdersComponent } from './features/admin/orders/orders.component';
 import { ProductsComponent } from './features/admin/products/products.component';
-import { DetailsComponent } from './features/admin/users/details/details.component';
+import { DetailsComponent } from './features/admin/users/userdetails/userdetails.component';
 import { UsersComponent } from './features/admin/users/users.component';
 import { authGuard } from './guard/auth.guard';
 import { Role } from './types/role.type';

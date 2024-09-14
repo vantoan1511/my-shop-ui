@@ -12,7 +12,7 @@ import { Perform } from '../../../types/perform.type';
 import { Response } from '../../../types/response.type';
 import { Sort, SortField } from '../../../types/sort.type';
 import { User } from '../../../types/user.type';
-import { DetailsComponent } from './details/details.component';
+import { DetailsComponent } from './userdetails/userdetails.component';
 
 @Component({
   selector: 'app-users',
@@ -136,17 +136,8 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  private getSelectedUserIds(): number[] {
-    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      '.custom-checkbox:not(#selectAll)'
-    );
-    return Array.from(selectBoxes)
-      .filter((box) => box.checked)
-      .map((box) => parseInt(box.id));
-  }
-
   private showSuccess() {
-    const text = `${this.selectedUserIds.length} users deleted`;
+    const text = `${this.getSelectedUserIds().length} users deleted`;
     this.alertService.showSuccessToast(text);
   }
 
@@ -154,6 +145,15 @@ export class UsersComponent implements OnInit {
     const { error } = errorResponse;
     const errorMessage = error.errorMessage || 'Some server issues occurred';
     this.alertService.showErrorToast(errorMessage);
+  }
+
+  private getSelectedUserIds(): number[] {
+    const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      '.custom-checkbox:not(#selectAll)'
+    );
+    return Array.from(selectBoxes)
+      .filter((box) => box.checked)
+      .map((box) => parseInt(box.id));
   }
 
   private validatePageRequest() {

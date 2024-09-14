@@ -1,3 +1,16 @@
+.card {
+  .card-footer {
+    .nav-underline {
+      .nav-link {
+        color: var(--gray-9);
+        &.active {
+          color: var(--purple-9);
+        }
+      }
+    }
+  }
+}
+
 .bg-purple {
   background: var(--purple-9);
 }
@@ -41,8 +54,6 @@ label {
 }
 
 .custom-checkbox {
-  border-color: var(--purple-9);
-
   &:checked {
     background-color: var(--purple-9);
     border-color: var(--purple-9);
@@ -54,19 +65,28 @@ label {
   }
 }
 
-.controls-bar {
-  background: var(--purple-8);
+.card-footer {
+  &.controls-bar {
+    .return-btn {
+      color: var(--purple-9);
 
-  .btn {
-    color: var(--purple-contrast);
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background: var(--purple-9) !important;
+      &:hover {
+        color: var(--purple-12);
+      }
     }
 
-    &:active {
-      background: var(--purple-11) !important;
+    .save-btn {
+      color: var(--purple-contrast);
+      background-color: var(--purple-9);
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background: var(--purple-12) !important;
+      }
+
+      &:active {
+        background: var(--purple-9) !important;
+      }
     }
   }
 }

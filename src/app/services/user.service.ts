@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PageRequest } from '../types/page-request.type';
 import { Response } from '../types/response.type';
-import { User } from '../types/user.type';
 import { Sort } from '../types/sort.type';
+import { UserCreation } from '../types/user-creation.type';
+import { User } from '../types/user.type';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,17 @@ export class UserService {
         ...sort,
       },
     });
+  }
+
+  getById(id: number) {
+    return this.http.get<User>(`http://localhost:8081/api/users/${id}`);
+  }
+
+  create(userCreation: UserCreation) {
+    return this.http.post<User>(
+      'http://localhost:8081/api/users',
+      userCreation
+    );
   }
 
   delete(ids: number[]) {

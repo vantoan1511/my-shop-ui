@@ -3,7 +3,7 @@ import {
   ApplicationConfig,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import {
   HTTP_INTERCEPTORS,
@@ -17,7 +17,7 @@ import { initializeKeycloak } from './keycloak.config';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,

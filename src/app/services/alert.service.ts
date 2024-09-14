@@ -38,7 +38,8 @@ export class AlertService {
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
-      timer: 3000,
+      showCloseButton: true,
+      timer: 5000,
     });
   }
 }

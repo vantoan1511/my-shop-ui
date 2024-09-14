@@ -50,6 +50,15 @@
     border-radius: 4px;
   }
 
+  .user-link {
+    color: var(--purple-9);
+    transition: color .3s ease;
+
+    &:hover {
+      color: var(--purple-12);
+    }
+  }
+
   @keyframes loading {
     0% {
       background-position: 200% 0;
