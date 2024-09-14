@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../../../services/user.service';
 import { ValidationService } from '../../../../services/validation.service';
 
 @Component({
@@ -18,7 +19,11 @@ import { ValidationService } from '../../../../services/validation.service';
 export class DetailsComponent implements OnInit {
   userForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private validator: ValidationService) {}
+  constructor(
+    private fb: FormBuilder,
+    private validator: ValidationService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -46,5 +51,9 @@ export class DetailsComponent implements OnInit {
 
   onCreateButtonClick() {
     console.log('INFO - USER: ', this.userForm.value);
+    this.userService.create(this.userForm.value).subscribe({
+      next: (resp) => console.log(resp),
+      error: (err) => console.log(err),
+    });
   }
 }

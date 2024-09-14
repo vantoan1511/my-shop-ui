@@ -112,8 +112,9 @@ export class UsersComponent implements OnInit {
   }
 
   onDeleteSelected() {
+    console.log('INFO - Starting deleting user...');
     const selectedUsers = this.getSelectedUserIds();
-    const title = `Delete ${selectedUsers.length}?`;
+    const title = `Delete ${selectedUsers.length} user(s)?`;
     const text =
       'Those users will be deleted forever! Do you want to continue?';
     this.alertService.showConfirmationAlert(title, text, 'warning', () =>
