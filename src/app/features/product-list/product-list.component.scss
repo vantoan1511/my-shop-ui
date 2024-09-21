@@ -1,0 +1,21 @@
+.card {
+  border-color: var(--gray-3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  .rating {
+    font-size: 0.8rem;
+    color: var(--purple-9);
+  }
+
+  &:hover {
+    border: 1px solid var(--purple-9);
+    box-shadow: 0 .25rem 0.5rem 0.2rem var(--gray-3);
+    transform: translateY(-5%);
+
+    .product-hero {
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.05);
+    }
+  }
+}

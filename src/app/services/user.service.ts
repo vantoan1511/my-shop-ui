@@ -4,7 +4,9 @@ import { PageRequest } from '../types/page-request.type';
 import { Response } from '../types/response.type';
 import { Sort } from '../types/sort.type';
 import { UserCreation } from '../types/user-creation.type';
+import { UserUpdate } from '../types/user-update.type';
 import { User } from '../types/user.type';
+import { PasswordReset } from '../types/password-reset.type';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +31,20 @@ export class UserService {
     return this.http.post<User>(
       'http://localhost:8081/api/users',
       userCreation
+    );
+  }
+
+  update(userUpdate: UserUpdate) {
+    return this.http.put(
+      'http://localhost:8081/api/users/' + userUpdate.id,
+      userUpdate
+    );
+  }
+
+  resetPassword(userId: number, passwordReset: PasswordReset) {
+    return this.http.put(
+      'http://localhost:8081/api/users/' + userId + '/reset-password',
+      passwordReset
     );
   }
 

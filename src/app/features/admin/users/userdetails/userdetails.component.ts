@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 import { AlertService } from '../../../../services/alert.service';
 import { UserService } from '../../../../services/user.service';
 import { ValidationService } from '../../../../services/validation.service';
+import { UserUpdate } from '../../../../types/user-update.type';
 import { User } from '../../../../types/user.type';
+import { PasswordReset } from '../../../../types/password-reset.type';
 
 @Component({
   selector: 'app-user-details',
@@ -21,6 +23,7 @@ import { User } from '../../../../types/user.type';
 })
 export class DetailsComponent implements OnInit {
   userForm!: FormGroup;
+  passwordForm!: FormGroup;
   userId: number | null = null;
   user: User | null = null;
   user$: Observable<User> | null = null;
@@ -36,6 +39,7 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.initPasswordForm();
     this.user$?.subscribe((user) => {
       this.user = user;
       this.updateForm(user);
@@ -49,19 +53,51 @@ export class DetailsComponent implements OnInit {
 
   onSaveButtonClick() {
     console.log('INFO - USER: ', this.userForm.value);
-    this.userService.create(this.userForm.value).subscribe({
-      next: (success) => {
-        console.log(success);
-        this.router.navigate(['/admin/users/', success.id]);
-        this.alertService.showSuccessToast(
-          `User ${success?.username} has been saved successfully`
-        );
-      },
-      error: (error) => {
-        console.log(error);
-        this.alertService.showErrorToast(error.error?.errorMessage);
-      },
-    });
+    if (this.currentTabView === 'general') {
+      if (this.userId) {
+        const userUpdate: UserUpdate = this.userForm.value;
+        userUpdate.id = this.userId;
+        this.userService.update(this.userForm.value).subscribe({
+          next: () => {
+            this.router.navigate(['/admin/users/', this.userId]);
+            this.alertService.showSuccessToast(
+              `User has been saved successfully`
+            );
+          },
+          error: (error) => {
+            this.alertService.showErrorToast(error.error?.errorMessage);
+          },
+        });
+      } else {
+        this.userService.create(this.userForm.value).subscribe({
+          next: (success) => {
+            console.log(success);
+            this.router.navigate(['/admin/users/', success.id]);
+            this.alertService.showSuccessToast(
+              `User ${success?.username} has been saved successfully`
+            );
+          },
+          error: (error) => {
+            this.alertService.showErrorToast(error.error?.errorMessage);
+          },
+        });
+      }
+    } else if (this.currentTabView === 'credentials') {
+      const passwordReset: PasswordReset = this.passwordForm.value;
+      if (this.userId) {
+        this.userService.resetPassword(this.userId, passwordReset).subscribe({
+          next: () => {
+            this.router.navigate(['/admin/users/', this.userId]);
+            this.alertService.showSuccessToast(
+              `Password has been saved successfully`
+            );
+          },
+          error: (error) => {
+            this.alertService.showErrorToast(error.error?.errorMessage);
+          },
+        });
+      }
+    }
   }
 
   changeTab(tab: 'general' | 'credentials') {
@@ -88,8 +124,14 @@ export class DetailsComponent implements OnInit {
       emailVerified: [false],
       enabled: [false],
       username: ['', Validators.required],
-      password: ['', Validators.required],
-      rePassword: ['', Validators.required],
+    });
+  }
+
+  private initPasswordForm() {
+    this.passwordForm = this.fb.group({
+      password: [''],
+      rePassword: [''],
+      temporary: [false],
     });
 
     this.userForm.addValidators(this.validator.passwordMatchValidator);

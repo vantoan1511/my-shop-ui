@@ -159,11 +159,11 @@ export class UsersComponent implements OnInit {
   private validatePageRequest() {
     if (this.users.data) {
       const itemsLeft =
-        this.users.data.totalUsers -
+        this.users.data.totalItems -
         this.pageRequest.page * this.pageRequest.size;
       if (itemsLeft < 0) {
         this.pageRequest.page = Math.ceil(
-          this.users.data.totalUsers / this.pageRequest.size
+          this.users.data.totalItems / this.pageRequest.size
         );
       }
     }

@@ -1,0 +1,56 @@
+.rating {
+  color: var(--purple-9);
+}
+
+.discount-percentage {
+  background: var(--purple-9);
+}
+
+.price {
+  color: var(--purple-9);
+  background: var(--gray-1);
+
+  .sale-price {
+    color: var(--gray-9);
+  }
+}
+
+.add-to-cart-btn {
+  color: var(--purple-9);
+  border: 1px solid var(--purple-9);
+
+  &:active {
+    color: var(--purple-9);
+    border: 1px solid var(--purple-9);
+    background: var(--purple-3);
+  }
+}
+
+.buy-now-btn {
+  color: var(--purple-contrast);
+  background: var(--purple-9);
+
+  &:active {
+    border: 1px solid var(--purple-10);
+    color: var(--purple-contrast);
+    background: var(--purple-10);
+  }
+}
+
+.product-detail-title {
+  background: var(--gray-1);
+}
+
+.review-filter-btn {
+  background: var(--purple-1);
+
+  &:active {
+    border-color: var(--purple-9);
+    background: var(--purple-3);
+  }
+}
+
+.active {
+  border-color: var(--purple-9);
+  background: var(--purple-3);
+}

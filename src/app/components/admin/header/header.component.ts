@@ -3,7 +3,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-admin-header',
   standalone: true,
   imports: [RouterLink, RouterModule],
   templateUrl: './header.component.html',

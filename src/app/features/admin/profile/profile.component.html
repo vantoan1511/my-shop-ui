@@ -1,0 +1,26 @@
+<main class="container-fluid my-5">
+  <div class="row">
+    <div class="col-md-4 text-center">
+      <div class="avatar-container">
+        <img
+          src="http://localhost:8082/api/images/1"
+          alt="User Avatar"
+          class="img-fluid rounded-circle avatar-preview"
+          (click)="fileInput.click()"
+        />
+        <input
+          type="file"
+          accept="image/*"
+          class="mt-2 avatar-input"
+          (change)="previewAvatar($event); handleFileChange($event)"
+          #fileInput
+          style="display: none"
+        />
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h2>User Details</h2>
+      <button class="btn btn-danger" (click)="logout()">logout</button>
+    </div>
+  </div>
+</main>

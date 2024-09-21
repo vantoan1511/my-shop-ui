@@ -136,7 +136,7 @@
                     aria-checked="true"
                     id="emailVerified"
                   />
-                  <label for="">True</label>
+                  <label for="emailVerified">True</label>
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@
                     aria-checked="true"
                     id="enabled"
                   />
-                  <label for="">True</label>
+                  <label for="enabled">True</label>
                 </div>
               </div>
             </div>
@@ -163,7 +163,7 @@
         </div>
       </form>
       } @else {
-      <form [formGroup]="userForm">
+      <form [formGroup]="passwordForm">
         <div class="row">
           <div class="col">
             <div class="row g-3 align-items-center my-1">
@@ -222,7 +222,7 @@
               <div class="col">
                 <div class="form-check form-switch">
                   <input
-                    formControlName="enabled"
+                    formControlName="temporary"
                     class="form-check-input custom-checkbox"
                     type="checkbox"
                     role="switch"

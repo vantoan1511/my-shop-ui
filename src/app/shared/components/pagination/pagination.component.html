@@ -3,11 +3,11 @@
     Showing {{ (pageRequest.page - 1) * pageRequest.size + 1 }} to
     {{
       min(
-        users.data?.totalUsers || 0,
+        users.data?.totalItems || 0,
         pageRequest.size + (pageRequest.page - 1) * pageRequest.size
       )
     }}
-    of {{ users.data?.totalUsers || 0 }} entries
+    of {{ users.data?.totalItems || 0 }} entries
   </span>
   <div class="d-flex align-items-center">
     <div class="dropdown me-3">
@@ -21,7 +21,7 @@
           {{ (pageRequest.page - 1) * pageRequest.size + 1 }} -
           {{
             min(
-              users.data?.totalUsers || 0,
+              users.data?.totalItems || 0,
               pageRequest.size + (pageRequest.page - 1) * pageRequest.size
             )
           }}
