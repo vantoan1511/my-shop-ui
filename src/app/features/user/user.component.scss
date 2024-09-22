@@ -1,0 +1,65 @@
+.nav-link {
+  color: var(--gray-9);
+
+  &.active {
+    color: var(--purple-9);
+  }
+
+  &:hover {
+    color: var(--purple-9);
+  }
+}
+
+.profile {
+  border-right: 1px solid var(--gray-6);
+}
+
+.helper-text {
+  text-align: center;
+  text-wrap: balance;
+}
+
+.readonly {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--gray-6);
+  background: transparent;
+}
+
+.form-control {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--gray-6);
+
+  &:focus,
+  &:active {
+    box-shadow: none;
+    border-bottom: 1px solid var(--purple-9);
+  }
+
+  &.ng-invalid {
+    border-color: var(--red-9);
+    color: var(--red-9);
+  }
+}
+
+.btn-primary {
+  border-color: var(--purple-9);
+  background: var(--purple-9);
+
+  &:active {
+    border-color: var(--purple-10);
+    background: var(--purple-10);
+  }
+}
+
+.form-check-input {
+  &:checked {
+    border-color: var(--purple-9);
+    background-color: var(--purple-9);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem var(--purple-3);
+  }
+}

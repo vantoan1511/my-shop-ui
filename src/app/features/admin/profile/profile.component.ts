@@ -4,13 +4,13 @@ import { ImageService } from '../../../services/image.service';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-admin-profile',
   standalone: true,
   imports: [],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileAdminComponent implements OnInit {
   avatarUrl!: string;
   username = this.keycloak.getUsername();
 

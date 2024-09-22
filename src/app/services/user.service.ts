@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PageRequest } from '../types/page-request.type';
+import { PasswordReset } from '../types/password-reset.type';
 import { Response } from '../types/response.type';
 import { Sort } from '../types/sort.type';
 import { UserCreation } from '../types/user-creation.type';
-import { UserUpdate } from '../types/user-update.type';
+import { CustomerProfileUpdate, UserUpdate } from '../types/user-update.type';
 import { User } from '../types/user.type';
-import { PasswordReset } from '../types/password-reset.type';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,12 @@ export class UserService {
     return this.http.get<User>(`http://localhost:8081/api/users/${id}`);
   }
 
+  getByUsername(username: string) {
+    return this.http.get<User>(
+      `http://localhost:8081/api/customers/${username}`
+    );
+  }
+
   create(userCreation: UserCreation) {
     return this.http.post<User>(
       'http://localhost:8081/api/users',
@@ -38,6 +44,22 @@ export class UserService {
     return this.http.put(
       'http://localhost:8081/api/users/' + userUpdate.id,
       userUpdate
+    );
+  }
+
+  updateProfile(username: string, profile: CustomerProfileUpdate) {
+    return this.http.put(
+      `http://localhost:8081/api/customers/${username}`,
+      profile
+    );
+  }
+
+  changePassword(username: string, newPassword: string) {
+    return this.http.put(
+      `http://localhost:8081/api/customers/${username}/change-password`,
+      {
+        newPassword,
+      }
     );
   }
 

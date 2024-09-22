@@ -18,6 +18,11 @@
 .add-to-cart-btn {
   color: var(--purple-9);
   border: 1px solid var(--purple-9);
+  transition: background 0.3s, color 0.3s;
+
+  &:hover {
+    background: var(--purple-3);
+  }
 
   &:active {
     color: var(--purple-9);
@@ -29,6 +34,11 @@
 .buy-now-btn {
   color: var(--purple-contrast);
   background: var(--purple-9);
+  transition: background 0.3s, color 0.3s;
+
+  &:hover {
+    background: var(--purple-10);
+  }
 
   &:active {
     border: 1px solid var(--purple-10);
@@ -43,6 +53,11 @@
 
 .review-filter-btn {
   background: var(--purple-1);
+  transition: background 0.3s;
+
+  &:hover {
+    background: var(--purple-3);
+  }
 
   &:active {
     border-color: var(--purple-9);

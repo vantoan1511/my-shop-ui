@@ -24,6 +24,9 @@ export class AuthenticationService {
   }
 
   get username() {
+    if (!this.isAuthenticated) {
+      this.login();
+    }
     return this.keycloak.getUsername();
   }
 }
