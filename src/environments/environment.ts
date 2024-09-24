@@ -7,4 +7,5 @@ export const environment = {
     realm: 'shopbee',
     clientId: 'shopbee-ui',
   },
+  SERVICE_API_URL: '',
 };

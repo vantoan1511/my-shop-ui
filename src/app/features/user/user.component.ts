@@ -11,9 +11,10 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { catchError, Subject, switchMap, takeUntil } from 'rxjs';
 import { AlertService } from '../../services/alert.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { ImageService } from '../../services/image.service';
 import { UserService } from '../../services/user.service';
 import { ValidationService } from '../../services/validation.service';
 
@@ -28,6 +29,9 @@ export class UserComponent implements OnInit, OnDestroy {
   userForm!: FormGroup;
   passwordForm!: FormGroup;
   username!: string;
+  userId: number | null = null;
+  avatar: string | null = null;
+  defaultAvatar = 'https://placehold.co/48x48';
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -36,13 +40,14 @@ export class UserComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private route: ActivatedRoute,
     private authService: AuthenticationService,
-    private validator: ValidationService
+    private validator: ValidationService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
     this.username = this.getUsername();
-    this.initUserProfileForm();
-    this.initPasswordForm();
+    this.userForm = this.initUserProfileForm();
+    this.passwordForm = this.initPasswordForm();
     this.getUserProfile();
   }
 
@@ -83,7 +88,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   previewImage(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (!input.files || !input.files[0]) {
+    if (!input.files?.[0]) {
       return;
     }
 
@@ -101,6 +106,26 @@ export class UserComponent implements OnInit, OnDestroy {
       imgElement.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
+
+    this.imageService
+      .uploadImage(file)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        switchMap((resp) => {
+          const avatarId = resp.id;
+          return this.imageService.setAvatar(avatarId);
+        }),
+        catchError((error) => {
+          this.alertService.showErrorToast('Failed to upload image');
+          return [];
+        })
+      )
+      .subscribe({
+        next: () =>
+          this.alertService.showSuccessToast('Updated avatar successfully'),
+        error: () =>
+          this.alertService.showErrorToast('Failed to update avatar'),
+      });
   }
 
   get isValidProfileForm() {
@@ -116,7 +141,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   private initUserProfileForm() {
-    this.userForm = this.fb.group({
+    return this.fb.group({
       username: [{ value: '', disabled: true }],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -135,12 +160,12 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   private initPasswordForm() {
-    this.passwordForm = this.fb.group({
+    const passwordForm = this.fb.group({
       password: ['', Validators.required],
       rePassword: ['', Validators.required],
     });
-
-    this.passwordForm.addValidators(this.validator.passwordMatchValidator);
+    passwordForm.addValidators(this.validator.passwordMatchValidator);
+    return passwordForm;
   }
 
   private getUserProfile() {
@@ -148,22 +173,28 @@ export class UserComponent implements OnInit, OnDestroy {
 
     this.userService
       .getByUsername(username)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (user) => this.userForm.patchValue(user),
-        error: (error) =>
-          this.alertService.showErrorToast('Failed to get user: ' + username),
-      });
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        catchError((error) => {
+          this.alertService.showErrorToast('Failed to get user: ' + username);
+          return [];
+        }),
+        switchMap((user) => {
+          this.userForm.patchValue(user);
+          this.userId = user.id;
+          return this.imageService.getAvatarByUserId(this.userId);
+        })
+      )
+      .subscribe((blob) => (this.avatar = this.createAvatarUrl(blob)));
+  }
+
+  private createAvatarUrl(blob: Blob) {
+    return URL.createObjectURL(blob);
   }
 
   private getUsername() {
-    let username = this.route.snapshot.paramMap.get('username');
-
-    if (!username) {
-      username = this.authService.username;
-    }
-
-    return username;
+    const username = this.route.snapshot.paramMap.get('username');
+    return username ?? this.authService.username;
   }
 
   private validateFile(file: File) {

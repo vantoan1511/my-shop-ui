@@ -8,10 +8,13 @@ import { Image } from '../types/image.type';
 export class ImageService {
   constructor(private http: HttpClient) {}
 
-  getAvatar(username: string) {
-    return this.http.get<string>(
-      'http://localhost:8082/api/images/avatar/' + username
-    );
+  getAvatarByUserId(userId: number) {
+    return this.http.get<Blob>('http://localhost:8082/api/images/avatar', {
+      params: {
+        userId,
+      },
+      responseType: 'blob' as 'json',
+    });
   }
 
   uploadImage(file: File) {
