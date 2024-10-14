@@ -26,8 +26,8 @@ export class SortableDirective {
   onClick() {
     this.descending = !this.descending;
     this.sortChange.emit({
-      sort_by: this.sortField,
-      descending: this.descending,
+      sortBy: this.sortField,
+      ascending: this.descending,
     });
     this.setIcon();
   }

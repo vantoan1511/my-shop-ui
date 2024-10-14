@@ -3,11 +3,11 @@
     Showing {{ (pageRequest.page - 1) * pageRequest.size + 1 }} to
     {{
       min(
-        users.data?.totalItems || 0,
+        items.data?.totalItems || 0,
         pageRequest.size + (pageRequest.page - 1) * pageRequest.size
       )
     }}
-    of {{ users.data?.totalItems || 0 }} entries
+    of {{ items.data?.totalItems || 0 }} entries
   </span>
   <div class="d-flex align-items-center">
     <div class="dropdown me-3">
@@ -21,7 +21,7 @@
           {{ (pageRequest.page - 1) * pageRequest.size + 1 }} -
           {{
             min(
-              users.data?.totalItems || 0,
+              items.data?.totalItems || 0,
               pageRequest.size + (pageRequest.page - 1) * pageRequest.size
             )
           }}
@@ -55,14 +55,14 @@
       <div class="btn-group">
         <button
           class="btn btn-light btn-sm border-0 bg-transparent me-2"
-          [disabled]="users.isLoading || !users.data?.hasPrevious"
+          [disabled]="items.isLoading || !items.data?.hasPrevious"
           (click)="previousPage()"
         >
           <i class="bi bi-chevron-left"></i>
         </button>
         <button
           class="btn btn-light btn-sm border-0 bg-transparent"
-          [disabled]="users.isLoading || !users.data?.hasNext"
+          [disabled]="items.isLoading || !items.data?.hasNext"
           (click)="nextPage()"
         >
           <i class="bi bi-chevron-right"></i>

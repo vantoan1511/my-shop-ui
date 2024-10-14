@@ -22,6 +22,10 @@ export class ImageService {
         });
     }
 
+    getById(id: number) {
+        return this.http.get<Image>(`${this.BASE_URL}/images/${id}`);
+    }
+
     uploadImage(file: File) {
         const formData = new FormData();
         formData.append('image', file);

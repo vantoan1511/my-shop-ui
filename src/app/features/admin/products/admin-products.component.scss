@@ -1,0 +1,83 @@
+.card {
+  .bg-purple {
+    background: var(--purple-9);
+  }
+
+  .card-header {
+    color: var(--purple-contrast);
+
+    .new-user-btn,
+    .refresh-btn {
+      color: var(--purple-9);
+      background: var(--purple-1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: var(--purple-contrast);
+        background: var(--purple-9);
+      }
+    }
+  }
+
+  .table {
+    th {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: var(--gray-9);
+    }
+
+    .user-avatar {
+      border: 2px solid var(--purple-contrast);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+      font-weight: 500;
+    }
+  }
+
+  .skeleton-loader {
+    background: linear-gradient(
+                    90deg,
+                    var(--gray-2) 25%,
+                    var(--gray-3) 50%,
+                    var(--gray-2) 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    height: 20px;
+    border-radius: 4px;
+  }
+
+  .user-link {
+    color: var(--purple-9);
+    transition: color .3s ease;
+
+    &:hover {
+      color: var(--purple-12);
+    }
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
+.custom-checkbox {
+  border-color: var(--purple-9);
+}
+
+.custom-checkbox:checked {
+  background-color: var(--purple-9);
+  border-color: var(--purple-9);
+}
+
+.custom-checkbox:focus {
+  box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+}

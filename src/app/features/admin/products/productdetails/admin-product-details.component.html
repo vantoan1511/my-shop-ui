@@ -1,0 +1,472 @@
+<main class="container my-5">
+    <div class="card border-0 shadow">
+        <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
+            <h2 class="mb-0 text-white">
+                {{ product?.name || 'New Product' }}
+            </h2>
+        </div>
+        <div class="card-footer">
+            <ul class="nav nav-underline" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active"
+                            id="general-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#general"
+                            type="button"
+                            role="tab"
+                            aria-controls="general"
+                            aria-selected="true">
+                        General
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            id="details-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#details"
+                            type="button"
+                            role="tab"
+                            aria-controls="details"
+                            aria-selected="false">
+                        Details
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            id="images-tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#images"
+                            type="button"
+                            role="tab"
+                            aria-controls="images"
+                            aria-selected="false">
+                        Images
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="productForm">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active"
+                         id="general"
+                         role="tabpanel"
+                         aria-labelledby="general-tab">
+                        <div class="row g-3">
+                            <div class="col">
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="name" class="col-form-label">Name</label>
+                                    </div>
+                                    <div class="col">
+                                        <input [class.invalid-input]="isInvalid('name')"
+                                               formControlName="name"
+                                               type="text"
+                                               id="name"
+                                               class="form-control"
+                                               placeholder="Product name"/>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center my-1">
+                                    <div class="col-3">
+                                        <label for="slug" class="col-form-label">Slug</label>
+                                    </div>
+                                    <div class="col">
+                                        <input [class.invalid-input]="isInvalid('slug')"
+                                               formControlName="slug"
+                                               type="text"
+                                               id="slug"
+                                               class="form-control"
+                                               placeholder="product-slug"/>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center my-1">
+                                    <div class="col-3">
+                                        <label for="basePrice" class="col-form-label">Base price</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input [class.invalid-input]="isInvalid('basePrice')"
+                                               formControlName="basePrice"
+                                               type="number"
+                                               id="basePrice"
+                                               class="form-control"
+                                               placeholder="10,000,000.00"/>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center my-1">
+                                    <div class="col-3">
+                                        <label for="stock" class="col-form-label">Stock</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input [class.invalid-input]="isInvalid('stockQuantity')"
+                                               formControlName="stockQuantity"
+                                               type="number"
+                                               id="stock"
+                                               class="form-control"
+                                               placeholder="product-slug"/>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center my-1">
+                                    <div class="col-3">
+                                        <label for="active" class="col-form-label">Active</label>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-switch">
+                                            <input formControlName="active"
+                                                   class="form-check-input custom-checkbox"
+                                                   type="checkbox"
+                                                   role="switch"
+                                                   aria-checked="true"
+                                                   id="active"/>
+                                            <label for="active">True</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="category" class="col-form-label">Category</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="category" class="form-select" formControlName="category">
+                                            <option value="" disabled selected>
+                                                Choose category
+                                            </option>
+                                            @for (category of (categories$|async)?.items; track $index) {
+                                                <option [value]="category.slug">
+                                                    {{ category.name }}
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="model" class="col-form-label">Model</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="model" class="form-select" formControlName="model">
+                                            <option value="" disabled selected>
+                                                Choose model
+                                            </option>
+                                            @for (model of (models$|async)?.items; track $index) {
+                                                <option [value]="model.slug">
+                                                    {{ model.name }}
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="salePrice" class="col-form-label">Sale price</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input [class.invalid-input]="isInvalid('salePrice')"
+                                               formControlName="salePrice"
+                                               type="number"
+                                               id="salePrice"
+                                               class="form-control"
+                                               placeholder="7,000,000.00"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade"
+                         id="details"
+                         role="tabpanel"
+                         aria-labelledby="details-tab">
+                        <div class="row g-3">
+                            <div class="col">
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="processor" class="col-form-label">Processor</label>
+                                    </div>
+                                    <div class="col">
+                                        <input [class.invalid-input]="isInvalid('processor')"
+                                               formControlName="processor"
+                                               type="text"
+                                               id="processor"
+                                               class="form-control"
+                                               placeholder="Intel Core i3"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="gpu" class="col-form-label">GPU</label>
+                                    </div>
+                                    <div class="col">
+                                        <input [class.invalid-input]="isInvalid('gpu')"
+                                               formControlName="gpu"
+                                               type="text"
+                                               id="gpu"
+                                               class="form-control"
+                                               placeholder="RTX3050"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="screenSize" class="col-form-label">Screen size (inches)</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input [class.invalid-input]="isInvalid('screenSize')"
+                                               formControlName="screenSize"
+                                               type="number"
+                                               id="screenSize"
+                                               class="form-control"
+                                               placeholder="15.6"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="os" class="col-form-label">OS</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="os" class="form-select" formControlName="os">
+                                            <option value="" selected disabled>Choose OS</option>
+                                            <option value="WINDOW11">
+                                                Windows 11
+                                            </option>
+                                            <option value="MACOS">
+                                                Mac OS
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="color" class="col-form-label">Color</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="color" class="form-select" formControlName="color">
+                                            <option value="" disabled selected>
+                                                Choose color
+                                            </option>
+                                            <option value="SILVER">
+                                                Silver
+                                            </option>
+                                            <option value="BLACK">
+                                                Black
+                                            </option>
+                                            <option value="WHITE">
+                                                White
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="warranty" class="col-form-label">Warranty (years)</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input [class.invalid-input]="isInvalid('warranty')"
+                                               formControlName="warranty"
+                                               type="number"
+                                               id="warranty"
+                                               class="form-control"
+                                               placeholder="1.5"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="ram" class="col-form-label">Ram (GB)</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input [class.invalid-input]="isInvalid('ram')"
+                                               formControlName="ram"
+                                               type="number"
+                                               id="ram"
+                                               class="form-control"
+                                               placeholder="16"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="storageType" class="col-form-label">Storage type</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select id="storageType" class="form-select" formControlName="storageType">
+                                            <option value="" disabled selected>Choose storage type</option>
+                                            <option value="HDD">HDD</option>
+                                            <option value="SSD">SSD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="storageCapacity"
+                                               class="col-form-label">
+                                            Storage Capacity (GB)
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input [class.invalid-input]="isInvalid('storageCapacity')"
+                                               formControlName="storageCapacity"
+                                               type="number"
+                                               id="storageCapacity"
+                                               class="form-control"
+                                               placeholder="500"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="batteryCapacity"
+                                               class="col-form-label">
+                                            Battery capacity (Wh)
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input [class.invalid-input]="isInvalid('batteryCapacity')"
+                                               formControlName="batteryCapacity"
+                                               type="number"
+                                               id="batteryCapacity"
+                                               class="form-control"
+                                               placeholder="42"/>
+                                    </div>
+                                </div>
+                                <div class="row g-3 align-items-center mt-1">
+                                    <div class="col-3">
+                                        <label for="weight"
+                                               class="col-form-label">
+                                            Weight (Kg)
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <input [class.invalid-input]="isInvalid('weight')"
+                                               formControlName="weight"
+                                               type="number"
+                                               id="weight"
+                                               class="form-control"
+                                               placeholder="1.8"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade"
+                         id="images"
+                         role="tabpanel"
+                         aria-labelledby="images-tab">
+
+                        <div class="mb-4">
+                            <h4 class="text-muted fw-light">
+                                <i class="bi bi-star"></i> FEATURED
+                            </h4>
+                            <div class="hero-image mb-3">
+                                <img id="heroImage"
+                                     [src]="imageMap.get(heroImageId) || defaultHeroImage"
+                                     class="img-fluid rounded mx-auto"
+                                     alt="Current Hero Image">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="text-muted fw-light">ALL</h4>
+                            <div class="d-flex gap-3"
+                                 id="productThumbnails">
+                                @for (image of productImages; track $index) {
+                                    @if (imageMap.get(image.imageId)) {
+                                        <img [src]="imageMap.get(image.imageId) || defaultThumbnail"
+                                             [id]="image.imageId"
+                                             class="img-thumbnail"
+                                             alt="Product Image 1"
+                                             (contextmenu)="showContextMenu($event, image.imageId)">
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 justify-content-center align-items-center">
+                            <input type="file"
+                                   class="d-none"
+                                   id="image"
+                                   accept="image/jpeg, image/png"
+                                   (change)="onUploadImageButtonClick($event)"/>
+                            <label for="image"
+                                   style="cursor: pointer">
+                                <i class="bi bi-upload me-2"></i>Upload new
+                            </label>
+
+                            <span class="text-muted fw-light">- or -</span>
+                            <button class="btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#uploadedImageChooser"
+                                    (click)="onChooseFromUploadedClick()">
+                                <i class="bi bi-images me-2"></i>Choose from uploaded
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade"
+                                 id="uploadedImageChooser"
+                                 data-bs-backdrop="static"
+                                 data-bs-keyboard="false"
+                                 tabindex="-1"
+                                 aria-labelledby="uploadedImageChooserLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5"
+                                                id="uploadedImageChooserLabel">
+                                                Modal title
+                                            </h1>
+                                            <button type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button"
+                                                    class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button"
+                                                    class="btn btn-primary">
+                                                Understood
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer border-0 controls-bar d-flex justify-content-between align-items-center">
+            <button routerLink=".." class="btn return-btn border-0 fs-5">
+                <i class="bi bi-arrow-return-left me-3"></i>
+                <span>Back</span>
+            </button>
+
+            <button [disabled]="!productForm.valid"
+                    class="btn save-btn border-0 fs-5 fw-bold"
+                    (click)="onSaveButtonClick()">
+                <i class="bi bi-floppy me-3"></i>
+                <span>Save</span>
+            </button>
+        </div>
+    </div>
+</main>
+
+<app-context-menu #contextMenu [imageId]="selectedImageId"
+                  (imageSetFeatured)="onImageSetFeatured($event)"
+                  (imageRemove)="onImageRemove($event)">
+</app-context-menu>

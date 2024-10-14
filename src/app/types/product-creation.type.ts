@@ -1,0 +1,22 @@
+export interface ProductCreation {
+    name: string,
+    slug: string,
+    model: string,
+    category: string,
+    description?: string,
+    basePrice?: number,
+    salePrice?: number,
+    stockQuantity?: number,
+    active?: boolean,
+    weight?: number,
+    color?: string,
+    processor?: string,
+    gpu?: string,
+    ram?: number,
+    storageType?: string,
+    storageCapacity?: number,
+    os?: string,
+    screenSize?: number,
+    batteryCapacity?: number,
+    warranty?: number
+}

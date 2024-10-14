@@ -1,153 +1,167 @@
 <main class="container-fluid my-5">
-  <div class="card border-0 shadow">
-    <div
-      class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3"
-    >
-      <h2 class="mb-0 text-white">Users</h2>
-    </div>
+    <div class="card border-0 shadow">
+        <div
+                class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3"
+        >
+            <h2 class="mb-0 text-white">Users</h2>
+        </div>
 
-    <div
-      class="card-footer border-0 d-flex align-items-center justify-content-between"
-    >
-      <app-list-controls
-        (refreshButtonClick)="onRefreshButtonClick()"
-        (deleteButtonClick)="onDeleteSelected()"
-      ></app-list-controls>
-      <app-pagination
-        [pageRequest]="pageRequest"
-        [users]="users"
-        (pageChange)="onPageChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      ></app-pagination>
-    </div>
+        <div
+                class="card-footer border-0 d-flex align-items-center justify-content-between"
+        >
+            <app-list-controls
+                    (refreshButtonClick)="onRefreshButtonClick()"
+                    (deleteButtonClick)="onDeleteSelected()"
+            ></app-list-controls>
+            <app-pagination
+                    [pageRequest]="pageRequest"
+                    [items]="users"
+                    (pageChange)="onPageChange($event)"
+                    (pageSizeChange)="onPageSizeChange($event)"
+            ></app-pagination>
+        </div>
 
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>
-                <input
-                  id="selectAll"
-                  type="checkbox"
-                  class="form-check-input custom-checkbox"
-                  (change)="onSelectAll($event)"
-                />
-              </th>
-              <th style="width: 5%">ID</th>
-              <th
-                style="width: 20%"
-                appSortable
-                [sortField]="sortableFields.USERNAME"
-                (sortChange)="onSortChange($event)"
-              >
-                User
-              </th>
-              <th
-                style="width: 25%"
-                appSortable
-                [sortField]="sortableFields.EMAIL"
-                (sortChange)="onSortChange($event)"
-              >
-                Email
-              </th>
-              <th
-                style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.FIRST_NAME"
-                (sortChange)="onSortChange($event)"
-              >
-                First name
-              </th>
-              <th
-                style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.LAST_NAME"
-                (sortChange)="onSortChange($event)"
-              >
-                Last name
-              </th>
-              <th
-                style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.CREATED_AT"
-                (sortChange)="onSortChange($event)"
-              >
-                Created at
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            @if (users.isLoading) { @for (item of [1,2,3,4,5,6,7,8,9,10]; track
-            item) {
-            <tr class="skeleton-row">
-              <td>
-                <input
-                  type="checkbox"
-                  class="form-check-input custom-checkbox"
-                />
-              </td>
-              <td><div class="skeleton-loader" style="width: 30px"></div></td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div
-                    class="skeleton-loader rounded-circle me-3"
-                    style="width: 40px; height: 40px"
-                  ></div>
-                  <div class="skeleton-loader" style="width: 100px"></div>
-                </div>
-              </td>
-              <td><div class="skeleton-loader" style="width: 150px"></div></td>
-              <td><div class="skeleton-loader" style="width: 60px"></div></td>
-              <td><div class="skeleton-loader" style="width: 60px"></div></td>
-              <td><div class="skeleton-loader" style="width: 60px"></div></td>
-            </tr>
-            } } @else { @for (user of users.data?.items; track $index) {
-            <tr>
-              <td>
-                <input
-                  [id]="user.id"
-                  type="checkbox"
-                  class="form-check-input custom-checkbox"
-                  (change)="onSelect()"
-                />
-              </td>
-              <td>{{ user.id }}</td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <img
-                    src="https://via.placeholder.com/50"
-                    alt="John Doe"
-                    width="40"
-                    height="40"
-                    class="rounded-circle me-3 user-avatar"
-                  />
-                  <a
-                    [routerLink]="['.', user.id]"
-                    class="user-link text-decoration-none fw-bold"
-                  >
-                    {{ user.username }}
-                  </a>
-                </div>
-              </td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.firstName }}</td>
-              <td>{{ user.lastName }}</td>
-              <td>{{ user.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
-            </tr>
-            } }
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th>
+                            <input
+                                    id="selectAll"
+                                    type="checkbox"
+                                    class="form-check-input custom-checkbox"
+                                    (change)="onSelectAll($event)"
+                            />
+                        </th>
+                        <th style="width: 5%">ID</th>
+                        <th
+                                style="width: 20%"
+                                appSortable
+                                [sortField]="sortableFields.USERNAME"
+                                (sortChange)="onSortChange($event)"
+                        >
+                            User
+                        </th>
+                        <th
+                                style="width: 25%"
+                                appSortable
+                                [sortField]="sortableFields.EMAIL"
+                                (sortChange)="onSortChange($event)"
+                        >
+                            Email
+                        </th>
+                        <th
+                                style="width: 15%"
+                                appSortable
+                                [sortField]="sortableFields.FIRST_NAME"
+                                (sortChange)="onSortChange($event)"
+                        >
+                            First name
+                        </th>
+                        <th
+                                style="width: 15%"
+                                appSortable
+                                [sortField]="sortableFields.LAST_NAME"
+                                (sortChange)="onSortChange($event)"
+                        >
+                            Last name
+                        </th>
+                        <th
+                                style="width: 15%"
+                                appSortable
+                                [sortField]="sortableFields.CREATED_AT"
+                                (sortChange)="onSortChange($event)"
+                        >
+                            Created at
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @if (users.isLoading) {
+                            @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track
+                                item) {
+                                <tr class="skeleton-row">
+                                    <td>
+                                        <input
+                                                type="checkbox"
+                                                class="form-check-input custom-checkbox"
+                                        />
+                                    </td>
+                                    <td>
+                                        <div class="skeleton-loader" style="width: 30px"></div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                    class="skeleton-loader rounded-circle me-3"
+                                                    style="width: 40px; height: 40px"
+                                            ></div>
+                                            <div class="skeleton-loader" style="width: 100px"></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="skeleton-loader" style="width: 150px"></div>
+                                    </td>
+                                    <td>
+                                        <div class="skeleton-loader" style="width: 60px"></div>
+                                    </td>
+                                    <td>
+                                        <div class="skeleton-loader" style="width: 60px"></div>
+                                    </td>
+                                    <td>
+                                        <div class="skeleton-loader" style="width: 60px"></div>
+                                    </td>
+                                </tr>
+                            }
+                        } @else {
+                            @for (user of users.data?.items; track $index) {
+                                <tr>
+                                    <td>
+                                        <input
+                                                [id]="user.id"
+                                                type="checkbox"
+                                                class="form-check-input custom-checkbox"
+                                                (change)="onSelect()"
+                                        />
+                                    </td>
+                                    <td>{{ user.id }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img
+                                                    src="https://via.placeholder.com/50"
+                                                    alt="John Doe"
+                                                    width="40"
+                                                    height="40"
+                                                    class="rounded-circle me-3 user-avatar"
+                                            />
+                                            <a
+                                                    [routerLink]="['.', user.id]"
+                                                    class="user-link text-decoration-none fw-bold"
+                                            >
+                                                {{ user.username }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.firstName }}</td>
+                                    <td>{{ user.lastName }}</td>
+                                    <td>{{ user.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <div class="card-footer border-0 d-flex justify-content-end">
-      <app-pagination
-        [pageRequest]="pageRequest"
-        [users]="users"
-        (pageChange)="onPageChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      ></app-pagination>
+        <div class="card-footer border-0 d-flex justify-content-end">
+            <app-pagination
+                    [pageRequest]="pageRequest"
+                    [items]="users"
+                    (pageChange)="onPageChange($event)"
+                    (pageSizeChange)="onPageSizeChange($event)"
+            ></app-pagination>
+        </div>
     </div>
-  </div>
 </main>

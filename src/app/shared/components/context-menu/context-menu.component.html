@@ -1,0 +1,8 @@
+@if (visible) {
+    <div [ngStyle]="{top: position.y + 'px', left: position.x+'px'}" class="context-menu">
+        <ul>
+            <li (click)="onSetFeatured()"><i class="bi bi-star me-2"></i>Set featured</li>
+            <li (click)="onRemove()"><i class="bi bi-trash3 me-2"></i>Remove</li>
+        </ul>
+    </div>
+}

@@ -192,28 +192,20 @@
                                 </div>
                             </form>
                         </div>
-                        <div
-                                class="col-md-4 d-flex flex-column justify-content-center align-items-center"
-                        >
-                            <input
-                                    type="file"
+                        <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                            <input type="file"
                                     class="d-none"
                                     id="avatar"
                                     accept="image/jpeg, image/png"
-                                    (change)="previewImage($event)"
-                            />
-                            <label
-                                    for="avatar"
+                                    (change)="previewImage($event)"/>
+                            <label for="avatar"
                                     class="text-center mb-3"
-                                    style="cursor: pointer"
-                            >
+                                    style="cursor: pointer">
                                 <div class="avatar-preview rounded-circle">
-                                    <img
-                                            id="avatar-preview"
+                                    <img id="avatar-preview"
                                             [src]="avatar ?? defaultAvatar"
                                             alt="Avatar Preview"
-                                            class="rounded-circle"
-                                    />
+                                            class="rounded-circle"/>
                                 </div>
                             </label>
                             <div class="helper-text text-muted fs-6">
