@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {catchError, Observable, Subject, switchMap, takeUntil} from "rxjs";
@@ -26,7 +26,7 @@ import {ProductImage} from "../../../../types/image.type";
     templateUrl: './admin-product-details.component.html',
     styleUrl: './admin-product-details.component.scss'
 })
-export class AdminProductDetailsComponent implements OnInit {
+export class AdminProductDetailsComponent implements OnInit, OnDestroy {
 
     productForm!: FormGroup;
     product: Product | null = null;

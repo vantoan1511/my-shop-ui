@@ -14,6 +14,9 @@ import {UserComponent} from './features/user/user.component';
 import {authGuard} from './guard/auth.guard';
 import {Role} from './types/role.type';
 import {AdminProductDetailsComponent} from "./features/admin/products/productdetails/admin-product-details.component";
+import {BrandsComponent} from "./features/admin/brands/brands.component";
+import {ModelsComponent} from "./features/admin/models/models.component";
+import {CategoriesComponent} from "./features/admin/categories/categories.component";
 
 export const routes: Routes = [
     {
@@ -61,6 +64,18 @@ export const routes: Routes = [
             {
                 path: 'dashboard',
                 component: DashboardComponent,
+            },
+            {
+                path: 'brands',
+                component: BrandsComponent,
+            },
+            {
+                path: 'models',
+                component: ModelsComponent,
+            },
+            {
+                path: 'categories',
+                component: CategoriesComponent,
             },
             {
                 path: 'products',

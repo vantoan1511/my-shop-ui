@@ -1,7 +1,7 @@
 <main class="container-fluid my-5">
     <div class="card border-0 shadow">
         <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
-            <h2 class="mb-0 text-white">Users</h2>
+            <h2 class="mb-0 text-white">Models</h2>
         </div>
 
         <div class="card-footer border-0 d-flex align-items-center justify-content-between">
@@ -9,7 +9,7 @@
                                (deleteButtonClick)="onDeleteSelected()">
             </app-list-controls>
             <app-pagination [pageRequest]="pageRequest"
-                            [items]="users"
+                            [items]="models"
                             (pageChange)="onPageChange($event)"
                             (pageSizeChange)="onPageSizeChange($event)">
             </app-pagination>
@@ -27,29 +27,17 @@
                                    (change)="onSelectAll($event)"/>
                         </th>
                         <th style="width: 5%">ID</th>
-                        <th style="width: 20%"
+                        <th style="width: 40%"
                             appSortable
-                            [sortField]="sortableFields.USERNAME"
+                            [sortField]="sortableFields.NAME"
                             (sortChange)="onSortChange($event)">
-                            User
+                            Name
                         </th>
-                        <th style="width: 25%"
+                        <th style="width: 40%"
                             appSortable
-                            [sortField]="sortableFields.EMAIL"
+                            [sortField]="sortableFields.SLUG"
                             (sortChange)="onSortChange($event)">
-                            Email
-                        </th>
-                        <th style="width: 15%"
-                            appSortable
-                            [sortField]="sortableFields.FIRST_NAME"
-                            (sortChange)="onSortChange($event)">
-                            First name
-                        </th>
-                        <th style="width: 15%"
-                            appSortable
-                            [sortField]="sortableFields.LAST_NAME"
-                            (sortChange)="onSortChange($event)">
-                            Last name
+                            Slug
                         </th>
                         <th style="width: 15%"
                             appSortable
@@ -60,7 +48,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @if (users.isLoading) {
+                        @if (models.isLoading) {
                             @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track item) {
                                 <tr class="skeleton-row">
                                     <td>
@@ -71,12 +59,7 @@
                                         <div class="skeleton-loader" style="width: 30px"></div>
                                     </td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="skeleton-loader rounded-circle me-3"
-                                                 style="width: 40px; height: 40px">
-                                            </div>
-                                            <div class="skeleton-loader" style="width: 100px"></div>
-                                        </div>
+                                        <div class="skeleton-loader" style="width: 100px"></div>
                                     </td>
                                     <td>
                                         <div class="skeleton-loader" style="width: 150px"></div>
@@ -84,41 +67,26 @@
                                     <td>
                                         <div class="skeleton-loader" style="width: 60px"></div>
                                     </td>
-                                    <td>
-                                        <div class="skeleton-loader" style="width: 60px"></div>
-                                    </td>
-                                    <td>
-                                        <div class="skeleton-loader" style="width: 60px"></div>
-                                    </td>
                                 </tr>
                             }
                         } @else {
-                            @for (user of users.data?.items; track $index) {
+                            @for (model of models.data?.items; track $index) {
                                 <tr>
                                     <td>
-                                        <input [id]="user.id"
+                                        <input [id]="model.id"
                                                type="checkbox"
                                                class="form-check-input custom-checkbox"
                                                (change)="onSelect()"/>
                                     </td>
-                                    <td>{{ user.id }}</td>
+                                    <td>{{ model.id }}</td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/50"
-                                                 alt="John Doe"
-                                                 width="40"
-                                                 height="40"
-                                                 class="rounded-circle me-3 user-avatar"/>
-                                            <a [routerLink]="['.', user.id]"
-                                               class="user-link text-decoration-none fw-bold">
-                                                {{ user.username }}
-                                            </a>
-                                        </div>
+                                        <a [routerLink]="['.', model.id]"
+                                           class="user-link text-decoration-none fw-bold">
+                                            {{ model.name }}
+                                        </a>
                                     </td>
-                                    <td>{{ user.email }}</td>
-                                    <td>{{ user.firstName }}</td>
-                                    <td>{{ user.lastName }}</td>
-                                    <td>{{ user.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
+                                    <td>{{ model.slug }}</td>
+                                    <td>{{ model.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
                                 </tr>
                             }
                         }
@@ -129,7 +97,7 @@
 
         <div class="card-footer border-0 d-flex justify-content-end">
             <app-pagination [pageRequest]="pageRequest"
-                            [items]="users"
+                            [items]="models"
                             (pageChange)="onPageChange($event)"
                             (pageSizeChange)="onPageSizeChange($event)"></app-pagination>
         </div>
