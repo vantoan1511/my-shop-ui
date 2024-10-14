@@ -17,6 +17,8 @@ import {AdminProductDetailsComponent} from "./features/admin/products/productdet
 import {BrandsComponent} from "./features/admin/brands/brands.component";
 import {ModelsComponent} from "./features/admin/models/models.component";
 import {CategoriesComponent} from "./features/admin/categories/categories.component";
+import {BrandDetailsComponent} from "./features/admin/brands/brand-details/brand-details.component";
+import {CategoryDetailsComponent} from "./features/admin/categories/category-details/category-details.component";
 
 export const routes: Routes = [
     {
@@ -70,12 +72,20 @@ export const routes: Routes = [
                 component: BrandsComponent,
             },
             {
+                path: 'brands/:slug',
+                component: BrandDetailsComponent,
+            },
+            {
                 path: 'models',
                 component: ModelsComponent,
             },
             {
                 path: 'categories',
                 component: CategoriesComponent,
+            },
+            {
+                path: 'categories/:slug',
+                component: CategoryDetailsComponent,
             },
             {
                 path: 'products',

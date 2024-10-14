@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {catchError, Observable, Subject, switchMap, takeUntil} from "rxjs";
 import {ValidationService} from "../../../../services/validation.service";
@@ -147,7 +147,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
                     }
                     return [];
                 }),
-                catchError((error) => {
+                catchError(() => {
                     this.alertService.showErrorToast('Failed to upload image');
                     return [];
                 })
@@ -192,26 +192,26 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     private initForm() {
         this.productForm = this.fb.group({
             id: [0],
-            name: [''],
-            slug: [''],
+            name: ['', Validators.required],
+            slug: ['', Validators.required],
             description: [''],
-            stockQuantity: [0],
-            basePrice: [0],
-            salePrice: [0],
+            stockQuantity: [0, Validators.min(0)],
+            basePrice: [0, Validators.min(0)],
+            salePrice: [0, Validators.min(0)],
             active: [false],
-            weight: [0],
+            weight: [0, Validators.min(0)],
             color: [''],
             processor: [''],
             gpu: [''],
-            ram: [0],
+            ram: [0, Validators.min(0)],
             storageType: [''],
-            storageCapacity: [0],
+            storageCapacity: [0, Validators.min(0)],
             os: [''],
-            screenSize: [0],
-            batteryCapacity: [0],
-            warranty: [0],
+            screenSize: [0, Validators.min(0)],
+            batteryCapacity: [0, Validators.min(0)],
+            warranty: [0, Validators.min(0)],
             viewCount: [0],
-            userId: [0],
+            userId: [],
             model: [''],
             category: ['']
         });
