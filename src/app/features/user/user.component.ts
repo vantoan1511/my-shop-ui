@@ -17,6 +17,7 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {ImageService} from '../../services/image.service';
 import {UserService} from '../../services/user.service';
 import {ValidationService} from '../../services/validation.service';
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
     selector: 'app-user',
@@ -30,7 +31,7 @@ export class UserComponent implements OnInit, OnDestroy {
     passwordForm!: FormGroup;
     username!: string;
     userId: number | null = null;
-    avatar: string | null = null;
+    avatar: SafeUrl | null = null;
     defaultAvatar = 'https://placehold.co/128x128';
     private unsubscribe$ = new Subject<void>();
 
@@ -41,7 +42,8 @@ export class UserComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private authService: AuthenticationService,
         private validator: ValidationService,
-        private imageService: ImageService
+        private imageService: ImageService,
+        private sanitizer: DomSanitizer
     ) {
     }
 
@@ -186,7 +188,9 @@ export class UserComponent implements OnInit, OnDestroy {
                     return this.imageService.getAvatarByUserId(this.userId);
                 })
             )
-            .subscribe((blob) => (this.avatar = this.createAvatarUrl(blob)));
+            .subscribe({
+                next: (imageBlob) => (this.avatar = this.sanitizer.bypassSecurityTrustUrl(this.createAvatarUrl(imageBlob)))
+            });
     }
 
     private createAvatarUrl(blob: Blob) {

@@ -1,7 +1,8 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Image} from '../types/image.type';
 import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {Image} from "../types/image.type";
 
 @Injectable({
     providedIn: 'root',
@@ -13,12 +14,9 @@ export class ImageService {
     constructor(private http: HttpClient) {
     }
 
-    getAvatarByUserId(userId: number) {
-        return this.http.get<Blob>(`${this.BASE_URL}/images/avatar`, {
-            params: {
-                userId,
-            },
-            responseType: 'blob' as 'json',
+    getAvatarByUserId(userId: number): Observable<Blob> {
+        return this.http.get(`${this.BASE_URL}/images/avatar/users/${userId}`, {
+            responseType: "blob",
         });
     }
 
@@ -31,10 +29,10 @@ export class ImageService {
         formData.append('image', file);
         formData.append('altText', file.name);
 
-        return this.http.post<Image>(`${this.BASE_URL}/images`, formData);
+        return this.http.post<Image>(`${this.BASE_URL}/images/upload`, formData);
     }
 
     setAvatar(imageId: number) {
-        return this.http.patch(`${this.BASE_URL}/images/` + imageId, {});
+        return this.http.patch(`${this.BASE_URL}/images/${imageId}/set-avatar`, {});
     }
 }
