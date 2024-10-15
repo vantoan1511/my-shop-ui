@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {catchError, Observable, Subject, switchMap, takeUntil} from "rxjs";
-import {ValidationService} from "../../../../services/validation.service";
 import {AlertService} from "../../../../services/alert.service";
 import {Category, Model, Product} from "../../../../types/product.type";
 import {ProductService} from "../../../../services/product.service";
@@ -13,6 +12,7 @@ import {CategoryService} from "../../../../services/category.service";
 import {ImageService} from "../../../../services/image.service";
 import {ContextMenuComponent} from "../../../../shared/components/context-menu/context-menu.component";
 import {ProductImage} from "../../../../types/image.type";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 
 @Component({
     selector: 'admin-product-details',
@@ -38,7 +38,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     heroImageId = -1;
 
     productImages: ProductImage[] | null = null;
-    imageMap: Map<number, string> = new Map();
+    imageMap: Map<number, SafeUrl> = new Map();
 
     uploadedImageMenuOpen = false;
 
@@ -52,13 +52,13 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private validator: ValidationService,
         private productService: ProductService,
         private imageService: ImageService,
         private modelService: ModelService,
         private categoryService: CategoryService,
         private alertService: AlertService,
         private router: Router,
+        private sanitizer: DomSanitizer
     ) {
     }
 
@@ -84,7 +84,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
                         .map(each => each.imageId).at(0) || -1;
                     productImages.forEach(productImage => {
                         this.imageService.getById(productImage.imageId).subscribe(image => {
-                            this.imageMap.set(image.id, `data:image/png;base64,${image.content}`);
+                            this.imageMap.set(productImage.imageId, this.sanitizer.bypassSecurityTrustUrl(this.createUrl(image)));
                         })
                     })
                 })
@@ -279,6 +279,10 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     private validFileType(file: File) {
         const validTypes = ['image/jpeg', 'image/png'];
         return validTypes.includes(file.type);
+    }
+
+    private createUrl(blob: Blob) {
+        return URL.createObjectURL(blob);
     }
 
     ngOnDestroy(): void {

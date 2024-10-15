@@ -20,8 +20,10 @@ export class ImageService {
         });
     }
 
-    getById(id: number) {
-        return this.http.get<Image>(`${this.BASE_URL}/images/${id}`);
+    getById(id: number): Observable<Blob> {
+        return this.http.get(`${this.BASE_URL}/images/${id}`, {
+            responseType: "blob",
+        });
     }
 
     uploadImage(file: File) {
@@ -34,5 +36,9 @@ export class ImageService {
 
     setAvatar(imageId: number) {
         return this.http.patch(`${this.BASE_URL}/images/${imageId}/set-avatar`, {});
+    }
+
+    deleteImage(imageId: number) {
+        return this.http.delete(`${this.BASE_URL}/images/${imageId}`);
     }
 }
