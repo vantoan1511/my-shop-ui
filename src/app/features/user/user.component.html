@@ -124,19 +124,31 @@
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="address" class="col-sm-4 col-form-label text-end">
-                                        Address
+                                        Address (Default)
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="address"
-                                                type="text"
-                                                class="form-control"
-                                                id="address"
-                                                placeholder="Address"
-                                                required
-                                        />
+                                        <input formControlName="address"
+                                               type="text"
+                                               class="form-control"
+                                               id="address"
+                                               placeholder="Address"
+                                               required/>
                                     </div>
                                 </div>
+                                @for (i of [1, 2, 3, 4]; track i) {
+                                    <div class="mb-3 row">
+                                        <label [for]="'address'+i" class="col-sm-4 col-form-label text-end">
+                                            Address {{ i }}
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input [formControlName]="'address'+i"
+                                                   type="text"
+                                                   class="form-control"
+                                                   [id]="'address'+i"
+                                                   [placeholder]="'Address '+i"/>
+                                        </div>
+                                    </div>
+                                }
                                 <div class="mb-3 row">
                                     <label for="gender" class="col-sm-4 col-form-label text-end">
                                         Gender
@@ -194,18 +206,18 @@
                         </div>
                         <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
                             <input type="file"
-                                    class="d-none"
-                                    id="avatar"
-                                    accept="image/jpeg, image/png"
-                                    (change)="previewImage($event)"/>
+                                   class="d-none"
+                                   id="avatar"
+                                   accept="image/jpeg, image/png"
+                                   (change)="previewImage($event)"/>
                             <label for="avatar"
-                                    class="text-center mb-3"
-                                    style="cursor: pointer">
+                                   class="text-center mb-3"
+                                   style="cursor: pointer">
                                 <div class="avatar-preview rounded-circle">
                                     <img id="avatar-preview"
-                                            [src]="avatar ?? defaultAvatar"
-                                            alt="Avatar Preview"
-                                            class="rounded-circle"/>
+                                         [src]="avatar ?? defaultAvatar"
+                                         alt="Avatar Preview"
+                                         class="rounded-circle"/>
                                 </div>
                             </label>
                             <div class="helper-text text-muted fs-6">

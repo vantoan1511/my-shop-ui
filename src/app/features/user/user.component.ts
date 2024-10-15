@@ -124,8 +124,10 @@ export class UserComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe({
-                next: () =>
-                    this.alertService.showSuccessToast('Updated avatar successfully'),
+                next: () => {
+                    this.alertService.showSuccessToast('Updated avatar successfully')
+                    this.avatar = this.sanitizer.bypassSecurityTrustUrl(this.createAvatarUrl(file))
+                },
                 error: () =>
                     this.alertService.showErrorToast('Failed to update avatar'),
             });
@@ -158,6 +160,10 @@ export class UserComponent implements OnInit, OnDestroy {
                 ],
             ],
             address: ['', Validators.required],
+            address1: [''],
+            address2: [''],
+            address3: [''],
+            address4: [''],
             gender: [{value: 'UNKNOWN'}],
         });
     }
