@@ -1,36 +1,33 @@
 <main class="product-list mt-3">
-  <div class="container">
-    <h1>Product list</h1>
-    <div class="row">
-      @for (i of [1,2,3,4,5,6,7]; track $index) {
-      <div class="col-md-2 p-0 me-2 mt-2">
-        <div class="card">
-          <img
-            src="https://placehold.co/80x80"
-            class="product-hero card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <a
-              [routerLink]="['products', 1]"
-              class="text-muted fw-light text-decoration-none"
-              >PRODUCT NAME BEST...</a
-            >
-            <div class="price d-flex justify-content-between">
-              <span class="fs-5 fw-bold">399$</span>
-              <span class="fs-5 text-muted"><del>499$</del></span>
-            </div>
-            <div class="rating d-flex">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-half"></i>
-            </div>
-          </div>
+    <div class="container">
+        <h1>Product list</h1>
+        <div class="row">
+            @for (product of products$.data?.items; track $index) {
+                <div class="col-md-2 p-0 me-2 mt-2">
+                    <div class="card">
+                        <img src="https://placehold.co/80x80"
+                             class="product-hero card-img-top"
+                             [alt]="product.name"/>
+                        <div class="card-body">
+                            <a [routerLink]="['products', product.slug]"
+                               class="text-muted fw-light text-decoration-none">
+                                {{ product.name }}
+                            </a>
+                            <div class="price d-flex justify-content-between">
+                                <span class="fs-5 fw-bold">{{ product.salePrice | currency: 'VND' }}</span>
+                                <span class="text-muted"><del>{{ product.basePrice|currency:'VND' }}</del></span>
+                            </div>
+                            <div class="rating d-flex">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-      </div>
-      }
     </div>
-  </div>
 </main>

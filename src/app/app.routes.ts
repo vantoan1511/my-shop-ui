@@ -19,6 +19,7 @@ import {ModelsComponent} from "./features/admin/models/models.component";
 import {CategoriesComponent} from "./features/admin/categories/categories.component";
 import {BrandDetailsComponent} from "./features/admin/brands/brand-details/brand-details.component";
 import {CategoryDetailsComponent} from "./features/admin/categories/category-details/category-details.component";
+import {ModelDetailsComponent} from "./features/admin/models/model-details/model-details.component";
 
 export const routes: Routes = [
     {
@@ -78,6 +79,10 @@ export const routes: Routes = [
             {
                 path: 'models',
                 component: ModelsComponent,
+            },
+            {
+                path: 'models/:slug',
+                component: ModelDetailsComponent,
             },
             {
                 path: 'categories',

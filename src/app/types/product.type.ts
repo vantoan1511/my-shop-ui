@@ -31,6 +31,7 @@ export interface Model {
     name: string
     slug: string
     brand: Brand
+    description: string
     createdAt: string
     modifiedAt: string
 }

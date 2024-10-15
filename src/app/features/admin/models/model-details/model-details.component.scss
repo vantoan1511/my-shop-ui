@@ -1,0 +1,111 @@
+.card {
+  .card-footer {
+    .nav-underline {
+      .nav-link {
+        color: var(--gray-9);
+
+        &.active {
+          color: var(--purple-9);
+        }
+      }
+    }
+  }
+}
+
+.bg-purple {
+  background: var(--purple-9);
+}
+
+.card-header {
+  color: var(--purple-contrast);
+
+  .new-user-btn,
+  .refresh-btn {
+    color: var(--purple-9);
+    background: var(--purple-1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: var(--purple-contrast);
+      background: var(--purple-9);
+    }
+  }
+}
+
+.invalid-input {
+  border-color: var(--red-9);
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 0.25rem var(--red-a6);
+  }
+}
+
+input,
+.form-select {
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+    border-color: var(--purple-6);
+  }
+}
+
+.form-select {
+  option {
+    &:hover {
+      background: var(--purple-9);
+    }
+  }
+}
+
+label {
+  color: var(--gray-9);
+  font-weight: 600;
+}
+
+.custom-checkbox {
+  &:checked {
+    background-color: var(--purple-9);
+    border-color: var(--purple-9);
+  }
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+  }
+}
+
+.card-footer {
+  &.controls-bar {
+    .return-btn {
+      color: var(--purple-9);
+
+      &:hover {
+        color: var(--purple-12);
+      }
+    }
+
+    .save-btn {
+      color: var(--purple-contrast);
+      background-color: var(--purple-9);
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background: var(--purple-12) !important;
+      }
+
+      &:active {
+        background: var(--purple-9) !important;
+      }
+    }
+  }
+}
+
+.img-thumbnail {
+  width: 150px;
+  height: 150px;
+
+  &:hover {
+    border-color: var(--purple-9);
+  }
+}
