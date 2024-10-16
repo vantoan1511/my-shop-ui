@@ -1,4 +1,11 @@
-.rating {
+.product-thumbnail {
+
+  &:hover {
+    border-color: var(--purple-9) !important;
+  }
+}
+
+a, .rating, .breadcrumb {
   color: var(--purple-9);
 }
 

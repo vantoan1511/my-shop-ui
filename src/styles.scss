@@ -179,6 +179,15 @@ button,
 textarea,
 select {
   font: inherit;
+
+  &:active, &:focus {
+    border-color: var(--purple-7) !important;
+    box-shadow: 0 0 1rem .25rem var(--purple-6) !important;
+  }
+}
+
+input, textarea {
+  line-height: 2 !important;
 }
 
 /*

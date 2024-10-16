@@ -1,310 +1,301 @@
 <main class="container">
-  <nav class="mt-3" aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Shopbee</a></li>
-      <li class="breadcrumb-item"><a href="#">Laptop</a></li>
-      <li class="breadcrumb-item" aria-current="page">Office</li>
-    </ol>
-  </nav>
-  <div class="row py-3 mt-3 bg-white">
-    <div class="col-md-4">
-      <figure class="figure">
-        <img
-          src="http://placehold.co/450x450"
-          alt="product-hero"
-          class="figure-img img-fluid rounded"
-        />
-      </figure>
-      <div class="d-flex gap-3 overflow-auto">
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-        <img src="http://placehold.co/82x82" alt="product-thumbnails" />
-      </div>
+    <div class="row mt-3 py-3 bg-white">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="">Shopbee</a></li>
+                <li class="breadcrumb-item"><a href="">Laptop</a></li>
+                <li class="breadcrumb-item" aria-current="page">{{ product?.category?.name }}</li>
+            </ol>
+        </nav>
     </div>
-    <div class="col-md-8">
-      <h3 class="fw-lighter">
-        [Nhập ELHP9 giảm 15% tối đa 3TR] Laptop HP Victus 16-d0198TX 4R0U0PA i7|
-        8GB | 512GB + 32GB | GeForce RTX™ 3050Ti 4GB
-      </h3>
-      <div class="d-flex gap-3">
-        <div class="rating">
-          <span class="fs-5 me-1">4.7</span>
-          <span>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-half"></i>
-          </span>
-        </div>
-        <div class="border-end"></div>
-        <div class="sold">
-          <span class="fs-5">1k+ sold</span>
-        </div>
-      </div>
-      <div class="price d-flex align-items-center gap-3 p-3 mt-2">
-        <span class="sale-price fs-4"><del>39.000.000</del></span>
-        <span class="fs-2 fw-bold">29.000.000</span>
-        <span class="discount-percentage badge">21% discounted</span>
-      </div>
-      <div class="row mt-3 p-3">
-        <div class="col-md-3">
-          <span class="text-muted">Quantity</span>
-        </div>
-        <div class="col-md-9 d-flex gap-1 align-items-center">
-          <button class="btn"><i class="bi bi-plus-lg"></i></button>
-          <input type="number" value="1" />
-          <button class="btn"><i class="bi bi-dash-lg"></i></button>
-          <span class="text-muted">6 available</span>
-        </div>
-      </div>
-      <div class="d-flex align-items-center">
-        <button class="add-to-cart-btn btn btn-lg me-3 rounded-0">
-          <i class="bi bi-cart-plus me-2"></i
-          ><span class="fs-6">Add to cart</span>
-        </button>
-        <button class="buy-now-btn btn btn-lg rounded-0">
-          <i class="bi bi-bag-check me-2"></i><span class="fs-6">Buy now</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="row py-3 mt-3 bg-white">
-    <div class="product-detail-title col mx-3 p-3">
-      <span class="fs-3 fw-lighter">PRODUCT DETAILS</span>
-    </div>
-    <div class="col-12 mx-3 mt-3 text-muted">
-      <div class="row">
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Category</span>
-          </div>
-          <div class="col">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item">
-                  <a href="#">Shopbee</a>
-                </li>
-                <li class="breadcrumb-item">
-                  <a href="#">Laptop</a>
-                </li>
-                <li class="breadcrumb-item">Office</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Brand</span>
-          </div>
-          <div class="col">
-            <span>Asus</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Model</span>
-          </div>
-          <div class="col">
-            <span>Vivobook 15</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Stock</span>
-          </div>
-          <div class="col">
-            <span>6</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Color</span>
-          </div>
-          <div class="col">
-            <span>Silver</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Storage</span>
-          </div>
-          <div class="col">
-            <span>SSD 500GB</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>CPU</span>
-          </div>
-          <div class="col">
-            <span>Intel Core i5 13th</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>RAM</span>
-          </div>
-          <div class="col">
-            <span>16GB</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Monitor</span>
-          </div>
-          <div class="col">
-            <span>14", IPS 1920x1080 FHD, Anti-glare, 300 inits</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>OS</span>
-          </div>
-          <div class="col">
-            <span>Windows 11 Home</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Dimension</span>
-          </div>
-          <div class="col">
-            <span>29x15x5 cm</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Weight</span>
-          </div>
-          <div class="col">
-            <span>1,4kg</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Material</span>
-          </div>
-          <div class="col">
-            <span>ABS</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>Capacity</span>
-          </div>
-          <div class="col">
-            <span>4 cell</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="product-detail-title col mx-3 p-3">
-      <span class="fs-3 fw-lighter">DESCRIPTION</span>
-    </div>
-    <div class="col-12 mx-3 mt-3 text-muted">
-      <p>Thông số kỹ thuật:</p>
-      <p>Chip: Intel Core i7 11800H 2.3Ghz-24Mb</p>
-      <p>Card đồ họa: NVIDIA RTX3050 TI 4GB DDR6</p>
-
-      <p>RAM: 8GB</p>
-      <p>SSD: 512GB + 32GB SSD</p>
-      <p>Màn hình: 16.1" FHD</p>
-      <p>Hệ điều hành: Windows 11 Home</p>
-      <p>Màu sắc/ Chất liệu: Black</p>
-
-      <p>🛠THÔNG TIN BẢO HÀNH🛠</p>
-      <p>
-        1. Thời gian bảo hành Tất cả các dòng laptop HP đều có thời gian bảo
-        hành chính hãng 1 năm tính từ ngày khách hàng cuối mua hàng. Khách hàng
-        khi mua máy yêu cầu cửa hàng cung cấp hóa đơn VAT có số Serial Number để
-        giữ làm phiếu bảo hành.
-      </p>
-      <p>2. Các Trung tâm bảo hành chính hãng HP tại Việt Nam.</p>
-      <p>📌 Hà Nội: 74 Cửa Bắc, Ba Đình, Hà Nội</p>
-      <p>📌 Đà Nẵng: 60 Đường Nguyễn Du, Quận Hải Châu, Đà Nẵng</p>
-    </div>
-  </div>
-
-  <div class="row py-3 mt-3 bg-white">
-    <div class="product-detail-title col mx-3 p-3">
-      <span class="fs-3 fw-lighter">REVIEWS</span>
-    </div>
-    <div class="col-12 mx-3 mt-3 text-muted">
-      <div class="rating d-flex gap-3 p-3">
-        <div class="text-center fs-4">
-          <div>5 per 5</div>
-          <div>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-            <i class="bi bi-star-fill"></i>
-          </div>
-        </div>
-        <div class="d-flex align-items-center justify-content-around gap-3">
-          <button class="active review-filter-btn btn rounded-0">All</button>
-          <button class="review-filter-btn btn rounded-0">5 star (1)</button>
-          <button class="review-filter-btn btn rounded-0">4 star (1)</button>
-          <button class="review-filter-btn btn rounded-0">3 star (13)</button>
-          <button class="review-filter-btn btn rounded-0">2 star (1)</button>
-          <button class="review-filter-btn btn rounded-0">1 star (1)</button>
-          <button class="review-filter-btn btn rounded-0">Latest</button>
-          <button class="review-filter-btn btn rounded-0">Oldest</button>
-        </div>
-      </div>
-      <div class="reviews">
-        <div class="d-flex flex-shrink-0 gap-3">
-          <div>
-            <img
-              class="rounded-circle"
-              src="https://placehold.co/80x80"
-              alt="user-avatar"
-              width="48"
-              height="48"
-            />
-          </div>
-          <div class="review-details">
-            <div class="fs-5 fw-bold">user1234</div>
-            <div class="fs-6 rating">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
+    <div class="row py-3 mt-3 bg-white">
+        <div class="col-md-4">
+            <img [ngSrc]="heroUrl || imageUrls?.at(0) || constant.defaultHeroImageUrl"
+                 priority
+                 width="450"
+                 height="450"
+                 alt="product-hero"
+                 class="figure-img img-fluid rounded border border-1 p-2"/>
+            <div class="d-flex gap-2 overflow-auto">
+                @for (image of imageUrls; track $index) {
+                    <img [src]="image || constant.defaultThumbnail"
+                         width="82"
+                         height="82"
+                         alt="product-thumbnails"
+                         class="product-thumbnail rounded border border-1"
+                         (mouseover)="onHoverThumbnail($index)"/>
+                }
             </div>
-            <div class="mb-3">
-              <span class="text-muted fs-6">9:25 PM 21-09-2024</span>
-            </div>
-            <div class="mb-3">
-              <p>
-                Rất đáng tiền, cấu hình mạnh trong tầm giá. Hơi tiếc là không
-                được tặng quà: không được tặng thêm túi chống sốc hay chuột gì
-                cả Shop tư vấn nhiệt tình!!! 5*
-              </p>
-            </div>
-            <div class="helpful">
-              <button class="border-0 bg-transparent">
-                <i class="bi bi-hand-thumbs-up me-2"></i><span>123</span>
-              </button>
-            </div>
-          </div>
         </div>
-      </div>
+        <div class="col-md-8">
+            <h3 class="fw-lighter">
+                {{ product?.name }}
+            </h3>
+            <div class="d-flex gap-3">
+                <div class="rating">
+                    <span class="fs-5 me-1">4.7</span>
+                    <span>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                    </span>
+                </div>
+                <div class="border-end"></div>
+                <div class="sold">
+                    <span class="fs-5">1k+ {{ 'sold' | translate }}</span>
+                </div>
+            </div>
+            <div class="price d-flex align-items-center gap-3 p-3 mt-2">
+                <span class="sale-price fs-4"><del>{{ product?.basePrice | currency:'VND' }}</del></span>
+                <span class="fs-2 fw-bold">{{ product?.salePrice | currency:'VND' }}</span>
+                <span class="discount-percentage badge">{{ discount }}% {{ "discounted" | translate }}</span>
+            </div>
+            <div class="row mt-3 p-3">
+                <div class="col-md-3">
+                    <label for="quantity" class="text-muted">{{ "Quantity" | translate }}</label>
+                </div>
+                <div class="col-md-9 d-flex gap-1 align-items-center">
+                    <button class="btn">
+                        <i class="bi bi-dash-lg"></i>
+                    </button>
+                    <div>
+                        <input id="quantity" type="number" class="form-control" value="1"/>
+                    </div>
+                    <button class="btn">
+                        <i class="bi bi-plus-lg"></i>
+                    </button>
+                    <span class="text-muted">{{ product?.stockQuantity }} {{ "available" | translate }}</span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mt-auto   ">
+                <button class="add-to-cart-btn btn btn-lg me-3 rounded-0">
+                    <i class="bi bi-cart-plus me-2"></i
+                    ><span class="fs-6">{{ "Add to cart" | translate }}</span>
+                </button>
+                <button class="buy-now-btn btn btn-lg rounded-0">
+                    <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "Buy now" | translate }}</span>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="row py-3 mt-3 bg-white">
-    <div class="product-detail-title col mx-3 p-3">
-      <span class="fs-3 fw-lighter">YOU MAY ALSO LIKE</span>
+
+    <div class="row py-3 mt-3 bg-white">
+        <div class="product-detail-title col mx-3 p-3">
+            <span class="fs-3 fw-lighter">{{ "PRODUCT DETAILS" | translate }}</span>
+        </div>
+        <div class="col-12 mx-3 mt-3 text-muted">
+            <div class="row">
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Category</span>
+                    </div>
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item">
+                                    <a href="#">Shopbee</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="">Laptop</a>
+                                </li>
+                                <li class="breadcrumb-item">{{ product?.category?.name }}</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Brand</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.model?.brand?.name }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Model</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.model?.name }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Stock</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.stockQuantity }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Color</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.color }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Storage</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.storageType }} {{ product?.storageCapacity }} GB</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>CPU</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.processor }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>RAM</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.ram }}GB</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Monitor</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.screenSize }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>OS</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.os }}</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Weight</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.weight }}Kg</span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <span>Capacity</span>
+                    </div>
+                    <div class="col">
+                        <span>{{ product?.batteryCapacity }}Wh</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-detail-title col mx-3 p-3">
+            <span class="fs-3 fw-lighter">DESCRIPTION</span>
+        </div>
+        <div class="col-12 mx-3 mt-3 text-muted">
+            <p>Thông số kỹ thuật:</p>
+            <p>Chip: Intel Core i7 11800H 2.3Ghz-24Mb</p>
+            <p>Card đồ họa: NVIDIA RTX3050 TI 4GB DDR6</p>
+
+            <p>RAM: 8GB</p>
+            <p>SSD: 512GB + 32GB SSD</p>
+            <p>Màn hình: 16.1" FHD</p>
+            <p>Hệ điều hành: Windows 11 Home</p>
+            <p>Màu sắc/ Chất liệu: Black</p>
+
+            <p>🛠THÔNG TIN BẢO HÀNH🛠</p>
+            <p>
+                1. Thời gian bảo hành Tất cả các dòng laptop HP đều có thời gian bảo
+                hành chính hãng 1 năm tính từ ngày khách hàng cuối mua hàng. Khách hàng
+                khi mua máy yêu cầu cửa hàng cung cấp hóa đơn VAT có số Serial Number để
+                giữ làm phiếu bảo hành.
+            </p>
+            <p>2. Các Trung tâm bảo hành chính hãng HP tại Việt Nam.</p>
+            <p>📌 Hà Nội: 74 Cửa Bắc, Ba Đình, Hà Nội</p>
+            <p>📌 Đà Nẵng: 60 Đường Nguyễn Du, Quận Hải Châu, Đà Nẵng</p>
+        </div>
     </div>
-    <app-product-list></app-product-list>
-  </div>
+
+    <div class="row py-3 mt-3 bg-white">
+        <div class="product-detail-title col mx-3 p-3">
+            <span class="fs-3 fw-lighter">REVIEWS</span>
+        </div>
+        <div class="col-12 mx-3 mt-3 text-muted">
+            <div class="rating d-flex gap-3 p-3">
+                <div class="text-center fs-4">
+                    <div>5 per 5</div>
+                    <div>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-around gap-3">
+                    <button class="active review-filter-btn btn rounded-0">All</button>
+                    <button class="review-filter-btn btn rounded-0">5 star (1)</button>
+                    <button class="review-filter-btn btn rounded-0">4 star (1)</button>
+                    <button class="review-filter-btn btn rounded-0">3 star (13)</button>
+                    <button class="review-filter-btn btn rounded-0">2 star (1)</button>
+                    <button class="review-filter-btn btn rounded-0">1 star (1)</button>
+                    <button class="review-filter-btn btn rounded-0">Latest</button>
+                    <button class="review-filter-btn btn rounded-0">Oldest</button>
+                </div>
+            </div>
+            <div class="reviews">
+                <div class="d-flex flex-shrink-0 gap-3">
+                    <div>
+                        <img
+                                class="rounded-circle"
+                                src="https://placehold.co/80x80"
+                                alt="user-avatar"
+                                width="48"
+                                height="48"
+                        />
+                    </div>
+                    <div class="review-details">
+                        <div class="fs-5 fw-bold">user1234</div>
+                        <div class="fs-6 rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-muted fs-6">9:25 PM 21-09-2024</span>
+                        </div>
+                        <div class="mb-3">
+                            <p>
+                                Rất đáng tiền, cấu hình mạnh trong tầm giá. Hơi tiếc là không
+                                được tặng quà: không được tặng thêm túi chống sốc hay chuột gì
+                                cả Shop tư vấn nhiệt tình!!! 5*
+                            </p>
+                        </div>
+                        <div class="helpful">
+                            <button class="border-0 bg-transparent">
+                                <i class="bi bi-hand-thumbs-up me-2"></i><span>123</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row py-3 mt-3 bg-white">
+        <div class="product-detail-title col mx-3 p-3">
+            <span class="fs-3 fw-lighter">YOU MAY ALSO LIKE</span>
+        </div>
+        <app-product-list></app-product-list>
+    </div>
 </main>

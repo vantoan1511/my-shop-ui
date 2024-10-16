@@ -1,10 +1,19 @@
+.product-list {
+  background: var(--gray-contrast);
+}
+
 .card {
   border-color: var(--gray-3);
   overflow: hidden;
   transition: all 0.3s ease;
+  height: 24rem;
 
   .rating {
     font-size: 0.8rem;
+    color: var(--purple-9);
+  }
+
+  .saved-price {
     color: var(--purple-9);
   }
 
@@ -18,4 +27,14 @@
       transform: scale(1.05);
     }
   }
+}
+
+.truncate-multiline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-height: 1.5em;
+  max-height: calc(1.5em * 1);
 }
