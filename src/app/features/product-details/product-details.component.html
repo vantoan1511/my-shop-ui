@@ -70,7 +70,7 @@
                     <span class="text-muted">{{ product?.stockQuantity }} {{ "available" | translate }}</span>
                 </div>
             </div>
-            <div class="d-flex align-items-center mt-auto   ">
+            <div class="d-flex align-items-center mt-auto">
                 <button class="add-to-cart-btn btn btn-lg me-3 rounded-0">
                     <i class="bi bi-cart-plus me-2"></i
                     ><span class="fs-6">{{ "Add to cart" | translate }}</span>
@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Category</span>
+                        <span>{{ "Category" | translate }}</span>
                     </div>
                     <div class="col">
                         <nav aria-label="breadcrumb">
@@ -108,7 +108,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Brand</span>
+                        <span>{{ "Brand" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.model?.brand?.name }}</span>
@@ -116,7 +116,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Model</span>
+                        <span>{{ "Model" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.model?.name }}</span>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Stock</span>
+                        <span>{{ "Stock" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.stockQuantity }}</span>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Color</span>
+                        <span>{{ "Color" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.color }}</span>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Storage</span>
+                        <span>{{ "Storage" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.storageType }} {{ product?.storageCapacity }} GB</span>
@@ -164,7 +164,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Monitor</span>
+                        <span>{{ "Monitor" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.screenSize }}</span>
@@ -172,7 +172,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>OS</span>
+                        <span>{{ "OS" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.os }}</span>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Weight</span>
+                        <span>{{ "Weight" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.weight }}Kg</span>
@@ -188,7 +188,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-2">
-                        <span>Capacity</span>
+                        <span>{{ "Capacity" | translate }}</span>
                     </div>
                     <div class="col">
                         <span>{{ product?.batteryCapacity }}Wh</span>
@@ -197,7 +197,7 @@
             </div>
         </div>
         <div class="product-detail-title col mx-3 p-3">
-            <span class="fs-3 fw-lighter">DESCRIPTION</span>
+            <span class="fs-3 fw-lighter">{{ "DESCRIPTION" | translate }}</span>
         </div>
         <div class="col-12 mx-3 mt-3 text-muted">
             <p>Thông số kỹ thuật:</p>
@@ -225,12 +225,12 @@
 
     <div class="row py-3 mt-3 bg-white">
         <div class="product-detail-title col mx-3 p-3">
-            <span class="fs-3 fw-lighter">REVIEWS</span>
+            <span class="fs-3 fw-lighter">{{ "REVIEWS" | translate }}</span>
         </div>
         <div class="col-12 mx-3 mt-3 text-muted">
             <div class="rating d-flex gap-3 p-3">
                 <div class="text-center fs-4">
-                    <div>5 per 5</div>
+                    <div>5 / 5</div>
                     <div>
                         <i class="bi bi-star-fill"></i>
                         <i class="bi bi-star-fill"></i>
@@ -241,14 +241,14 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-around gap-3">
-                    <button class="active review-filter-btn btn rounded-0">All</button>
-                    <button class="review-filter-btn btn rounded-0">5 star (1)</button>
-                    <button class="review-filter-btn btn rounded-0">4 star (1)</button>
-                    <button class="review-filter-btn btn rounded-0">3 star (13)</button>
-                    <button class="review-filter-btn btn rounded-0">2 star (1)</button>
-                    <button class="review-filter-btn btn rounded-0">1 star (1)</button>
-                    <button class="review-filter-btn btn rounded-0">Latest</button>
-                    <button class="review-filter-btn btn rounded-0">Oldest</button>
+                    <button class="active review-filter-btn btn rounded-0">{{ "All" | translate }}</button>
+                    <button class="review-filter-btn btn rounded-0">5 {{ "star" | translate }} (1)</button>
+                    <button class="review-filter-btn btn rounded-0">4 {{ "star" | translate }} (1)</button>
+                    <button class="review-filter-btn btn rounded-0">3 {{ "star" | translate }} (13)</button>
+                    <button class="review-filter-btn btn rounded-0">2 {{ "star" | translate }} (1)</button>
+                    <button class="review-filter-btn btn rounded-0">1 {{ "star" | translate }} (1)</button>
+                    <button class="review-filter-btn btn rounded-0">{{ "Latest" | translate }}</button>
+                    <button class="review-filter-btn btn rounded-0">{{ "Oldest" | translate }}</button>
                 </div>
             </div>
             <div class="reviews">
@@ -294,7 +294,7 @@
     </div>
     <div class="row py-3 mt-3 bg-white">
         <div class="product-detail-title col mx-3 p-3">
-            <span class="fs-3 fw-lighter">YOU MAY ALSO LIKE</span>
+            <span class="fs-3 fw-lighter">{{ "YOU MAY ALSO LIKE" | translate }}</span>
         </div>
         <app-product-list></app-product-list>
     </div>

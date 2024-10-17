@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../types/product.type";
 import {Perform} from "../../types/perform.type";
@@ -29,13 +29,19 @@ export class ProductListComponent implements OnInit {
     constructor(
         private translate: TranslateService,
         private productService: ProductService,
-        private imageService: ImageService
+        private imageService: ImageService,
+        private router: Router
     ) {
         this.translate.setDefaultLang('vi');
     }
 
     ngOnInit(): void {
         this.products$.load(this.productService.getBy(this.pageRequest, this.sort));
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                window.scrollTo(0, 0);
+            }
+        })
     }
 
     savedPrice(product: Product) {
