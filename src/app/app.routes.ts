@@ -6,7 +6,7 @@ import {AdminProductsComponent} from './features/admin/products/admin-products.c
 import {ProfileAdminComponent} from './features/admin/profile/profile.component';
 import {DetailsComponent} from './features/admin/users/userdetails/userdetails.component';
 import {UsersComponent} from './features/admin/users/users.component';
-import {HomeComponent} from './features/home/home.component';
+import {LandingComponent} from './features/landing/landing.component';
 import {ProductDetailsComponent} from './features/product-details/product-details.component';
 import {ProductListComponent} from './features/product-list/product-list.component';
 import {ProfileComponent} from './features/user/profile/profile.component';
@@ -20,15 +20,16 @@ import {CategoriesComponent} from "./features/admin/categories/categories.compon
 import {BrandDetailsComponent} from "./features/admin/brands/brand-details/brand-details.component";
 import {CategoryDetailsComponent} from "./features/admin/categories/category-details/category-details.component";
 import {ModelDetailsComponent} from "./features/admin/models/model-details/model-details.component";
+import {HomeComponent} from "./features/home/home.component";
 
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent,
+        component: LandingComponent,
         children: [
             {
                 path: '',
-                component: ProductListComponent,
+                component: HomeComponent,
             },
             {
                 path: 'products/:slug',

@@ -8,22 +8,19 @@
   .search-form {
     width: 65dvw;
 
-    &:focus,
-    &:active {
-      border-color: var(--purple-9);
-      box-shadow: 0 0 0 0.25rem var(--purple-9);
-    }
+
   }
 
   .search-btn {
+    background: var(--purple-contrast);
     transition: all 0.1s ease;
 
     &:hover {
-      background: var(--purple-3);
+      background: var(--purple-6);
     }
 
     &:active {
-      background-color: var(--purple-6);
+      background-color: var(--purple-9);
     }
   }
 

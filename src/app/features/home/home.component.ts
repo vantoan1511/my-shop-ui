@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { HeaderComponent } from '../../components/header/header.component';
+import {ProductListComponent} from "../product-list/product-list.component";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [
+    ProductListComponent,
+    TranslateModule
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrl: './home.component.scss'
 })
-export class HomeComponent {}
+export class HomeComponent {
+
+}

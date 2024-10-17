@@ -10,6 +10,10 @@ import {CurrencyPipe} from "@angular/common";
 import {ImageService} from "../../services/image.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
+import {forkJoin, map, switchMap} from "rxjs";
+import {SafeUrl} from "@angular/platform-browser";
+import {ImageUtils} from "../../shared/services/Image.utils";
+import {constant} from "../../shared/constant";
 
 @Component({
     selector: 'app-product-list',
@@ -21,27 +25,28 @@ import {CardLoaderComponent} from "../../shared/components/card-loader/card-load
 export class ProductListComponent implements OnInit {
 
     productResponse: Response<Product> | null = null;
-    products$: Perform<Response<Product>> = new Perform<Response<Product>>();
+    heroImages: Map<number, SafeUrl> = new Map();
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
-    private loading = false;
+    loading = false;
 
     constructor(
         private translate: TranslateService,
         private productService: ProductService,
         private imageService: ImageService,
+        private imageUtils: ImageUtils,
         private router: Router
     ) {
         this.translate.setDefaultLang('vi');
     }
 
     ngOnInit(): void {
-        this.products$.load(this.productService.getBy(this.pageRequest, this.sort));
+        this.fetchProducts();
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 window.scrollTo(0, 0);
             }
-        })
+        });
     }
 
     savedPrice(product: Product) {
@@ -53,4 +58,47 @@ export class ProductListComponent implements OnInit {
         return null;
     }
 
+    private fetchProducts(): void {
+        this.loading = true;
+        this.productService.getBy(this.pageRequest, this.sort).subscribe({
+            next: resp => {
+                this.productResponse = resp;
+                this.loading = false;
+
+                if (resp.items.length) {
+                    this.fetchProductHeroImages(resp.items);
+                }
+            },
+            error: () => this.loading = false
+        });
+    }
+
+    private fetchProductHeroImages(products: Product[]) {
+        const heroImageRequests = products.map(product =>
+            this.productService.getImagesById(product.id).pipe(
+                map(productImages => {
+                    const hero = productImages.find(image => image.featured);
+                    return hero ? {productId: product.id, heroId: hero.imageId} : null;
+                })
+            )
+        );
+        forkJoin(heroImageRequests).subscribe((heroImages) => {
+            const validHeroImages = heroImages.filter(image => image != null);
+            const imageContentRequests = validHeroImages.map(hero =>
+                this.imageService.getById(hero!.heroId).pipe(
+                    map(imageContent => ({
+                        productId: hero!.productId,
+                        safeUrl: this.imageUtils.createSafeUrl(imageContent)
+                    }))
+                ));
+
+            forkJoin(imageContentRequests).subscribe(imageContents => {
+                imageContents.forEach(({productId, safeUrl}) => {
+                    this.heroImages.set(productId, safeUrl);
+                });
+            });
+        });
+    }
+
+    protected readonly constant = constant;
 }

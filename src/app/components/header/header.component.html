@@ -1,75 +1,62 @@
 <nav class="navbar py-3 px-3">
-  <div class="container-fluid">
-    <a class="navbar-brand fs-4 fw-bold" href="/">
-      <i class="fs-1 bi bi-bag"></i> Shopbee
-    </a>
-    <form class="position-relative" role="search">
-      <input
-        class="bg-white py-3 rounded-0 form-control search-form"
-        type="search"
-        placeholder="Search for products,..."
-        aria-label="Search"
-      />
-      <button
-        class="position-absolute top-50 end-0 translate-middle-y btn p-3 border-0 rounded-start-pill search-btn"
-        type="button"
-      >
-        <i class="bi bi-search me-1"></i> Search
-      </button>
-    </form>
-    <button
-      class="btn rounded-pill bg-transparent border-0 fs-5 fw-bold text-white"
-    >
-      <i class="fs-3 bi bi-cart"></i> Cart
-    </button>
-    @if (authService.isAuthenticated) {
-    <div class="dropdown">
-      <a
-        class="d-flex align-items-center text-decoration-none text-white fs-5 fw-bold dropdown-toggle"
-        href="#"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <img
-          src="https://placehold.co/80x80"
-          alt="Avatar"
-          class="avatar rounded-circle me-2"
-          width="32"
-          height="32"
-        />
-        <span class="username">{{ authService.username }}</span>
-      </a>
+    <div class="container-fluid">
+        <a class="navbar-brand fs-4 fw-bold" href="/">
+            <i class="fs-1 bi bi-bag"></i> Shopbee
+        </a>
+        <form class="position-relative" role="search">
+            <input class="bg-white py-3 rounded-0 form-control search-form"
+                   type="search"
+                   aria-label="Search"/>
+            <button class="position-absolute top-50 end-0 translate-middle-y btn p-3 border-0 rounded-start-pill search-btn"
+                    type="button">
+                <i class="bi bi-search me-2"></i>{{ "Search" | translate }}
+            </button>
+        </form>
+        <button class="btn rounded-pill bg-transparent border-0 fs-5 fw-bold text-white">
+            <i class="fs-3 bi bi-cart me-2"></i>{{ "Cart" | translate }}
+        </button>
+        @if (authService.isAuthenticated) {
+            <div class="dropdown">
+                <a class="d-flex align-items-center text-decoration-none text-white fs-5 fw-bold dropdown-toggle"
+                   href="#"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <img [src]="constant.defaultThumbnail"
+                         alt="Avatar"
+                         class="avatar rounded-circle me-2"
+                         width="32"
+                         height="32"/>
+                    <span class="username">{{ authService.username }}</span>
+                </a>
 
-      <ul class="shadow border-0 dropdown-menu dropdown-menu-lg-end">
-        @if (authService.isAdmin) {
-        <li>
-          <a routerLink="admin" class="dropdown-item">
-            <i class="bi bi-columns-gap"></i> Admin Dashboard
-          </a>
-        </li>
+                <ul class="shadow border-0 dropdown-menu dropdown-menu-lg-end">
+                    @if (authService.isAdmin) {
+                        <li>
+                            <a routerLink="admin" class="dropdown-item">
+                                <i class="bi bi-columns-gap"></i> Admin Dashboard
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a routerLink="users" class="dropdown-item">
+                            <i class="bi bi-person"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider"/>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" (click)="authService.logout()">
+                            <i class="bi bi-box-arrow-right"></i> {{ "Logout" | translate }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        } @else {
+            <button class="btn text-white fs-5 fw-bold border-0"
+                    (click)="authService.login()">
+                <i class="bi bi-box-arrow-in-right me-2"></i>{{ "Log in" | translate }}
+            </button>
         }
-        <li>
-          <a routerLink="users" class="dropdown-item"
-            ><i class="bi bi-person"></i> Profile</a
-          >
-        </li>
-        <li>
-          <hr class="dropdown-divider" />
-        </li>
-        <li>
-          <a class="dropdown-item" (click)="authService.logout()">
-            <i class="bi bi-box-arrow-right"></i> Logout
-          </a>
-        </li>
-      </ul>
     </div>
-    } @else {
-    <button
-      class="btn text-white fs-5 fw-bold border-0"
-      (click)="authService.login()"
-    >
-      <i class="bi bi-box-arrow-in-right me-2"></i>Log in
-    </button>
-    }
-  </div>
 </nav>
