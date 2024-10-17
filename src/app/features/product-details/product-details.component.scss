@@ -72,6 +72,16 @@ a, .rating, .breadcrumb {
   }
 }
 
+.quantity-input-btn {
+  color: var(--purple-9);
+  border: 1px solid var(--purple-9);
+
+  &:disabled {
+    background: var(--purple-3);
+    border-color: var(--gray-1);
+  }
+}
+
 .active {
   border-color: var(--purple-9);
   background: var(--purple-3);

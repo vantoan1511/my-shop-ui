@@ -9,16 +9,18 @@ import {constant} from "../../shared/constant";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ImageUtils} from "../../shared/services/Image.utils";
 import {ActivatedRoute} from "@angular/router";
+import {FormsModule} from "@angular/forms";
 
 @Component({
     selector: 'app-product-details',
     standalone: true,
-    imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule],
+    imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule],
     templateUrl: './product-details.component.html',
     styleUrl: './product-details.component.scss',
 })
 export class ProductDetailsComponent implements OnInit {
 
+    quantity = 0;
     productSlug: string | null = null;
     product: Product | null = null;
     heroUrl: SafeUrl | null = null;
@@ -61,6 +63,35 @@ export class ProductDetailsComponent implements OnInit {
 
     onHoverThumbnail(index: number) {
         this.heroUrl = this.imageUrls[index];
+    }
+
+    increaseQuantity(): void {
+        if (this.product && this.quantity < this.product?.stockQuantity) {
+            this.quantity++;
+        }
+    }
+
+    decreaseQuantity(): void {
+        if (this.quantity > 0) {
+            this.quantity--;
+        }
+    }
+
+    validateQuantity(): void {
+        if (isNaN(this.quantity)) {
+            this.quantity = 0;
+            return;
+        }
+
+        this.quantity = Math.ceil(this.quantity);
+        if (this.quantity < 0) {
+            this.quantity = 0;
+            return
+        }
+
+        if (this.product && this.quantity > this.product?.stockQuantity) {
+            this.quantity = this.product.stockQuantity;
+        }
     }
 
     get discount(): number {
