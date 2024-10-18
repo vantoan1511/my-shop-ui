@@ -34,6 +34,15 @@
 
     .badge {
       font-weight: 500;
+      color: var(--purple-contrast);
+    }
+
+    .active-badge {
+      background: var(--purple-9);
+    }
+
+    .inactive-badge {
+      background: var(--gray-6);
     }
   }
 

@@ -128,7 +128,13 @@
                                         </div>
                                     </td>
                                     <td>{{ product.slug }}</td>
-                                    <td>{{ product.active }}</td>
+                                    <td>
+                                        <span class="badge"
+                                              [class.inactive-badge]="!product.active"
+                                              [class.active-badge]="product.active">
+                                            {{ product.active ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </td>
                                     <td>{{ product.basePrice | currency:"VND" }}</td>
                                     <td>{{ product.salePrice | currency:"VND" }}</td>
                                     <td>{{ product.stockQuantity }}</td>

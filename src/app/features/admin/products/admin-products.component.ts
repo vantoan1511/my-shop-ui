@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgClass} from "@angular/common";
 import {ListControlsComponent} from "../../../shared/components/list-controls/list-controls.component";
 import {SortableDirective} from "../../../directives/sortable.directive";
 import {PageRequest} from "../../../types/page-request.type";
@@ -12,6 +12,7 @@ import {RouterLink} from "@angular/router";
 import {ProductService} from "../../../services/product.service";
 import {AlertService} from "../../../services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
     selector: 'admin-products',
@@ -22,7 +23,9 @@ import {HttpErrorResponse} from "@angular/common/http";
         ListControlsComponent,
         SortableDirective,
         RouterLink,
-        CurrencyPipe
+        CurrencyPipe,
+        NgClass,
+        TranslateModule
     ],
     templateUrl: './admin-products.component.html',
     styleUrl: './admin-products.component.scss'
