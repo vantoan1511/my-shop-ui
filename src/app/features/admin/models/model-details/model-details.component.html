@@ -79,13 +79,13 @@
                                         <label for="description" class="col-form-label">Description</label>
                                     </div>
                                     <div class="col">
-                                        <textarea [class.invalid-input]="isInvalid('description')"
-                                                  rows="10"
-                                                  formControlName="description"
-                                                  type="text"
-                                                  id="description"
-                                                  class="form-control"
-                                                  placeholder="Description"></textarea>
+                                        <div id="description" class="NgxEditor__Wrapper">
+                                            <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
+                                            <ngx-editor formControlName="description"
+                                                        [editor]="editor"
+                                                        [placeholder]="'Type here...'">
+                                            </ngx-editor>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ import {Brand, Category} from "../../../../types/product.type";
 import {Observable, Subject, takeUntil} from "rxjs";
 import {AlertService} from "../../../../services/alert.service";
 import {CategoryService} from "../../../../services/category.service";
+import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 
 @Component({
     selector: 'app-brand-details',
@@ -16,12 +17,24 @@ import {CategoryService} from "../../../../services/category.service";
         ContextMenuComponent,
         FormsModule,
         ReactiveFormsModule,
-        RouterLink
+        RouterLink,
+        NgxEditorModule
     ],
     templateUrl: './category-details.component.html',
     styleUrl: './category-details.component.scss'
 })
 export class CategoryDetailsComponent implements OnInit, OnDestroy {
+    editor: Editor = new Editor()
+    toolbar: Toolbar = [
+        ['bold', 'italic'],
+        ['underline', 'strike'],
+        ['code', 'blockquote'],
+        ['ordered_list', 'bullet_list'],
+        [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
+        ['link', 'image'],
+        ['text_color', 'background_color'],
+        ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ];
     categoryForm!: FormGroup;
     category: Category | null = null;
     categorySlug?: string;

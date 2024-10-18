@@ -9,6 +9,7 @@ import {AlertService} from "../../../../services/alert.service";
 import {ModelService} from "../../../../services/model.service";
 import {BrandService} from "../../../../services/brand.service";
 import {Response} from "../../../../types/response.type";
+import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 
 @Component({
     selector: 'app-brand-details',
@@ -18,12 +19,24 @@ import {Response} from "../../../../types/response.type";
         ContextMenuComponent,
         FormsModule,
         ReactiveFormsModule,
-        RouterLink
+        RouterLink,
+        NgxEditorModule
     ],
     templateUrl: './model-details.component.html',
     styleUrl: './model-details.component.scss'
 })
 export class ModelDetailsComponent implements OnInit, OnDestroy {
+    editor: Editor = new Editor()
+    toolbar: Toolbar = [
+        ['bold', 'italic'],
+        ['underline', 'strike'],
+        ['code', 'blockquote'],
+        ['ordered_list', 'bullet_list'],
+        [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
+        ['link', 'image'],
+        ['text_color', 'background_color'],
+        ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ];
     modelForm!: FormGroup;
     model: Model | null = null;
     modelSlug?: string;

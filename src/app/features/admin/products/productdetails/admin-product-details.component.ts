@@ -13,6 +13,7 @@ import {ImageService} from "../../../../services/image.service";
 import {ContextMenuComponent} from "../../../../shared/components/context-menu/context-menu.component";
 import {ProductImage} from "../../../../types/image.type";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 
 @Component({
     selector: 'admin-product-details',
@@ -21,13 +22,24 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
         ReactiveFormsModule,
         RouterLink,
         AsyncPipe,
-        ContextMenuComponent
+        ContextMenuComponent,
+        NgxEditorModule
     ],
     templateUrl: './admin-product-details.component.html',
     styleUrl: './admin-product-details.component.scss'
 })
 export class AdminProductDetailsComponent implements OnInit, OnDestroy {
-
+    editor: Editor = new Editor()
+    toolbar: Toolbar = [
+        ['bold', 'italic'],
+        ['underline', 'strike'],
+        ['code', 'blockquote'],
+        ['ordered_list', 'bullet_list'],
+        [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
+        ['link', 'image'],
+        ['text_color', 'background_color'],
+        ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ];
     productForm!: FormGroup;
     product: Product | null = null;
     productSlug?: string;

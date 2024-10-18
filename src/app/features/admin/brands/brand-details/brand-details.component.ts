@@ -8,6 +8,7 @@ import {Observable, Subject, takeUntil} from "rxjs";
 import {ValidationService} from "../../../../services/validation.service";
 import {AlertService} from "../../../../services/alert.service";
 import {BrandService} from "../../../../services/brand.service";
+import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 
 @Component({
     selector: 'app-brand-details',
@@ -17,12 +18,24 @@ import {BrandService} from "../../../../services/brand.service";
         ContextMenuComponent,
         FormsModule,
         ReactiveFormsModule,
-        RouterLink
+        RouterLink,
+        NgxEditorModule
     ],
     templateUrl: './brand-details.component.html',
     styleUrl: './brand-details.component.scss'
 })
 export class BrandDetailsComponent implements OnInit, OnDestroy {
+    editor: Editor = new Editor()
+    toolbar: Toolbar = [
+        ['bold', 'italic'],
+        ['underline', 'strike'],
+        ['code', 'blockquote'],
+        ['ordered_list', 'bullet_list'],
+        [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+        ['link', 'image'],
+        ['text_color', 'background_color'],
+        ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ];
     brandForm!: FormGroup;
     brand: Brand | null = null;
     brandSlug?: string;
