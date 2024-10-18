@@ -68,6 +68,18 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
+    generateSlug() {
+        const productName = this.categoryForm.value.name;
+        let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        slug = slug.toLowerCase()
+            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        this.categoryForm.patchValue({
+            slug: slug
+        })
+    }
+
     isInvalid(fieldName: string) {
         const field = this.categoryForm.get(fieldName);
         return field?.invalid && (field?.dirty || field?.touched);

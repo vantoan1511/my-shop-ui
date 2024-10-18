@@ -48,13 +48,18 @@
                                     <div class="col-3">
                                         <label for="slug" class="col-form-label">Slug</label>
                                     </div>
-                                    <div class="col">
+                                    <div class="col d-flex gap-2">
                                         <input [class.invalid-input]="isInvalid('slug')"
                                                formControlName="slug"
                                                type="text"
                                                id="slug"
                                                class="form-control"
                                                placeholder="brand-slug"/>
+                                        <button class="btn"
+                                                title="Generate slug"
+                                                (click)="generateSlug()">
+                                            <i class="bi bi-repeat"></i>
+                                        </button>
                                     </div>
                                 </div>
 

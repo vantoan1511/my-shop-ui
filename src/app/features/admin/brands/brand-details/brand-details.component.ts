@@ -69,6 +69,18 @@ export class BrandDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
+    generateSlug() {
+        const productName = this.brandForm.value.name;
+        let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        slug = slug.toLowerCase()
+            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        this.brandForm.patchValue({
+            slug: slug
+        })
+    }
+
     isInvalid(fieldName: string) {
         const field = this.brandForm.get(fieldName);
         return field?.invalid && (field?.dirty || field?.touched);

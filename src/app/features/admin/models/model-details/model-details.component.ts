@@ -73,6 +73,18 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.brands$ = this.brandService.getBy({page: 1, size: 999});
     }
 
+    generateSlug() {
+        const productName = this.modelForm.value.name;
+        let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        slug = slug.toLowerCase()
+            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        this.modelForm.patchValue({
+            slug: slug
+        })
+    }
+
     isInvalid(fieldName: string) {
         const field = this.modelForm.get(fieldName);
         return field?.invalid && (field?.dirty || field?.touched);

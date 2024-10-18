@@ -103,7 +103,18 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
             });
         this.models$ = this.modelService.getAll();
         this.categories$ = this.categoryService.getAll();
+    }
 
+    generateSlug() {
+        const productName = this.productForm.value.name;
+        let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        slug = slug.toLowerCase()
+            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        this.productForm.patchValue({
+            slug: slug
+        })
     }
 
     isInvalid(fieldName: string) {
