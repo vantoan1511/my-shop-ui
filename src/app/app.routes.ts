@@ -8,7 +8,6 @@ import {DetailsComponent} from './features/admin/users/userdetails/userdetails.c
 import {UsersComponent} from './features/admin/users/users.component';
 import {LandingComponent} from './features/landing/landing.component';
 import {ProductDetailsComponent} from './features/product-details/product-details.component';
-import {ProductListComponent} from './features/product-list/product-list.component';
 import {ProfileComponent} from './features/user/profile/profile.component';
 import {UserComponent} from './features/user/user.component';
 import {authGuard} from './guard/auth.guard';
@@ -21,6 +20,7 @@ import {BrandDetailsComponent} from "./features/admin/brands/brand-details/brand
 import {CategoryDetailsComponent} from "./features/admin/categories/category-details/category-details.component";
 import {ModelDetailsComponent} from "./features/admin/models/model-details/model-details.component";
 import {HomeComponent} from "./features/home/home.component";
+import {CartComponent} from "./features/cart/cart.component";
 
 export const routes: Routes = [
     {
@@ -34,6 +34,10 @@ export const routes: Routes = [
             {
                 path: 'products/:slug',
                 component: ProductDetailsComponent,
+            },
+            {
+                path: 'cart',
+                component: CartComponent,
             },
             {
                 path: 'users',

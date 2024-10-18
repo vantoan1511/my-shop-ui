@@ -1,0 +1,38 @@
+.buy-now {
+  line-height: 2;
+  color: var(--purple-contrast);
+  background: var(--purple-9);
+
+  &:active {
+    color: var(--purple-contrast);
+    background: var(--purple-10);
+  }
+
+}
+
+.quantity-input-btn {
+  color: var(--purple-9);
+  border: 1px solid var(--purple-9);
+
+  &:disabled {
+    background: var(--purple-3);
+    border-color: var(--gray-1);
+  }
+}
+
+.amount {
+  color: var(--purple-9);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.checkout-btn {
+  line-height: 2;
+  color: var(--purple-contrast);
+  background: var(--purple-9);
+
+  &:active {
+    color: var(--purple-contrast);
+    background: var(--purple-10);
+  }
+}

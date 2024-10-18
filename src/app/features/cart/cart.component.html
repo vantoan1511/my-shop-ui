@@ -1,0 +1,80 @@
+<div class="container my-3">
+    <div class="row p-3 bg-white">
+        <div class="p-3">
+            <h2 class="fs-2 fw-light text-muted">{{ "My Cart" | translate }}</h2>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        @if (cartItems.length > 0) {
+            <div class="col-md-8 bg-white">
+                @for (item of cartItems; track $index) {
+                    <div class="row mb-3 p-3 border-bottom">
+                        <div class="col-md-1">
+                            <img [src]="constant.defaultThumbnail" width="64" alt="{{item.product.name}}"
+                                 class="img-fluid rounded">
+                        </div>
+                        <div class="col-md-5">
+                            <h5 class="fs-5 fw-light text-muted">{{ item.product.name }}</h5>
+                            <p class="text-muted">{{ item.product.description }}</p>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center gap-2">
+                            <button class="btn quantity-input-btn"
+                                    (click)="decreaseQuantity(item)"
+                                    [disabled]="item.quantity <= 1">
+                                <i class="bi bi-dash-lg"></i>
+                            </button>
+                            <input type="number"
+                                   class="form-control text-center"
+                                   [(ngModel)]="item.quantity"
+                                   (change)="validateQuantity(item)">
+                            <button class="btn quantity-input-btn"
+                                    (click)="increaseQuantity(item)"
+                                    [disabled]="item.quantity >= 10 ">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center justify-content-between">
+                            <span class="text-muted">{{ item.product.salePrice | currency:'VND' }}</span>
+                            <button class="btn" (click)="removeFromCart(item)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <div class="col-md-4 bg-white">
+                <div class="row p-3">
+                    <div class="col">
+                        <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+                        <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Total Price' | translate }}
+                            :</span><span>{{ totalPrice | currency:"VND" }}</span>
+                        </div>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Total Discounted Price' | translate }}
+                            :</span><span>{{ totalPrice | currency:"VND" }}</span>
+                        </div>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Amount' | translate }}
+                            :</span><span class="amount">{{ totalPrice | currency:"VND" }}</span>
+                        </div>
+                        <hr/>
+                        <button class="btn w-100 checkout-btn" (click)="checkout()">
+                            {{ 'Proceed to Checkout' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        } @else {
+            <div class="text-center bg-white p-3">
+                <h2 class="fs-2 fw-light text-muted">{{ 'Your cart is empty' | translate }}</h2>
+                <a routerLink="/" class="btn mt-3 buy-now">{{ 'Shop Now' | translate }}</a>
+            </div>
+        }
+    </div>
+</div>
