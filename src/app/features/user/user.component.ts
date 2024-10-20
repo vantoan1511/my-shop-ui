@@ -1,28 +1,23 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {
-    FormBuilder,
-    FormGroup,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
-import {
-    ActivatedRoute,
-    RouterLink,
-    RouterLinkActive,
-    RouterOutlet,
-} from '@angular/router';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet,} from '@angular/router';
 import {catchError, Subject, switchMap, takeUntil} from 'rxjs';
 import {AlertService} from '../../services/alert.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ImageService} from '../../services/image.service';
 import {UserService} from '../../services/user.service';
 import {ValidationService} from '../../services/validation.service';
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
+import {constant} from "../../shared/constant";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {environment} from "../../../environments/environment";
+import {PageRequest} from "../../types/page-request.type";
+import {Image} from "../../types/image.type";
+import {Response} from "../../types/response.type";
 
 @Component({
     selector: 'app-user',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, RouterOutlet, ReactiveFormsModule],
+    imports: [RouterLink, RouterLinkActive, RouterOutlet, ReactiveFormsModule, TranslateModule],
     templateUrl: './user.component.html',
     styleUrl: './user.component.scss',
 })
@@ -31,11 +26,13 @@ export class UserComponent implements OnInit, OnDestroy {
     passwordForm!: FormGroup;
     username!: string;
     userId: number | null = null;
-    avatar: SafeUrl | null = null;
-    defaultAvatar = 'https://placehold.co/128x128';
+    avatarUrl: string = constant.defaultAvatar;
+    pageRequest: PageRequest = {page: 1, size: 10}
+    uploaded: Response<Image> | null = null;
     private unsubscribe$ = new Subject<void>();
 
     constructor(
+        private translate: TranslateService,
         private fb: FormBuilder,
         private userService: UserService,
         private alertService: AlertService,
@@ -43,8 +40,8 @@ export class UserComponent implements OnInit, OnDestroy {
         private authService: AuthenticationService,
         private validator: ValidationService,
         private imageService: ImageService,
-        private sanitizer: DomSanitizer
     ) {
+        this.translate.setDefaultLang("vi");
     }
 
     ngOnInit(): void {
@@ -54,95 +51,9 @@ export class UserComponent implements OnInit, OnDestroy {
         this.getUserProfile();
     }
 
-    ngOnDestroy(): void {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
-
-    onProfileFormSubmit() {
-        if (this.userForm.valid) {
-            this.userService
-                .updateProfile(this.username, this.userForm.value)
-                .pipe(takeUntil(this.unsubscribe$))
-                .subscribe({
-                    next: () => {
-                        this.alertService.showSuccessToast('Profile updated successfully');
-                    },
-                    error: (error) => {
-                        this.alertService.showErrorToast('Failed to update profile');
-                    },
-                });
-        }
-    }
-
-    onPasswordFormSubmit() {
-        if (this.passwordForm.valid) {
-            this.userService
-                .changePassword(this.username, this.passwordForm.get('password')?.value)
-                .pipe(takeUntil(this.unsubscribe$))
-                .subscribe({
-                    next: () =>
-                        this.alertService.showSuccessToast('Password changed successfully'),
-                    error: (error) =>
-                        this.alertService.showErrorToast('Failed to change password'),
-                });
-        }
-    }
-
-    previewImage(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        if (!input.files?.[0]) {
-            return;
-        }
-
-        const file = input.files[0];
-
-        if (!this.validateFile(file)) {
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const imgElement = document.getElementById(
-                'avatar-preview'
-            ) as HTMLImageElement;
-            imgElement.src = e.target?.result as string;
-        };
-        reader.readAsDataURL(file);
-
-        this.imageService
-            .uploadImage(file)
-            .pipe(
-                takeUntil(this.unsubscribe$),
-                switchMap((resp) => {
-                    const avatarId = resp.id;
-                    return this.imageService.setAvatar(avatarId);
-                }),
-                catchError((error) => {
-                    this.alertService.showErrorToast('Failed to upload image');
-                    return [];
-                })
-            )
-            .subscribe({
-                next: () => {
-                    this.alertService.showSuccessToast('Updated avatar successfully')
-                    this.avatar = this.sanitizer.bypassSecurityTrustUrl(this.createAvatarUrl(file))
-                },
-                error: () =>
-                    this.alertService.showErrorToast('Failed to update avatar'),
-            });
-    }
-
-    get isValidProfileForm() {
-        return this.userForm.valid;
-    }
-
-    get dirtyProfileForm() {
-        return this.userForm.dirty;
-    }
-
-    get notMatchedPassword() {
-        return this.passwordForm.errors?.['mismatch'];
+    private getUsername() {
+        const username = this.route.snapshot.paramMap.get('username');
+        return username ?? this.authService.username;
     }
 
     private initUserProfileForm() {
@@ -191,21 +102,100 @@ export class UserComponent implements OnInit, OnDestroy {
                 switchMap((user) => {
                     this.userForm.patchValue(user);
                     this.userId = user.id;
-                    return this.imageService.getAvatarByUserId(this.userId);
+                    this.avatarUrl = this.createAvatarUrl(this.userId);
+                    return this.imageService.getUploaded(this.pageRequest);
+                })
+            )
+            .subscribe((response) => this.uploaded = response);
+    }
+
+    protected onProfileFormSubmit() {
+        if (this.userForm.valid) {
+            this.userService
+                .updateProfile(this.username, this.userForm.value)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe({
+                    next: () => {
+                        this.alertService.showSuccessToast('Profile updated successfully');
+                    },
+                    error: (error) => {
+                        this.alertService.showErrorToast('Failed to update profile');
+                    },
+                });
+        }
+    }
+
+    protected onPasswordFormSubmit() {
+        if (this.passwordForm.valid) {
+            this.userService
+                .changePassword(this.username, this.passwordForm.get('password')?.value)
+                .pipe(takeUntil(this.unsubscribe$))
+                .subscribe({
+                    next: () =>
+                        this.alertService.showSuccessToast('Password changed successfully'),
+                    error: () =>
+                        this.alertService.showErrorToast('Failed to change password'),
+                });
+        }
+    }
+
+    protected previewImage(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        if (!input.files?.[0]) {
+            return;
+        }
+
+        const file = input.files[0];
+
+        if (!this.validateFile(file)) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const imgElement = document.getElementById(
+                'avatar-preview'
+            ) as HTMLImageElement;
+            imgElement.src = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
+
+        this.imageService
+            .uploadImage(file)
+            .pipe(
+                takeUntil(this.unsubscribe$),
+                switchMap((resp) => {
+                    const avatarId = resp.id;
+                    return this.imageService.setAvatar(avatarId);
+                }),
+                catchError((error) => {
+                    this.alertService.showErrorToast('Failed to upload image');
+                    return [];
                 })
             )
             .subscribe({
-                next: (imageBlob) => (this.avatar = this.sanitizer.bypassSecurityTrustUrl(this.createAvatarUrl(imageBlob)))
+                next: () => {
+                    this.alertService.showSuccessToast('Updated avatar successfully')
+                },
+                error: () =>
+                    this.alertService.showErrorToast('Failed to update avatar'),
             });
     }
 
-    private createAvatarUrl(blob: Blob) {
-        return URL.createObjectURL(blob);
+    get isValidProfileForm() {
+        return this.userForm.valid;
     }
 
-    private getUsername() {
-        const username = this.route.snapshot.paramMap.get('username');
-        return username ?? this.authService.username;
+    get dirtyProfileForm() {
+        return this.userForm.dirty;
+    }
+
+    get notMatchedPassword() {
+        return this.passwordForm.errors?.['mismatch'];
+    }
+
+    private createAvatarUrl(userId: number) {
+        return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${userId}`;
     }
 
     private validateFile(file: File) {
@@ -238,4 +228,43 @@ export class UserComponent implements OnInit, OnDestroy {
         const validTypes = ['image/jpeg', 'image/png'];
         return validTypes.includes(file.type);
     }
+
+    protected createImageUrl(imageId: number) {
+        return `${environment.IMAGE_SERVICE_API}/images/${imageId}`;
+    }
+
+    protected onScrollGallery(event: Event) {
+        if (this.isScrolledToEnd(event) && this.uploaded?.hasNext) {
+            this.pageRequest = {...this.pageRequest, page: this.pageRequest.page + 1}
+            this.fetchImages()
+        }
+    }
+
+    protected setAvatar(image: Image) {
+        this.imageService.setAvatar(image.id).subscribe({
+            next: () => {
+                this.alertService.showSuccessToast('Avatar changed successfully')
+            },
+        })
+    }
+
+    private isScrolledToEnd(event: Event) {
+        const element = event.target as HTMLElement;
+        return element.scrollHeight - element.scrollTop === element.clientHeight;
+    }
+
+    private fetchImages() {
+        this.imageService.getUploaded(this.pageRequest).subscribe({
+            next: (response) => {
+                this.uploaded = {...response, items: [...(this.uploaded?.items || []), ...response.items]};
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+
+    protected readonly constant = constant;
 }

@@ -12,8 +12,9 @@ import {User} from '../../../types/user.type';
     styleUrl: './pagination.component.scss',
 })
 export class DataTableFooterComponent<T> {
+    @Input() loading = false;
     @Input() pageRequest!: PageRequest;
-    @Input() items!: Perform<Response<T>>;
+    @Input() items: Response<T> | null = null;
     @Output() pageChange = new EventEmitter<'next' | 'previous'>();
     @Output() pageSizeChange = new EventEmitter<number>();
 

@@ -8,7 +8,6 @@ import {DetailsComponent} from './features/admin/users/userdetails/userdetails.c
 import {UsersComponent} from './features/admin/users/users.component';
 import {LandingComponent} from './features/landing/landing.component';
 import {ProductDetailsComponent} from './features/product-details/product-details.component';
-import {ProfileComponent} from './features/user/profile/profile.component';
 import {UserComponent} from './features/user/user.component';
 import {authGuard} from './guard/auth.guard';
 import {Role} from './types/role.type';
@@ -50,7 +49,7 @@ export const routes: Routes = [
                     },
                     {
                         path: 'profile',
-                        component: ProfileComponent,
+                        component: UserComponent,
                     },
                 ],
             },

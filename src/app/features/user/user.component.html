@@ -4,13 +4,11 @@
             <div class="position-sticky">
                 <div class="d-flex align-items-center gap-3 text-center mb-3">
                     <div class="avatar rounded-circle">
-                        <img
-                                [src]="avatar ?? defaultAvatar"
-                                alt="User Avatar"
-                                class="img-fluid"
-                                width="48"
-                                height="48"
-                        />
+                        <img [src]="avatarUrl"
+                             alt="User Avatar"
+                             class="img-fluid"
+                             width="48"
+                             height="48"/>
                     </div>
                     <h5 class="username">{{ username }}</h5>
                 </div>
@@ -18,17 +16,17 @@
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="#profile" data-bs-toggle="tab">
-                            <i class="bi bi-person me-2"></i>Profile
+                            <i class="bi bi-person me-2"></i>{{ "Profile" | translate }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#change-password" data-bs-toggle="tab">
-                            <i class="bi bi-shield-lock me-2"></i>Change password
+                            <i class="bi bi-shield-lock me-2"></i>{{ "Change password" | translate }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#orders" data-bs-toggle="tab">
-                            <i class="bi bi-journals me-2"></i>Orders
+                            <i class="bi bi-journals me-2"></i>{{ "Orders" | translate }}
                         </a>
                     </li>
                 </ul>
@@ -38,154 +36,133 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
             <div class="tab-content p-3">
                 <div class="tab-pane fade show active" id="profile">
-                    <span class="fs-3 fw-lighter">PROFILE INFORMATION</span>
+                    <span class="fs-3 fw-lighter">{{ "PROFILE INFORMATION" | translate }}</span>
                     <hr/>
                     <div class="row">
                         <div class="profile col-md-8">
                             <form [formGroup]="userForm" (ngSubmit)="onProfileFormSubmit()">
                                 <div class="mb-3 row">
-                                    <label
-                                            for="username"
-                                            class="col-sm-4 col-form-label text-end"
-                                    >
-                                        Username
+                                    <label for="username"
+                                           class="col-sm-4 col-form-label text-end">
+                                        {{ "Username" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="username"
-                                                type="text"
-                                                class="readonly form-control"
-                                                id="username"
-                                                [disabled]="true"
-                                        />
+                                        <input formControlName="username"
+                                               type="text"
+                                               class="readonly form-control"
+                                               id="username"
+                                               [disabled]="true"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label
-                                            for="firstname"
-                                            class="col-sm-4 col-form-label text-end"
-                                    >
-                                        First name
+                                    <label for="firstname"
+                                           class="col-sm-4 col-form-label text-end">
+                                        {{ "First name" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="firstName"
-                                                type="text"
-                                                class="form-control"
-                                                id="firstname"
-                                                placeholder="First name"
-                                        />
+                                        <input formControlName="firstName"
+                                               type="text"
+                                               class="form-control"
+                                               id="firstname"
+                                               [placeholder]="'First name' | translate"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label
-                                            for="lastname"
-                                            class="col-sm-4 col-form-label text-end"
-                                    >
-                                        Last name
+                                    <label for="lastname"
+                                           class="col-sm-4 col-form-label text-end">
+                                        {{ "Last name" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="lastName"
-                                                type="text"
-                                                class="form-control"
-                                                id="lastname"
-                                                placeholder="First name"
-                                        />
+                                        <input formControlName="lastName"
+                                               type="text"
+                                               class="form-control"
+                                               id="lastname"
+                                               [placeholder]="'First name' | translate"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="email" class="col-sm-4 col-form-label text-end">
-                                        Email
+                                        {{ "Email" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="email"
-                                                type="email"
-                                                class="form-control"
-                                                id="email"
-                                                placeholder="Email"
-                                        />
+                                        <input formControlName="email"
+                                               type="email"
+                                               class="form-control"
+                                               id="email"
+                                               placeholder="Email"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="phone" class="col-sm-4 col-form-label text-end">
-                                        Phone number
+                                        {{ "Phone number" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="phone"
-                                                type="tel"
-                                                class="form-control"
-                                                id="phone"
-                                                placeholder="Phone number"
-                                        />
+                                        <input formControlName="phone"
+                                               type="tel"
+                                               class="form-control"
+                                               id="phone"
+                                               [placeholder]="'Phone number' | translate"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="address" class="col-sm-4 col-form-label text-end">
-                                        Address (Default)
+                                        {{ "Address" | translate }} ({{ "Default" | translate }})
                                     </label>
                                     <div class="col-sm-8">
                                         <input formControlName="address"
                                                type="text"
                                                class="form-control"
                                                id="address"
-                                               placeholder="Address"
+                                               [placeholder]="'Address' | translate"
                                                required/>
                                     </div>
                                 </div>
                                 @for (i of [1, 2, 3, 4]; track i) {
                                     <div class="mb-3 row">
                                         <label [for]="'address'+i" class="col-sm-4 col-form-label text-end">
-                                            Address {{ i }}
+                                            {{ "Address" | translate }} {{ i }}
                                         </label>
                                         <div class="col-sm-8">
                                             <input [formControlName]="'address'+i"
                                                    type="text"
                                                    class="form-control"
                                                    [id]="'address'+i"
-                                                   [placeholder]="'Address '+i"/>
+                                                   [placeholder]="'Address'+i"/>
                                         </div>
                                     </div>
                                 }
                                 <div class="mb-3 row">
                                     <label for="gender" class="col-sm-4 col-form-label text-end">
-                                        Gender
+                                        {{ "Gender" | translate }}
                                     </label>
                                     <div id="gender" class="col-sm-8 col-form-label">
                                         <div class="form-check form-check-inline">
-                                            <input
-                                                    formControlName="gender"
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value="MALE"
-                                                    id="male"
-                                            />
-                                            <label class="form-check-label" for="male"> Male </label>
+                                            <input formControlName="gender"
+                                                   class="form-check-input"
+                                                   type="radio"
+                                                   value="MALE"
+                                                   id="male"/>
+                                            <label class="form-check-label"
+                                                   for="male"> {{ "Male" | translate }} </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input
-                                                    formControlName="gender"
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    id="female"
-                                                    value="FEMALE"
-                                            />
+                                            <input formControlName="gender"
+                                                   class="form-check-input"
+                                                   type="radio"
+                                                   id="female"
+                                                   value="FEMALE"/>
                                             <label class="form-check-label" for="female">
-                                                Female
+                                                {{ "Female" | translate }}
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input
-                                                    formControlName="gender"
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    id="other"
-                                                    value="UNKNOWN"
-                                            />
+                                            <input formControlName="gender"
+                                                   class="form-check-input"
+                                                   type="radio"
+                                                   id="other"
+                                                   value="UNKNOWN"/>
                                             <label class="form-check-label" for="other">
-                                                Other
+                                                {{ "Other" | translate }}
                                             </label>
                                         </div>
                                     </div>
@@ -193,92 +170,99 @@
                                 <div class="mb-3 row">
                                     <div class="col-sm-4"></div>
                                     <div class="col-sm-8">
-                                        <button
-                                                [disabled]="!isValidProfileForm || !dirtyProfileForm"
+                                        <button [disabled]="!isValidProfileForm || !dirtyProfileForm"
                                                 type="submit"
-                                                class="btn btn-primary"
-                                        >
-                                            Save
+                                                class="btn btn-primary">
+                                            {{ "Save" | translate }}
                                         </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
-                            <input type="file"
-                                   class="d-none"
-                                   id="avatar"
-                                   accept="image/jpeg, image/png"
-                                   (change)="previewImage($event)"/>
-                            <label for="avatar"
-                                   class="text-center mb-3"
-                                   style="cursor: pointer">
-                                <div class="avatar-preview rounded-circle">
-                                    <img id="avatar-preview"
-                                         [src]="avatar ?? defaultAvatar"
-                                         alt="Avatar Preview"
-                                         class="rounded-circle"/>
+                        <div class="col-md-4">
+                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                <input type="file"
+                                       class="d-none"
+                                       id="avatar"
+                                       accept="image/jpeg, image/png"
+                                       (change)="previewImage($event)"/>
+                                <label for="avatar"
+                                       class="text-center mb-3"
+                                       style="cursor: pointer">
+                                    <div class="avatar-preview rounded-circle">
+                                        <img id="avatar-preview"
+                                             [src]="avatarUrl"
+                                             alt="Avatar Preview"
+                                             class="rounded-circle"/>
+                                    </div>
+                                </label>
+                                <div class="helper-text text-muted fs-6">
+                                    <span>{{ "File size limit" | translate }}: 1MB. {{ "Accepted format" | translate }}: PNG, JPG.</span>
                                 </div>
-                            </label>
-                            <div class="helper-text text-muted fs-6">
-                                <span>File size limit: 1MB. Accepted format: PNG, JPG.</span>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="helper-text text-muted fs-6">
+                                    <span>{{ "Or choose from uploaded" | translate }}.</span>
+                                </div>
+                                <div class="gallery row row-cols-md-2 g-2 overflow-auto"
+                                     (scroll)="onScrollGallery($event)">
+                                    @for (image of uploaded?.items; track $index) {
+                                        <div class="col">
+                                            <div class="card">
+                                                <img [src]="createImageUrl(image.id)"
+                                                     class="card-img-top"
+                                                     [alt]="image.altText"
+                                                     (click)="setAvatar(image)">
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="change-password">
-                    <span class="fs-3 fw-lighter">Change password</span>
+                    <span class="fs-3 fw-lighter">{{ "Change password" | translate }}</span>
                     <hr/>
                     <div class="row">
                         <div class="col-md-8">
-                            <form
-                                    [formGroup]="passwordForm"
-                                    (ngSubmit)="onPasswordFormSubmit()"
-                            >
+                            <form [formGroup]="passwordForm"
+                                  (ngSubmit)="onPasswordFormSubmit()">
                                 <div class="mb-3 row">
-                                    <label
-                                            for="password"
-                                            class="col-sm-4 col-form-label text-end"
-                                    >
-                                        New password
+                                    <label for="password"
+                                           class="col-sm-4 col-form-label text-end">
+                                        {{ "New password" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                formControlName="password"
-                                                type="password"
-                                                class="form-control"
-                                                id="password"
-                                                placeholder="Enter your new password"
-                                        />
+                                        <input formControlName="password"
+                                               type="password"
+                                               class="form-control"
+                                               id="password"
+                                               [placeholder]="'Enter your new password' | translate"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label
-                                            for="re-password"
-                                            class="col-sm-4 col-form-label text-end"
-                                    >
-                                        Confirm password
+                                    <label for="re-password"
+                                           class="col-sm-4 col-form-label text-end">
+                                        {{ "Confirm password" | translate }}
                                     </label>
                                     <div class="col-sm-8">
-                                        <input
-                                                [class.ng-invalid]="this.notMatchedPassword"
-                                                formControlName="rePassword"
-                                                type="password"
-                                                class="form-control"
-                                                id="re-password"
-                                                placeholder="Confirm new password"
-                                        />
+                                        <input [class.ng-invalid]="this.notMatchedPassword"
+                                               formControlName="rePassword"
+                                               type="password"
+                                               class="form-control"
+                                               id="re-password"
+                                               [placeholder]="'Confirm new password' | translate"/>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <div class="col-sm-4"></div>
                                     <div class="col-sm-8">
-                                        <button
-                                                [disabled]="passwordForm.invalid || !passwordForm.dirty"
+                                        <button [disabled]="passwordForm.invalid || !passwordForm.dirty"
                                                 type="submit"
-                                                class="btn btn-primary"
-                                        >
-                                            Save
+                                                class="btn btn-primary">
+                                            {{ "Save" | translate }}
                                         </button>
                                     </div>
                                 </div>
@@ -287,7 +271,7 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="orders">
-                    <span class="fs-3 fw-lighter">Your Orders</span>
+                    <span class="fs-3 fw-lighter">{{ "Your Orders" | translate }}</span>
                 </div>
             </div>
         </main>

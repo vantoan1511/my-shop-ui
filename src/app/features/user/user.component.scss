@@ -75,3 +75,14 @@
     box-shadow: 0 0 0 0.25rem var(--purple-3);
   }
 }
+
+.gallery {
+  height: 500px !important;
+
+  .card {
+
+    &:hover {
+      border-color: var(--purple-9);
+    }
+  }
+}

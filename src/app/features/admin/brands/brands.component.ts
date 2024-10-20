@@ -3,7 +3,6 @@ import {DataTableFooterComponent} from "../../../shared/components/pagination/pa
 import {DatePipe} from "@angular/common";
 import {ListControlsComponent} from "../../../shared/components/list-controls/list-controls.component";
 import {SortableDirective} from "../../../directives/sortable.directive";
-import {Perform} from "../../../types/perform.type";
 import {Response} from "../../../types/response.type";
 import {PageRequest} from "../../../types/page-request.type";
 import {Sort, SortField} from "../../../types/sort.type";
@@ -27,7 +26,8 @@ import {BrandService} from "../../../services/brand.service";
     styleUrl: './brands.component.scss'
 })
 export class BrandsComponent implements OnInit {
-    brands = new Perform<Response<Brand>>();
+    loading = false
+    brands: Response<Brand> | null = null;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     sortableFields = SortField;
@@ -73,14 +73,14 @@ export class BrandsComponent implements OnInit {
     }
 
     nextPage() {
-        if (this.brands.data?.hasNext) {
+        if (this.brands?.hasNext) {
             this.pageRequest.page++;
             this.fetchBrands();
         }
     }
 
     previousPage() {
-        if (this.brands.data?.hasPrevious) {
+        if (this.brands?.hasPrevious) {
             this.pageRequest.page--;
             this.fetchBrands();
         }
@@ -117,7 +117,14 @@ export class BrandsComponent implements OnInit {
     }
 
     private fetchBrands() {
-        this.brands.load(this.brandService.getBy(this.pageRequest, this.sort));
+        this.loading = true
+        this.brandService.getBy(this.pageRequest, this.sort).subscribe({
+            next: (brands) => {
+                this.brands = brands
+                this.loading = false
+            },
+            error: () => this.loading = false
+        })
     }
 
     private doDeleteSelectedBrands() {
@@ -151,13 +158,13 @@ export class BrandsComponent implements OnInit {
     }
 
     private validatePageRequest() {
-        if (this.brands.data) {
+        if (this.brands) {
             const itemsLeft =
-                this.brands.data.totalItems -
+                this.brands.totalItems -
                 this.pageRequest.page * this.pageRequest.size;
             if (itemsLeft < 0) {
                 this.pageRequest.page = Math.ceil(
-                    this.brands.data.totalItems / this.pageRequest.size
+                    this.brands.totalItems / this.pageRequest.size
                 );
             }
         }

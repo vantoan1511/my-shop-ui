@@ -6,7 +6,6 @@ import {SortableDirective} from "../../../directives/sortable.directive";
 import {PageRequest} from "../../../types/page-request.type";
 import {Product} from "../../../types/product.type";
 import {Response} from "../../../types/response.type";
-import {Perform} from "../../../types/perform.type";
 import {Sort, SortField} from "../../../types/sort.type";
 import {RouterLink} from "@angular/router";
 import {ProductService} from "../../../services/product.service";
@@ -31,9 +30,10 @@ import {TranslateModule} from "@ngx-translate/core";
     styleUrl: './admin-products.component.scss'
 })
 export class AdminProductsComponent implements OnInit {
+    loading = false;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
-    products = new Perform<Response<Product>>()
+    products: Response<Product> | null = null
     sortableFields = SortField;
     selectAllChecked = false;
 
@@ -107,31 +107,35 @@ export class AdminProductsComponent implements OnInit {
     }
 
     private fetchProducts() {
-        this.products.load(this.productService.getBy(this.pageRequest, this.sort));
+        this.loading = true
+        this.productService.getBy(this.pageRequest, this.sort).subscribe((response) => {
+            this.products = response
+            this.loading = false
+        })
     }
 
     private nextPage() {
-        if (this.products.data?.hasNext) {
+        if (this.products?.hasNext) {
             this.pageRequest.page++;
             this.fetchProducts();
         }
     }
 
     private previousPage() {
-        if (this.products.data?.hasPrevious) {
+        if (this.products?.hasPrevious) {
             this.pageRequest.page--;
             this.fetchProducts();
         }
     }
 
     private validatePageRequest() {
-        if (this.products.data) {
+        if (this.products) {
             const itemsLeft =
-                this.products.data.totalItems -
+                this.products.totalItems -
                 this.pageRequest.page * this.pageRequest.size;
             if (itemsLeft < 0) {
                 this.pageRequest.page = Math.ceil(
-                    this.products.data.totalItems / this.pageRequest.size
+                    this.products.totalItems / this.pageRequest.size
                 );
             }
         }

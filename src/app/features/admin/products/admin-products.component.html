@@ -10,6 +10,7 @@
             </app-list-controls>
             <app-pagination [pageRequest]="pageRequest"
                             [items]="products"
+                            [loading]="loading"
                             (pageChange)="onPageChange($event)"
                             (pageSizeChange)="onPageSizeChange($event)">
             </app-pagination>
@@ -78,7 +79,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @if (products.isLoading) {
+                        @if (loading) {
                             @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track
                                 item) {
                                 <tr class="skeleton-row">
@@ -105,7 +106,7 @@
                                 </tr>
                             }
                         } @else {
-                            @for (product of products.data?.items; track $index) {
+                            @for (product of products?.items; track $index) {
                                 <tr>
                                     <td>
                                         <input [id]="product.id"

@@ -3,7 +3,6 @@ import {DataTableFooterComponent} from "../../../shared/components/pagination/pa
 import {DatePipe} from "@angular/common";
 import {ListControlsComponent} from "../../../shared/components/list-controls/list-controls.component";
 import {SortableDirective} from "../../../directives/sortable.directive";
-import {Perform} from "../../../types/perform.type";
 import {Response} from "../../../types/response.type";
 import {Category} from "../../../types/product.type";
 import {PageRequest} from "../../../types/page-request.type";
@@ -27,7 +26,8 @@ import {CategoryService} from "../../../services/category.service";
     styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent implements OnInit {
-    categories = new Perform<Response<Category>>();
+    loading = false
+    categories: Response<Category> | null = null;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     sortableFields = SortField;
@@ -73,14 +73,14 @@ export class CategoriesComponent implements OnInit {
     }
 
     nextPage() {
-        if (this.categories.data?.hasNext) {
+        if (this.categories?.hasNext) {
             this.pageRequest.page++;
             this.fetchCategories();
         }
     }
 
     previousPage() {
-        if (this.categories.data?.hasPrevious) {
+        if (this.categories?.hasPrevious) {
             this.pageRequest.page--;
             this.fetchCategories();
         }
@@ -117,7 +117,14 @@ export class CategoriesComponent implements OnInit {
     }
 
     private fetchCategories() {
-        this.categories.load(this.categoryService.getBy(this.pageRequest, this.sort));
+        this.loading = true
+        this.categoryService.getBy(this.pageRequest, this.sort).subscribe({
+            next: (categories) => {
+                this.categories = categories
+                this.loading = false
+            },
+            error: () => this.loading = false
+        })
     }
 
     private doDeleteSelectedCategories() {
@@ -151,13 +158,13 @@ export class CategoriesComponent implements OnInit {
     }
 
     private validatePageRequest() {
-        if (this.categories.data) {
+        if (this.categories) {
             const itemsLeft =
-                this.categories.data.totalItems -
+                this.categories.totalItems -
                 this.pageRequest.page * this.pageRequest.size;
             if (itemsLeft < 0) {
                 this.pageRequest.page = Math.ceil(
-                    this.categories.data.totalItems / this.pageRequest.size
+                    this.categories.totalItems / this.pageRequest.size
                 );
             }
         }

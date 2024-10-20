@@ -8,11 +8,12 @@ import {UserService} from '../../../services/user.service';
 import {ListControlsComponent} from '../../../shared/components/list-controls/list-controls.component';
 import {DataTableFooterComponent} from '../../../shared/components/pagination/pagination.component';
 import {PageRequest} from '../../../types/page-request.type';
-import {Perform} from '../../../types/perform.type';
 import {Response} from '../../../types/response.type';
 import {Sort, SortField} from '../../../types/sort.type';
 import {User} from '../../../types/user.type';
 import {DetailsComponent} from './userdetails/userdetails.component';
+import {ImageService} from "../../../services/image.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
     selector: 'app-users',
@@ -30,20 +31,33 @@ import {DetailsComponent} from './userdetails/userdetails.component';
     styleUrl: './users.component.scss',
 })
 export class UsersComponent implements OnInit {
-    users = new Perform<Response<User>>();
+    loading = false;
+    users: Response<User> | null = null;
     pageRequest: PageRequest = {page: 1, size: 10};
-    sort: Sort = {sortBy: SortField.CREATED_AT, ascending: true};
+    sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     sortableFields = SortField;
     selectAllChecked = false;
 
     constructor(
         private userService: UserService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private imageService: ImageService
     ) {
     }
 
     ngOnInit(): void {
         this.fetchUsers();
+    }
+
+    private fetchUsers() {
+        this.loading = true
+        this.userService.getBy(this.pageRequest, this.sort).subscribe({
+            next: (response) => {
+                this.users = response;
+                this.loading = false
+            },
+            error: () => this.loading = false
+        });
     }
 
     onRefreshButtonClick() {
@@ -75,19 +89,15 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    min(...values: number[]) {
-        return Math.min(...values);
-    }
-
     nextPage() {
-        if (this.users.data?.hasNext) {
+        if (this.users?.hasNext) {
             this.pageRequest.page++;
             this.fetchUsers();
         }
     }
 
     previousPage() {
-        if (this.users.data?.hasPrevious) {
+        if (this.users?.hasPrevious) {
             this.pageRequest.page--;
             this.fetchUsers();
         }
@@ -123,10 +133,6 @@ export class UsersComponent implements OnInit {
         );
     }
 
-    private fetchUsers() {
-        this.users.load(this.userService.getBy(this.pageRequest, this.sort));
-    }
-
     private doDeleteSelectedUsers() {
         this.userService.delete(this.getSelectedUserIds()).subscribe({
             next: () => {
@@ -158,15 +164,19 @@ export class UsersComponent implements OnInit {
     }
 
     private validatePageRequest() {
-        if (this.users.data) {
+        if (this.users) {
             const itemsLeft =
-                this.users.data.totalItems -
+                this.users.totalItems -
                 this.pageRequest.page * this.pageRequest.size;
             if (itemsLeft < 0) {
                 this.pageRequest.page = Math.ceil(
-                    this.users.data.totalItems / this.pageRequest.size
+                    this.users.totalItems / this.pageRequest.size
                 );
             }
         }
+    }
+
+    protected createUserAvatarUrl(user: User) {
+        return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${user.id}`
     }
 }

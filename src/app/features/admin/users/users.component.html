@@ -60,7 +60,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @if (users.isLoading) {
+                        @if (loading) {
                             @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track item) {
                                 <tr class="skeleton-row">
                                     <td>
@@ -93,7 +93,7 @@
                                 </tr>
                             }
                         } @else {
-                            @for (user of users.data?.items; track $index) {
+                            @for (user of users?.items; track $index) {
                                 <tr>
                                     <td>
                                         <input [id]="user.id"
@@ -104,7 +104,7 @@
                                     <td>{{ user.id }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/50"
+                                            <img [src]="createUserAvatarUrl(user)"
                                                  alt="John Doe"
                                                  width="40"
                                                  height="40"
