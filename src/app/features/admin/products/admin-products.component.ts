@@ -95,8 +95,7 @@ export class AdminProductsComponent implements OnInit {
         const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
             '.custom-checkbox:not(#selectAll)'
         );
-        const allChecked = Array.from(selectBoxes).every((box) => box.checked);
-        this.selectAllChecked = allChecked;
+        this.selectAllChecked = Array.from(selectBoxes).every((box) => box.checked);
 
         const selectAllCheckbox = document.querySelector(
             '#selectAll'
@@ -108,9 +107,12 @@ export class AdminProductsComponent implements OnInit {
 
     private fetchProducts() {
         this.loading = true
-        this.productService.getBy(this.pageRequest, this.sort).subscribe((response) => {
-            this.products = response
-            this.loading = false
+        this.productService.getBy(this.pageRequest, this.sort).subscribe({
+            next: (response) => {
+                this.products = response
+                this.loading = false
+            },
+            error: () => this.loading = false
         })
     }
 
