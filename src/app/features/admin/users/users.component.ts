@@ -12,8 +12,8 @@ import {Response} from '../../../types/response.type';
 import {Sort, SortField} from '../../../types/sort.type';
 import {User} from '../../../types/user.type';
 import {DetailsComponent} from './userdetails/userdetails.component';
-import {ImageService} from "../../../services/image.service";
 import {environment} from "../../../../environments/environment";
+import {constant} from "../../../shared/constant";
 
 @Component({
     selector: 'app-users',
@@ -41,7 +41,6 @@ export class UsersComponent implements OnInit {
     constructor(
         private userService: UserService,
         private alertService: AlertService,
-        private imageService: ImageService
     ) {
     }
 
@@ -49,7 +48,7 @@ export class UsersComponent implements OnInit {
         this.fetchUsers();
     }
 
-    private fetchUsers() {
+    fetchUsers() {
         this.loading = true
         this.userService.getBy(this.pageRequest, this.sort).subscribe({
             next: (response) => {
@@ -60,11 +59,11 @@ export class UsersComponent implements OnInit {
         });
     }
 
-    onRefreshButtonClick() {
+    protected onRefreshButtonClick() {
         this.fetchUsers();
     }
 
-    onSelectAll(event: Event) {
+    protected onSelectAll(event: Event) {
         const checkbox = event.target as HTMLInputElement;
         this.selectAllChecked = checkbox.checked;
         const selectBoxes: NodeListOf<HTMLInputElement> =
@@ -74,12 +73,11 @@ export class UsersComponent implements OnInit {
         });
     }
 
-    onSelect() {
+    protected onSelect() {
         const selectBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
             '.custom-checkbox:not(#selectAll)'
         );
-        const allChecked = Array.from(selectBoxes).every((box) => box.checked);
-        this.selectAllChecked = allChecked;
+        this.selectAllChecked = Array.from(selectBoxes).every((box) => box.checked);
 
         const selectAllCheckbox = document.querySelector(
             '#selectAll'
@@ -89,21 +87,21 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    nextPage() {
+    protected nextPage() {
         if (this.users?.hasNext) {
             this.pageRequest.page++;
             this.fetchUsers();
         }
     }
 
-    previousPage() {
+    protected previousPage() {
         if (this.users?.hasPrevious) {
             this.pageRequest.page--;
             this.fetchUsers();
         }
     }
 
-    onPageChange(change: 'next' | 'previous') {
+    protected onPageChange(change: 'next' | 'previous') {
         if (change === 'next') {
             this.nextPage();
         } else {
@@ -111,18 +109,18 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    onPageSizeChange(size: number) {
+    protected onPageSizeChange(size: number) {
         this.pageRequest.size = size;
         this.validatePageRequest();
         this.fetchUsers();
     }
 
-    onSortChange(sort: Sort) {
+    protected onSortChange(sort: Sort) {
         this.sort = sort;
         this.fetchUsers();
     }
 
-    onDeleteSelected() {
+    protected onDeleteSelected() {
         console.log('INFO - Starting deleting user...');
         const selectedUsers = this.getSelectedUserIds();
         const title = `Delete ${selectedUsers.length} user(s)?`;
@@ -131,6 +129,16 @@ export class UsersComponent implements OnInit {
         this.alertService.showConfirmationAlert(title, text, 'warning', () =>
             this.doDeleteSelectedUsers()
         );
+    }
+
+
+    protected createUserAvatarUrl(user: User) {
+        return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${user.id}`
+    }
+
+    protected onAvatarNotFound(event: Event) {
+        const target = event.target as HTMLImageElement;
+        target.src = constant.defaultAvatar;
     }
 
     private doDeleteSelectedUsers() {
@@ -176,7 +184,5 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    protected createUserAvatarUrl(user: User) {
-        return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${user.id}`
-    }
+    protected readonly constant = constant;
 }

@@ -105,6 +105,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <img [src]="createUserAvatarUrl(user)"
+                                                 (error)="onAvatarNotFound($event)"
                                                  alt="John Doe"
                                                  width="40"
                                                  height="40"
