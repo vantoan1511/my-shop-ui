@@ -32,7 +32,7 @@ export const routes: Routes = [
                 component: HomeComponent,
             },
             {
-                path: 'products/:slug',
+                path: 'may-tinh-xach-tay/:slug',
                 component: ProductDetailsComponent,
             },
             {

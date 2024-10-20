@@ -2,18 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../types/product.type";
-import {Perform} from "../../types/perform.type";
 import {Response} from "../../types/response.type";
 import {PageRequest} from "../../types/page-request.type";
 import {Sort, SortField} from "../../types/sort.type";
 import {CurrencyPipe} from "@angular/common";
-import {ImageService} from "../../services/image.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
-import {forkJoin, map, switchMap} from "rxjs";
-import {SafeUrl} from "@angular/platform-browser";
-import {ImageUtils} from "../../shared/services/Image.utils";
 import {constant} from "../../shared/constant";
+import {environment} from "../../../environments/environment";
+import {ProductImage} from "../../types/image.type";
 
 @Component({
     selector: 'app-product-list',
@@ -25,7 +22,7 @@ import {constant} from "../../shared/constant";
 export class ProductListComponent implements OnInit {
 
     productResponse: Response<Product> | null = null;
-    heroImages: Map<number, SafeUrl> = new Map();
+    heroImages: Map<number, string> = new Map();
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     loading = false;
@@ -33,8 +30,6 @@ export class ProductListComponent implements OnInit {
     constructor(
         private translate: TranslateService,
         private productService: ProductService,
-        private imageService: ImageService,
-        private imageUtils: ImageUtils,
         private router: Router
     ) {
         this.translate.setDefaultLang('vi');
@@ -49,7 +44,46 @@ export class ProductListComponent implements OnInit {
         });
     }
 
-    savedPrice(product: Product) {
+    private fetchProducts(): void {
+        this.loading = true;
+        this.productService.getBy(this.pageRequest, this.sort).subscribe({
+            next: response => {
+                this.productResponse = response;
+                this.fetchProductHeroImages(response);
+                this.loading = false;
+            },
+            error: () => this.loading = false
+        });
+    }
+
+
+    private fetchProductHeroImages(response: Response<Product>) {
+        if (response.items) {
+            const products = response.items;
+            products.forEach(product => {
+                    this.setDefaultHeroImageUrl(product)
+                    this.productService.getImagesById(product.id).subscribe(productImages => {
+                        this.heroImages.set(product.id, constant.defaultHeroImageUrl);
+                        const hero = productImages.find(image => image.featured);
+                        if (hero) {
+                            const heroUrl = this.createHeroUrl(hero);
+                            this.heroImages.set(product.id, heroUrl);
+                        }
+                    })
+                }
+            );
+        }
+    }
+
+    private setDefaultHeroImageUrl(product: Product) {
+        this.heroImages.set(product.id, constant.defaultHeroImageUrl);
+    }
+
+    private createHeroUrl(productImage: ProductImage) {
+        return `${environment.IMAGE_SERVICE_API}/images/${productImage.imageId}`;
+    }
+
+    protected savedPrice(product: Product) {
         const gapPrice = product.basePrice - product.salePrice;
         if (gapPrice > 0) {
             return gapPrice;
@@ -58,47 +92,5 @@ export class ProductListComponent implements OnInit {
         return null;
     }
 
-    private fetchProducts(): void {
-        this.loading = true;
-        this.productService.getBy(this.pageRequest, this.sort).subscribe({
-            next: resp => {
-                this.productResponse = resp;
-                this.loading = false;
-
-                if (resp.items.length) {
-                    this.fetchProductHeroImages(resp.items);
-                }
-            },
-            error: () => this.loading = false
-        });
-    }
-
-    private fetchProductHeroImages(products: Product[]) {
-        const heroImageRequests = products.map(product =>
-            this.productService.getImagesById(product.id).pipe(
-                map(productImages => {
-                    const hero = productImages.find(image => image.featured);
-                    return hero ? {productId: product.id, heroId: hero.imageId} : null;
-                })
-            )
-        );
-        forkJoin(heroImageRequests).subscribe((heroImages) => {
-            const validHeroImages = heroImages.filter(image => image != null);
-            const imageContentRequests = validHeroImages.map(hero =>
-                this.imageService.getById(hero!.heroId).pipe(
-                    map(imageContent => ({
-                        productId: hero!.productId,
-                        safeUrl: this.imageUtils.createSafeUrl(imageContent)
-                    }))
-                ));
-
-            forkJoin(imageContentRequests).subscribe(imageContents => {
-                imageContents.forEach(({productId, safeUrl}) => {
-                    this.heroImages.set(productId, safeUrl);
-                });
-            });
-        });
-    }
-
-    protected readonly constant = constant;
+    protected readonly environment = environment;
 }

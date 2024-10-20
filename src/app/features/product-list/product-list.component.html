@@ -9,12 +9,12 @@
         @for (product of productResponse?.items; track $index) {
             <div class="col-md-2 p-0 me-2 mt-2">
                 <div class="card">
-                    <img [src]="heroImages.get(product.id) || constant.defaultThumbnail"
+                    <img [src]="heroImages.get(product.id)"
                          class="product-hero card-img-top"
                          width="80"
                          [alt]="product.name"/>
                     <div class="card-body">
-                        <a [routerLink]="['/products', product.slug]"
+                        <a [routerLink]="['/may-tinh-xach-tay', product.slug]"
                            class="text-muted fw-light text-decoration-none truncate-multiline">
                             {{ product.name }}
                         </a>
