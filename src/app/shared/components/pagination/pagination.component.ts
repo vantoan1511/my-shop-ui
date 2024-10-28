@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PageRequest} from '../../../types/page-request.type';
 import {Perform} from '../../../types/perform.type';
-import {Response} from '../../../types/response.type';
+import {PagedResponse} from '../../../types/response.type';
 import {User} from '../../../types/user.type';
 
 @Component({
@@ -14,7 +14,7 @@ import {User} from '../../../types/user.type';
 export class DataTableFooterComponent<T> {
     @Input() loading = false;
     @Input() pageRequest!: PageRequest;
-    @Input() items: Response<T> | null = null;
+    @Input() items: PagedResponse<T> | null = null;
     @Output() pageChange = new EventEmitter<'next' | 'previous'>();
     @Output() pageSizeChange = new EventEmitter<number>();
 

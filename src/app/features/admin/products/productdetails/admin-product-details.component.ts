@@ -6,7 +6,7 @@ import {AlertService} from "../../../../services/alert.service";
 import {Category, Model, Product} from "../../../../types/product.type";
 import {ProductService} from "../../../../services/product.service";
 import {ModelService} from "../../../../services/model.service";
-import {Response} from "../../../../types/response.type";
+import {PagedResponse} from "../../../../types/response.type";
 import {AsyncPipe} from "@angular/common";
 import {CategoryService} from "../../../../services/category.service";
 import {ImageService} from "../../../../services/image.service";
@@ -44,8 +44,8 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     product: Product | null = null;
     productSlug?: string;
     products$: Observable<Product> | null = null;
-    models$: Observable<Response<Model>> | null = null;
-    categories$: Observable<Response<Category>> | null = null;
+    models$: Observable<PagedResponse<Model>> | null = null;
+    categories$: Observable<PagedResponse<Category>> | null = null;
 
     heroImageId = -1;
 

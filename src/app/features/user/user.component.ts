@@ -12,7 +12,7 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {environment} from "../../../environments/environment";
 import {PageRequest} from "../../types/page-request.type";
 import {Image} from "../../types/image.type";
-import {Response} from "../../types/response.type";
+import {PagedResponse} from "../../types/response.type";
 
 @Component({
     selector: 'app-user',
@@ -28,7 +28,7 @@ export class UserComponent implements OnInit, OnDestroy {
     userId: number | null = null;
     avatarUrl: string = constant.defaultAvatar;
     pageRequest: PageRequest = {page: 1, size: 10}
-    uploaded: Response<Image> | null = null;
+    uploaded: PagedResponse<Image> | null = null;
     private unsubscribe$ = new Subject<void>();
 
     constructor(

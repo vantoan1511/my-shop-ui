@@ -1,4 +1,4 @@
-export interface Response<T = unknown> {
+export interface PagedResponse<T = unknown> {
   page: number;
   size: number;
   totalItems: number;

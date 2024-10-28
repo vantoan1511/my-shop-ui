@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
-import {Response} from "../types/response.type";
+import {PagedResponse} from "../types/response.type";
 import {Category, Model} from "../types/product.type";
 
 @Injectable({
@@ -23,7 +23,7 @@ export class CategoryService {
     }
 
     getBy(pageRequest?: PageRequest, sort?: Sort) {
-        return this.http.get<Response<Category>>(this.CATEGORY_SERVICE_API_URL, {
+        return this.http.get<PagedResponse<Category>>(this.CATEGORY_SERVICE_API_URL, {
             params: {
                 ...pageRequest,
                 ...sort,

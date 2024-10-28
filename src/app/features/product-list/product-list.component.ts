@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../types/product.type";
-import {Response} from "../../types/response.type";
+import {PagedResponse} from "../../types/response.type";
 import {PageRequest} from "../../types/page-request.type";
 import {Sort, SortField} from "../../types/sort.type";
 import {CurrencyPipe} from "@angular/common";
@@ -21,7 +21,7 @@ import {ProductImage} from "../../types/image.type";
 })
 export class ProductListComponent implements OnInit {
 
-    productResponse: Response<Product> | null = null;
+    productResponse: PagedResponse<Product> | null = null;
     heroImages: Map<number, string> = new Map();
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
     }
 
 
-    private fetchProductHeroImages(response: Response<Product>) {
+    private fetchProductHeroImages(response: PagedResponse<Product>) {
         if (response.items) {
             const products = response.items;
             products.forEach(product => {

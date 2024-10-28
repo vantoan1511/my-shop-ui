@@ -4,7 +4,7 @@ import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {Image} from "../types/image.type";
 import {PageRequest} from "../types/page-request.type";
-import {Response} from "../types/response.type";
+import {PagedResponse} from "../types/response.type";
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +17,8 @@ export class ImageService {
     constructor(private http: HttpClient) {
     }
 
-    getUploaded(pageRequest: PageRequest): Observable<Response<Image>> {
-        return this.http.get<Response<Image>>(`${this.IMAGE_SERVICE_API_URL}`, {
+    getUploaded(pageRequest: PageRequest): Observable<PagedResponse<Image>> {
+        return this.http.get<PagedResponse<Image>>(`${this.IMAGE_SERVICE_API_URL}`, {
             params: {
                 ...pageRequest,
             }

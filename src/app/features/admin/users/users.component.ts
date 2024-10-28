@@ -8,7 +8,7 @@ import {UserService} from '../../../services/user.service';
 import {ListControlsComponent} from '../../../shared/components/list-controls/list-controls.component';
 import {DataTableFooterComponent} from '../../../shared/components/pagination/pagination.component';
 import {PageRequest} from '../../../types/page-request.type';
-import {Response} from '../../../types/response.type';
+import {PagedResponse} from '../../../types/response.type';
 import {Sort, SortField} from '../../../types/sort.type';
 import {User} from '../../../types/user.type';
 import {DetailsComponent} from './userdetails/userdetails.component';
@@ -32,7 +32,7 @@ import {constant} from "../../../shared/constant";
 })
 export class UsersComponent implements OnInit {
     loading = false;
-    users: Response<User> | null = null;
+    users: PagedResponse<User> | null = null;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     sortableFields = SortField;

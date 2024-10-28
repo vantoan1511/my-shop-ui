@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
-import {Response} from "../types/response.type";
+import {PagedResponse} from "../types/response.type";
 import {Model} from "../types/product.type";
 
 @Injectable({
@@ -23,7 +23,7 @@ export class ModelService {
     }
 
     getBy(pageRequest?: PageRequest, sort?: Sort) {
-        return this.http.get<Response<Model>>(this.MODEL_SERVICE_API_URL, {
+        return this.http.get<PagedResponse<Model>>(this.MODEL_SERVICE_API_URL, {
             params: {
                 ...pageRequest,
                 ...sort,

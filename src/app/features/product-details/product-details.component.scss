@@ -86,3 +86,165 @@ a, .rating, .breadcrumb {
   border-color: var(--purple-9);
   background: var(--purple-3);
 }
+
+.read-more-btn {
+  background: var(--purple-3);
+}
+
+.load-more-review-btn {
+  background: var(--purple-3);
+  color: var(--purple-9);
+
+  &:hover {
+    border-color: var(--purple-9);
+  }
+
+  &:active {
+    background: var(--purple-6);
+    color: var(--purple-9);
+  }
+}
+
+.reviews-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 10px;
+
+  .review-item-skeleton,
+  .review-item {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+.reviews {
+  .review-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+
+    .avatar-container {
+      flex-shrink: 0;
+    }
+
+    .user-avatar {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+    }
+
+    .review-details {
+      flex-grow: 1;
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+
+      .rating {
+        color: var(--purple-9);
+      }
+
+      .review-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      .helpful {
+        margin-top: 0.5rem;
+
+        .helpful-btn {
+          cursor: pointer;
+          transition: color 0.2s;
+
+          &:hover {
+          }
+
+          i {
+            margin-right: 0.25rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.review-item-skeleton {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    animation: pulse 1.5s infinite;
+  }
+
+  .skeleton-details {
+    flex-grow: 1;
+
+    .skeleton-text {
+      height: 12px;
+      background-color: #e0e0e0;
+      animation: pulse 1.5s infinite;
+      border-radius: 4px;
+      margin-bottom: 8px;
+
+      &.skeleton-username {
+        width: 30%;
+        height: 16px;
+      }
+
+      &.skeleton-date {
+        width: 50%;
+        margin-top: 4px;
+      }
+
+      &.skeleton-review {
+        width: 100%;
+        height: 12px;
+        margin-top: 8px;
+      }
+    }
+
+    .skeleton-stars {
+      display: flex;
+      gap: 4px;
+
+      .skeleton-star {
+        width: 12px;
+        height: 12px;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+    }
+
+    .skeleton-helpful {
+      width: 60px;
+      height: 12px;
+      background-color: #e0e0e0;
+      border-radius: 4px;
+      animation: pulse 1.5s infinite;
+      margin-top: 8px;
+    }
+  }
+}
+
+// Pulse animation
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

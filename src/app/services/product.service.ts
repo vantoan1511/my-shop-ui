@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
-import {Response} from "../types/response.type";
+import {PagedResponse} from "../types/response.type";
 import {Product} from "../types/product.type";
 import {ProductImage} from "../types/image.type";
 
@@ -19,7 +19,7 @@ export class ProductService {
     }
 
     getBy(pageRequest?: PageRequest, sort?: Sort) {
-        return this.http.get<Response<Product>>(this.PRODUCT_SERVICE_API_URL, {
+        return this.http.get<PagedResponse<Product>>(this.PRODUCT_SERVICE_API_URL, {
             params: {
                 ...pageRequest,
                 ...sort,

@@ -10,7 +10,7 @@
     </div>
     <div class="row py-3 mt-3 bg-white">
         <div class="col-md-4">
-            <img [ngSrc]="heroUrl || imageUrls?.at(0) || constant.defaultHeroImageUrl"
+            <img [ngSrc]="heroUrl"
                  priority
                  width="450"
                  height="450"
@@ -18,7 +18,7 @@
                  class="figure-img img-fluid rounded border border-1 p-2"/>
             <div class="d-flex gap-2 overflow-auto">
                 @for (image of imageUrls; track $index) {
-                    <img [src]="image || constant.defaultThumbnail"
+                    <img [src]="image"
                          width="82"
                          height="82"
                          alt="product-thumbnails"
@@ -210,26 +210,15 @@
             <span class="fs-3 fw-lighter">{{ "DESCRIPTION" | translate }}</span>
         </div>
         <div class="col-12 mx-3 mt-3 text-muted">
-            <p>Thông số kỹ thuật:</p>
-            <p>Chip: Intel Core i7 11800H 2.3Ghz-24Mb</p>
-            <p>Card đồ họa: NVIDIA RTX3050 TI 4GB DDR6</p>
+            @if (product?.description) {
+                <div [innerHTML]="showFullDescription ? product?.description : (product?.description | slice:0:500) + '...'"></div>
 
-            <p>RAM: 8GB</p>
-            <p>SSD: 512GB + 32GB SSD</p>
-            <p>Màn hình: 16.1" FHD</p>
-            <p>Hệ điều hành: Windows 11 Home</p>
-            <p>Màu sắc/ Chất liệu: Black</p>
-
-            <p>🛠THÔNG TIN BẢO HÀNH🛠</p>
-            <p>
-                1. Thời gian bảo hành Tất cả các dòng laptop HP đều có thời gian bảo
-                hành chính hãng 1 năm tính từ ngày khách hàng cuối mua hàng. Khách hàng
-                khi mua máy yêu cầu cửa hàng cung cấp hóa đơn VAT có số Serial Number để
-                giữ làm phiếu bảo hành.
-            </p>
-            <p>2. Các Trung tâm bảo hành chính hãng HP tại Việt Nam.</p>
-            <p>📌 Hà Nội: 74 Cửa Bắc, Ba Đình, Hà Nội</p>
-            <p>📌 Đà Nẵng: 60 Đường Nguyễn Du, Quận Hải Châu, Đà Nẵng</p>
+                <div class="text-center mt-2">
+                    <button class="btn read-more-btn" (click)="toggleShowFullDescription()">
+                        {{ showFullDescription ? 'Thu gọn' : 'Đọc tiếp' }}
+                    </button>
+                </div>
+            }
         </div>
     </div>
 
@@ -240,66 +229,125 @@
         <div class="col-12 mx-3 mt-3 text-muted">
             <div class="rating d-flex gap-3 p-3">
                 <div class="text-center fs-4">
-                    <div>5 / 5</div>
-                    <div>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
+                    <div>{{ reviewStatistic?.averageRating || 0 }} / 5</div>
+                    <div class="star-rating">
+                        @for (i of [1, 2, 3, 4, 5]; track $index) {
+                            <i class="bi"
+                               [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
+                               [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
+                               [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
+                            </i>
+                        }
                     </div>
+
                 </div>
                 <div class="d-flex align-items-center justify-content-around gap-3">
-                    <button class="active review-filter-btn btn rounded-0">{{ "All" | translate }}</button>
-                    <button class="review-filter-btn btn rounded-0">5 {{ "star" | translate }} (1)</button>
-                    <button class="review-filter-btn btn rounded-0">4 {{ "star" | translate }} (1)</button>
-                    <button class="review-filter-btn btn rounded-0">3 {{ "star" | translate }} (13)</button>
-                    <button class="review-filter-btn btn rounded-0">2 {{ "star" | translate }} (1)</button>
-                    <button class="review-filter-btn btn rounded-0">1 {{ "star" | translate }} (1)</button>
-                    <button class="review-filter-btn btn rounded-0">{{ "Latest" | translate }}</button>
-                    <button class="review-filter-btn btn rounded-0">{{ "Oldest" | translate }}</button>
+                    <button [class.active]="!filter?.rating"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating()">{{ "All" | translate }}
+                    </button>
+                    <button [class.active]="filter?.rating===5"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating(5)">
+                        5 {{ "star" | translate }} (1)
+                    </button>
+                    <button [class.active]="filter?.rating===4"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating(4)">
+                        4 {{ "star" | translate }} (1)
+                    </button>
+                    <button [class.active]="filter?.rating===3"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating(3)">
+                        3 {{ "star" | translate }} (13)
+                    </button>
+                    <button [class.active]="filter?.rating===2"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating(2)">
+                        2 {{ "star" | translate }} (1)
+                    </button>
+                    <button [class.active]="filter?.rating===1"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onRating(1)">
+                        1 {{ "star" | translate }} (1)
+                    </button>
+                    <button [class.active]="!sort.ascending"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onAscending(false)">{{ "Latest" | translate }}
+                    </button>
+                    <button [class.active]="sort.ascending"
+                            class="review-filter-btn btn rounded-0"
+                            (click)="onAscending(true)">{{ "Oldest" | translate }}
+                    </button>
                 </div>
             </div>
-            <div class="reviews">
-                <div class="d-flex flex-shrink-0 gap-3">
-                    <div>
-                        <img
-                                class="rounded-circle"
-                                src="https://placehold.co/80x80"
-                                alt="user-avatar"
-                                width="48"
-                                height="48"
-                        />
-                    </div>
-                    <div class="review-details">
-                        <div class="fs-5 fw-bold">user1234</div>
-                        <div class="fs-6 rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <div class="mb-3">
-                            <span class="text-muted fs-6">9:25 PM 21-09-2024</span>
-                        </div>
-                        <div class="mb-3">
-                            <p>
-                                Rất đáng tiền, cấu hình mạnh trong tầm giá. Hơi tiếc là không
-                                được tặng quà: không được tặng thêm túi chống sốc hay chuột gì
-                                cả Shop tư vấn nhiệt tình!!! 5*
-                            </p>
-                        </div>
-                        <div class="helpful">
-                            <button class="border-0 bg-transparent">
-                                <i class="bi bi-hand-thumbs-up me-2"></i><span>123</span>
-                            </button>
-                        </div>
-                    </div>
+
+            <div class="reviews-container">
+                <div class="reviews">
+                    @if (loading) {
+                        @for (i of Array(10); track $index) {
+                            <div class="review-item-skeleton d-flex gap-3 align-items-start mb-4">
+                                <div class="skeleton-avatar"></div>
+                                <div class="skeleton-details flex-grow-1">
+                                    <div class="skeleton-text skeleton-username"></div>
+                                    <div class="skeleton-stars">
+                                        @for (i of [1, 2, 3, 4, 5]; track $index) {
+                                            <div class="skeleton-star"></div>
+                                        }
+                                    </div>
+                                    <div class="skeleton-text skeleton-date"></div>
+                                    <div class="skeleton-text skeleton-review"></div>
+                                    <div class="skeleton-helpful"></div>
+                                </div>
+                            </div>
+                        }
+                    } @else {
+                        @for (review of reviews; track review.id) {
+                            <div class="review-item d-flex gap-3 align-items-start mb-4">
+                                <div class="avatar-container">
+                                    <img class="user-avatar rounded-circle"
+                                         src="https://placehold.co/80x80"
+                                         alt="user-avatar"
+                                         width="48"
+                                         height="48"/>
+                                </div>
+                                <div class="review-details flex-grow-1">
+                                    <div class="review-header d-flex flex-column">
+                                        <div class="username fs-5 fw-bold">{{ review.username }}</div>
+                                        <span class="text-muted fs-6">{{ review.createdAt | date:"HH:mm dd/MM/yyyy" }}</span>
+                                    </div>
+
+                                    <div class="rating fs-6">
+                                        @for (i of [1, 2, 3, 4, 5]; track $index) {
+                                            <i class="bi"
+                                               [class.bi-star-fill]="i <= review.rating"
+                                               [class.bi-star]="i > review.rating">
+                                            </i>
+                                        }
+                                    </div>
+
+                                    <div class="review-text mb-3">{{ review.text }}</div>
+                                    <div class="helpful">
+                                        <button class="helpful-btn border-0 bg-transparent p-0">
+                                            <i class="bi bi-hand-thumbs-up me-2"></i><span>{{ review.helpfulCount }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (reviewResponse?.hasNext) {
+                            <div class="text-center mt-3">
+                                <button class="btn load-more-review-btn" (click)="loadMoreReviews()">
+                                    {{ 'Xem thêm' }}
+                                </button>
+                            </div>
+                        }
+                    }
                 </div>
+
             </div>
+
         </div>
     </div>
     <div class="row py-3 mt-3 bg-white">

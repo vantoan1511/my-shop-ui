@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {PageRequest} from '../types/page-request.type';
 import {PasswordReset} from '../types/password-reset.type';
-import {Response} from '../types/response.type';
+import {PagedResponse} from '../types/response.type';
 import {Sort} from '../types/sort.type';
 import {UserCreation} from '../types/user-creation.type';
 import {CustomerProfileUpdate, UserUpdate} from '../types/user-update.type';
@@ -21,7 +21,7 @@ export class UserService {
     }
 
     getBy(pageRequest?: PageRequest, sort?: Sort) {
-        return this.http.get<Response<User>>(this.USER_SERVICE_API_URL, {
+        return this.http.get<PagedResponse<User>>(this.USER_SERVICE_API_URL, {
             params: {
                 ...pageRequest,
                 ...sort,

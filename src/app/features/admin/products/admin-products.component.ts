@@ -5,7 +5,7 @@ import {ListControlsComponent} from "../../../shared/components/list-controls/li
 import {SortableDirective} from "../../../directives/sortable.directive";
 import {PageRequest} from "../../../types/page-request.type";
 import {Product} from "../../../types/product.type";
-import {Response} from "../../../types/response.type";
+import {PagedResponse} from "../../../types/response.type";
 import {Sort, SortField} from "../../../types/sort.type";
 import {RouterLink} from "@angular/router";
 import {ProductService} from "../../../services/product.service";
@@ -33,7 +33,7 @@ export class AdminProductsComponent implements OnInit {
     loading = false;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
-    products: Response<Product> | null = null
+    products: PagedResponse<Product> | null = null
     sortableFields = SortField;
     selectAllChecked = false;
 

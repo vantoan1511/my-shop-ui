@@ -8,7 +8,7 @@ import {Observable, Subject, takeUntil} from "rxjs";
 import {AlertService} from "../../../../services/alert.service";
 import {ModelService} from "../../../../services/model.service";
 import {BrandService} from "../../../../services/brand.service";
-import {Response} from "../../../../types/response.type";
+import {PagedResponse} from "../../../../types/response.type";
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 
 @Component({
@@ -41,7 +41,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     model: Model | null = null;
     modelSlug?: string;
     models$: Observable<Model> | null = null;
-    brands$: Observable<Response<Brand>> | null = null;
+    brands$: Observable<PagedResponse<Brand>> | null = null;
 
     private destroy$: Subject<void> = new Subject<void>();
 

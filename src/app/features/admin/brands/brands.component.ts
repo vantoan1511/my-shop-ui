@@ -3,7 +3,7 @@ import {DataTableFooterComponent} from "../../../shared/components/pagination/pa
 import {DatePipe} from "@angular/common";
 import {ListControlsComponent} from "../../../shared/components/list-controls/list-controls.component";
 import {SortableDirective} from "../../../directives/sortable.directive";
-import {Response} from "../../../types/response.type";
+import {PagedResponse} from "../../../types/response.type";
 import {PageRequest} from "../../../types/page-request.type";
 import {Sort, SortField} from "../../../types/sort.type";
 import {AlertService} from "../../../services/alert.service";
@@ -27,7 +27,7 @@ import {BrandService} from "../../../services/brand.service";
 })
 export class BrandsComponent implements OnInit {
     loading = false
-    brands: Response<Brand> | null = null;
+    brands: PagedResponse<Brand> | null = null;
     pageRequest: PageRequest = {page: 1, size: 10};
     sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
     sortableFields = SortField;
