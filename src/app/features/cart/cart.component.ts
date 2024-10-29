@@ -37,6 +37,16 @@ export class CartComponent implements OnInit {
     pageRequest: PageRequest = {page: 1, size: 20}
     loading = false;
 
+    userAddresses: string[] = [
+        '123 Main St, City, Country',
+        '456 Elm St, City, Country',
+        '789 Oak St, City, Country',
+        '101 Pine St, City, Country',
+        '202 Maple St, City, Country'
+    ]; // List of current addresses for the user
+    selectedAddress = ''; // Holds the selected address
+    newAddress = ''; // Holds the new address input
+
     constructor(
         private cartService: CartService,
         private productService: ProductService,
@@ -157,6 +167,12 @@ export class CartComponent implements OnInit {
 
     placeOrder() {
         console.log('Order placed with payment method:', this.selectedPaymentMethod);
+    }
+
+    clearNewAddress() {
+        if (this.selectedAddress !== this.newAddress) {
+            this.newAddress = '';
+        }
     }
 
     private fetchCarts() {

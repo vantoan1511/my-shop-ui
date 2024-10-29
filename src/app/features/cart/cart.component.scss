@@ -71,6 +71,12 @@ $gray-bg: var(--gray-1);
   text-overflow: ellipsis;
 }
 
+.form-check-input {
+  &:checked {
+    background-color: $purple-main !important;
+    border-color: $purple-main !important;
+  }
+}
 
 // Media Queries
 @media (max-width: 768px) {
