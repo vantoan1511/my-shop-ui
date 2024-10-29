@@ -12,6 +12,7 @@ import {ProductService} from "../../services/product.service";
 import {Product} from "../../types/product.type";
 import {forkJoin, map, switchMap} from "rxjs";
 import {AlertService} from "../../services/alert.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-cart',
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit {
     cartResponse: PagedResponse<Cart> | null = null;
     cartItems: Cart[] = [];
     products: Map<string, Product> = new Map();
+    productFeaturedImage: Map<string, string> = new Map();
     pageRequest: PageRequest = {page: 1, size: 20}
     loading = false;
 
@@ -146,6 +148,10 @@ export class CartComponent implements OnInit {
         return this.products.get(item.productSlug);
     }
 
+    getImage(item: Cart) {
+        return this.productFeaturedImage.get(item.productSlug);
+    }
+
     private fetchCarts() {
         this.loading = true
 
@@ -162,11 +168,12 @@ export class CartComponent implements OnInit {
             map(products => products.reduce((acc, product) => {
                 acc.set(product.slug, product)
                 return acc;
-            }, new Map<string, Product>))
+            }, new Map<string, Product>)),
         ).subscribe({
             next: productMap => {
                 this.products = productMap;
                 this.loading = false;
+                this.fetchProductFeaturedImage(productMap)
             },
             error: () => this.loading = false
         })
@@ -176,5 +183,22 @@ export class CartComponent implements OnInit {
         return this.productService.getBySlug(productSlug);
     }
 
+    private fetchProductFeaturedImage(productMap: Map<string, Product>) {
+        Array.from(productMap.entries()).map(([slug, product]) =>
+            this.productService.getImagesById(product.id).subscribe({
+                next: productImages => {
+                    const featuredImage = productImages.find(image => image.featured);
+                    const imageUrl = featuredImage ? this.imageUrl(featuredImage.imageId) : constant.defaultHeroImageUrl;
+                    this.productFeaturedImage.set(slug, imageUrl);
+                }
+            })
+        );
+    }
+
+    private imageUrl(imageId: number) {
+        return `${environment.IMAGE_SERVICE_API}/images/${imageId}?size=SMALL`;
+    }
+
     protected readonly constant = constant;
+    protected readonly Array = Array;
 }

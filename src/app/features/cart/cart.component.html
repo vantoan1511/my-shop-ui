@@ -6,14 +6,53 @@
     </div>
 
     <div class="row g-3">
-        @if (!loading && cartItems.length > 0) {
+        @if (loading) {
+            <!-- Skeleton Loader Section -->
+            <div class="col-lg-8">
+                <div class="bg-white p-3 rounded shadow-sm">
+                    @for (i of Array(3); track $index) {
+                        <div class="row mb-3 py-3 border-bottom align-items-center">
+                            <div class="col-2 col-md-1 text-center">
+                                <div class="skeleton skeleton-thumbnail"></div>
+                            </div>
+                            <div class="col-6 col-md-5">
+                                <div class="skeleton skeleton-text skeleton-title"></div>
+                                <div class="skeleton skeleton-text skeleton-description"></div>
+                            </div>
+                            <div class="col-4 col-md-3 d-flex align-items-center gap-2">
+                                <div class="skeleton skeleton-button"></div>
+                                <div class="skeleton skeleton-input"></div>
+                                <div class="skeleton skeleton-button"></div>
+                            </div>
+                            <div class="col-12 col-md-3 d-flex align-items-center justify-content-between mt-2 mt-md-0">
+                                <div class="skeleton skeleton-price"></div>
+                                <div class="skeleton skeleton-icon"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-white p-3 rounded shadow-sm">
+                    <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+                    <div class="skeleton skeleton-text skeleton-summary"></div>
+                    <hr/>
+                    <div class="skeleton skeleton-text skeleton-summary"></div>
+                    <hr/>
+                    <div class="skeleton skeleton-text skeleton-summary"></div>
+                    <hr/>
+                    <div class="skeleton skeleton-button skeleton-checkout"></div>
+                </div>
+            </div>
+        } @else if (!loading && cartItems.length > 0) {
             <!-- Cart Items Section -->
             <div class="col-lg-8">
                 <div class="bg-white p-3 rounded shadow-sm">
                     @for (item of cartItems; track $index) {
                         <div class="row mb-3 py-3 border-bottom align-items-center">
                             <div class="col-2 col-md-1 text-center">
-                                <img [src]="constant.defaultThumbnail"
+                                <img [src]="getImage(item)"
                                      width="64"
                                      alt="{{ products.get(item.productSlug) }}"
                                      class="img-fluid rounded">
