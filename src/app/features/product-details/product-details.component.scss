@@ -1,107 +1,122 @@
-.product-thumbnail {
+// Variables for colors
+$purple-main: var(--purple-9);
+$purple-light: var(--purple-3);
+$purple-dark: var(--purple-10);
+$purple-contrast: var(--purple-contrast);
+$gray-bg: var(--gray-1);
+$gray-border: #e0e0e0;
 
+// Utility classes
+.text-purple {
+  color: $purple-main;
+}
+
+.bg-purple-light {
+  background: $purple-light;
+}
+
+.bg-purple-main {
+  background: $purple-main;
+}
+
+.border-purple {
+  border: 1px solid $purple-main;
+}
+
+.border-gray {
+  border-bottom: 1px solid $gray-border;
+}
+
+// Product details components
+.product-thumbnail {
   &:hover {
-    border-color: var(--purple-9) !important;
+    border-color: $purple-main !important;
   }
 }
 
 a, .rating, .breadcrumb {
-  color: var(--purple-9);
+  color: $purple-main;
 }
 
 .discount-percentage {
-  background: var(--purple-9);
+  background: $purple-main;
 }
 
 .price {
-  color: var(--purple-9);
-  background: var(--gray-1);
+  color: $purple-main;
+  background: $gray-bg;
 
   .sale-price {
     color: var(--gray-9);
   }
 }
 
-.add-to-cart-btn {
-  color: var(--purple-9);
-  border: 1px solid var(--purple-9);
-  transition: background 0.3s, color 0.3s;
+.add-to-cart-btn, .buy-now-btn {
+  color: $purple-contrast;
+  transition: background 0.3s ease, color 0.3s ease;
 
-  &:hover {
-    background: var(--purple-3);
+  &.add-to-cart-btn {
+    @extend .border-purple;
+    color: $purple-main;
+
+    &:hover {
+      background: $purple-light;
+    }
+
+    &:active {
+      background: $purple-main;
+    }
   }
 
-  &:active {
-    color: var(--purple-9);
-    border: 1px solid var(--purple-9);
-    background: var(--purple-3);
+  &.buy-now-btn {
+    background: $purple-main;
+
+    &:hover {
+      background: $purple-dark;
+    }
+
+    &:active {
+      @extend .border-purple;
+      background: $purple-dark;
+    }
   }
 }
 
-.buy-now-btn {
-  color: var(--purple-contrast);
-  background: var(--purple-9);
-  transition: background 0.3s, color 0.3s;
+.product-detail-title, .review-filter-btn, .read-more-btn, .load-more-review-btn {
+  background: $gray-bg;
 
-  &:hover {
-    background: var(--purple-10);
+  &.review-filter-btn {
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: $purple-light;
+    }
+
+    &:active {
+      border-color: $purple-main;
+    }
   }
 
-  &:active {
-    border: 1px solid var(--purple-10);
-    color: var(--purple-contrast);
-    background: var(--purple-10);
-  }
-}
+  &.load-more-review-btn {
+    color: $purple-main;
 
-.product-detail-title {
-  background: var(--gray-1);
-}
+    &:hover {
+      border-color: $purple-main;
+    }
 
-.review-filter-btn {
-  background: var(--purple-1);
-  transition: background 0.3s;
-
-  &:hover {
-    background: var(--purple-3);
-  }
-
-  &:active {
-    border-color: var(--purple-9);
-    background: var(--purple-3);
+    &:active {
+      background: var(--purple-6);
+    }
   }
 }
 
 .quantity-input-btn {
-  color: var(--purple-9);
-  border: 1px solid var(--purple-9);
+  color: $purple-main;
+  @extend .border-purple;
 
   &:disabled {
-    background: var(--purple-3);
-    border-color: var(--gray-1);
-  }
-}
-
-.active {
-  border-color: var(--purple-9);
-  background: var(--purple-3);
-}
-
-.read-more-btn {
-  background: var(--purple-3);
-}
-
-.load-more-review-btn {
-  background: var(--purple-3);
-  color: var(--purple-9);
-
-  &:hover {
-    border-color: var(--purple-9);
-  }
-
-  &:active {
-    background: var(--purple-6);
-    color: var(--purple-9);
+    background: $purple-light;
+    border-color: $gray-bg;
   }
 }
 
@@ -110,20 +125,9 @@ a, .rating, .breadcrumb {
   overflow-y: auto;
   padding-right: 10px;
 
-  .review-item-skeleton,
   .review-item {
     padding: 1rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-}
-
-.reviews {
-  .review-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 1rem;
+    @extend .border-gray;
 
     .avatar-container {
       flex-shrink: 0;
@@ -145,7 +149,7 @@ a, .rating, .breadcrumb {
       }
 
       .rating {
-        color: var(--purple-9);
+        color: $purple-main;
       }
 
       .review-text {
@@ -159,9 +163,6 @@ a, .rating, .breadcrumb {
         .helpful-btn {
           cursor: pointer;
           transition: color 0.2s;
-
-          &:hover {
-          }
 
           i {
             margin-right: 0.25rem;
@@ -177,12 +178,16 @@ a, .rating, .breadcrumb {
   gap: 1rem;
   align-items: flex-start;
 
+  .skeleton-avatar, .skeleton-text, .skeleton-star, .skeleton-helpful {
+    background-color: $gray-border;
+    animation: pulse 1.5s infinite;
+    border-radius: 4px;
+  }
+
   .skeleton-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #e0e0e0;
-    animation: pulse 1.5s infinite;
   }
 
   .skeleton-details {
@@ -190,9 +195,6 @@ a, .rating, .breadcrumb {
 
     .skeleton-text {
       height: 12px;
-      background-color: #e0e0e0;
-      animation: pulse 1.5s infinite;
-      border-radius: 4px;
       margin-bottom: 8px;
 
       &.skeleton-username {
@@ -219,18 +221,13 @@ a, .rating, .breadcrumb {
       .skeleton-star {
         width: 12px;
         height: 12px;
-        background-color: #e0e0e0;
         border-radius: 50%;
-        animation: pulse 1.5s infinite;
       }
     }
 
     .skeleton-helpful {
       width: 60px;
       height: 12px;
-      background-color: #e0e0e0;
-      border-radius: 4px;
-      animation: pulse 1.5s infinite;
       margin-top: 8px;
     }
   }

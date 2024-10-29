@@ -226,129 +226,139 @@
         <div class="product-detail-title col mx-3 p-3">
             <span class="fs-3 fw-lighter">{{ "REVIEWS" | translate }}</span>
         </div>
-        <div class="col-12 mx-3 mt-3 text-muted">
-            <div class="rating d-flex gap-3 p-3">
-                <div class="text-center fs-4">
-                    <div>{{ reviewStatistic?.averageRating || 0 }} / 5</div>
-                    <div class="star-rating">
-                        @for (i of [1, 2, 3, 4, 5]; track $index) {
-                            <i class="bi"
-                               [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
-                               [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
-                               [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
-                            </i>
+
+        @if (!reviewResponse?.items) {
+            <div class="col-12 mx-3 mt-3 text-muted">
+                <span>Chưa có bình luận nào</span>
+            </div>
+        } @else {
+            <div class="col-12 mx-3 mt-3 text-muted">
+                <div class="rating d-flex gap-3 p-3">
+                    <div class="text-center fs-4">
+                        <div>{{ reviewStatistic?.averageRating || 0 }} / 5</div>
+                        <div class="star-rating">
+                            @for (i of [1, 2, 3, 4, 5]; track $index) {
+                                <i class="bi"
+                                   [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
+                                   [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
+                                   [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
+                                </i>
+                            }
+                        </div>
+
+                    </div>
+                    <div class="d-flex align-items-center justify-content-around gap-3">
+                        <button [class.active]="!filter?.rating"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating()">{{ "All" | translate }}
+                        </button>
+                        <button [class.active]="filter?.rating===5"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating(5)">
+                            5 {{ "star" | translate }} ({{ reviewStatistic?.totalFiveStars }})
+                        </button>
+                        <button [class.active]="filter?.rating===4"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating(4)">
+                            4 {{ "star" | translate }} ({{ reviewStatistic?.totalFourStars }})
+                        </button>
+                        <button [class.active]="filter?.rating===3"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating(3)">
+                            3 {{ "star" | translate }} ({{ reviewStatistic?.totalThreeStars }})
+                        </button>
+                        <button [class.active]="filter?.rating===2"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating(2)">
+                            2 {{ "star" | translate }} ({{ reviewStatistic?.totalTwoStars }})
+                        </button>
+                        <button [class.active]="filter?.rating===1"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onRating(1)">
+                            1 {{ "star" | translate }} ({{ reviewStatistic?.totalOneStars }})
+                        </button>
+                        <button [class.active]="!sort.ascending"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onAscending(false)">{{ "Latest" | translate }}
+                        </button>
+                        <button [class.active]="sort.ascending"
+                                class="review-filter-btn btn rounded-0"
+                                (click)="onAscending(true)">{{ "Oldest" | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reviews-container">
+                    <div class="reviews">
+                        @if (loading) {
+                            @for (i of Array(10); track $index) {
+                                <div class="review-item-skeleton d-flex gap-3 align-items-start mb-4">
+                                    <div class="skeleton-avatar"></div>
+                                    <div class="skeleton-details flex-grow-1">
+                                        <div class="skeleton-text skeleton-username"></div>
+                                        <div class="skeleton-stars">
+                                            @for (i of [1, 2, 3, 4, 5]; track $index) {
+                                                <div class="skeleton-star"></div>
+                                            }
+                                        </div>
+                                        <div class="skeleton-text skeleton-date"></div>
+                                        <div class="skeleton-text skeleton-review"></div>
+                                        <div class="skeleton-helpful"></div>
+                                    </div>
+                                </div>
+                            }
+                        } @else {
+                            @for (review of reviews; track review.id) {
+                                <div class="review-item d-flex gap-3 align-items-start mb-4">
+                                    <div class="avatar-container">
+                                        <img class="user-avatar rounded-circle"
+                                             src="https://placehold.co/80x80"
+                                             alt="user-avatar"
+                                             width="48"
+                                             height="48"/>
+                                    </div>
+                                    <div class="review-details flex-grow-1">
+                                        <div class="review-header d-flex flex-column">
+                                            <div class="username fs-5 fw-bold">{{ review.username }}</div>
+                                            <span class="text-muted fs-6">{{ review.createdAt | date:"HH:mm dd/MM/yyyy" }}</span>
+                                        </div>
+
+                                        <div class="rating fs-6">
+                                            @for (i of [1, 2, 3, 4, 5]; track $index) {
+                                                <i class="bi"
+                                                   [class.bi-star-fill]="i <= review.rating"
+                                                   [class.bi-star]="i > review.rating">
+                                                </i>
+                                            }
+                                        </div>
+
+                                        <div class="review-text mb-3">{{ review.text }}</div>
+                                        <div class="helpful">
+                                            <button class="helpful-btn border-0 bg-transparent p-0">
+                                                <i class="bi bi-hand-thumbs-up me-2"></i><span>{{ review.helpfulCount }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (reviewResponse?.hasNext) {
+                                <div class="text-center mt-3">
+                                    <button class="btn load-more-review-btn" (click)="loadMoreReviews()">
+                                        {{ 'Xem thêm' }}
+                                    </button>
+                                </div>
+                            }
+
                         }
                     </div>
 
                 </div>
-                <div class="d-flex align-items-center justify-content-around gap-3">
-                    <button [class.active]="!filter?.rating"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating()">{{ "All" | translate }}
-                    </button>
-                    <button [class.active]="filter?.rating===5"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating(5)">
-                        5 {{ "star" | translate }} (1)
-                    </button>
-                    <button [class.active]="filter?.rating===4"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating(4)">
-                        4 {{ "star" | translate }} (1)
-                    </button>
-                    <button [class.active]="filter?.rating===3"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating(3)">
-                        3 {{ "star" | translate }} (13)
-                    </button>
-                    <button [class.active]="filter?.rating===2"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating(2)">
-                        2 {{ "star" | translate }} (1)
-                    </button>
-                    <button [class.active]="filter?.rating===1"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onRating(1)">
-                        1 {{ "star" | translate }} (1)
-                    </button>
-                    <button [class.active]="!sort.ascending"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onAscending(false)">{{ "Latest" | translate }}
-                    </button>
-                    <button [class.active]="sort.ascending"
-                            class="review-filter-btn btn rounded-0"
-                            (click)="onAscending(true)">{{ "Oldest" | translate }}
-                    </button>
-                </div>
-            </div>
-
-            <div class="reviews-container">
-                <div class="reviews">
-                    @if (loading) {
-                        @for (i of Array(10); track $index) {
-                            <div class="review-item-skeleton d-flex gap-3 align-items-start mb-4">
-                                <div class="skeleton-avatar"></div>
-                                <div class="skeleton-details flex-grow-1">
-                                    <div class="skeleton-text skeleton-username"></div>
-                                    <div class="skeleton-stars">
-                                        @for (i of [1, 2, 3, 4, 5]; track $index) {
-                                            <div class="skeleton-star"></div>
-                                        }
-                                    </div>
-                                    <div class="skeleton-text skeleton-date"></div>
-                                    <div class="skeleton-text skeleton-review"></div>
-                                    <div class="skeleton-helpful"></div>
-                                </div>
-                            </div>
-                        }
-                    } @else {
-                        @for (review of reviews; track review.id) {
-                            <div class="review-item d-flex gap-3 align-items-start mb-4">
-                                <div class="avatar-container">
-                                    <img class="user-avatar rounded-circle"
-                                         src="https://placehold.co/80x80"
-                                         alt="user-avatar"
-                                         width="48"
-                                         height="48"/>
-                                </div>
-                                <div class="review-details flex-grow-1">
-                                    <div class="review-header d-flex flex-column">
-                                        <div class="username fs-5 fw-bold">{{ review.username }}</div>
-                                        <span class="text-muted fs-6">{{ review.createdAt | date:"HH:mm dd/MM/yyyy" }}</span>
-                                    </div>
-
-                                    <div class="rating fs-6">
-                                        @for (i of [1, 2, 3, 4, 5]; track $index) {
-                                            <i class="bi"
-                                               [class.bi-star-fill]="i <= review.rating"
-                                               [class.bi-star]="i > review.rating">
-                                            </i>
-                                        }
-                                    </div>
-
-                                    <div class="review-text mb-3">{{ review.text }}</div>
-                                    <div class="helpful">
-                                        <button class="helpful-btn border-0 bg-transparent p-0">
-                                            <i class="bi bi-hand-thumbs-up me-2"></i><span>{{ review.helpfulCount }}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-
-                        @if (reviewResponse?.hasNext) {
-                            <div class="text-center mt-3">
-                                <button class="btn load-more-review-btn" (click)="loadMoreReviews()">
-                                    {{ 'Xem thêm' }}
-                                </button>
-                            </div>
-                        }
-                    }
-                </div>
 
             </div>
 
-        </div>
+        }
+
     </div>
     <div class="row py-3 mt-3 bg-white">
         <div class="product-detail-title col mx-3 p-3">

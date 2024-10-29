@@ -146,18 +146,28 @@ export class ProductDetailsComponent implements OnInit {
         this.loading = true;
         this.reviewService
             .getByCriteria(cleanedFilter, this.pageRequest, this.sort)
-            .subscribe(reviews => {
-                this.reviewResponse = reviews;
-                this.reviews = [...this.reviews, ...reviews.items];
-                this.loading = false;
+            .subscribe({
+                next: reviews => {
+                    this.reviewResponse = reviews;
+                    this.reviews = [...this.reviews, ...reviews.items];
+                    this.loading = false;
+                },
+                error: () => this.loading = false
             });
     }
 
     private fetchReviewStatistic() {
         if (!this.productSlug) return;
 
+        this.loading = true
         this.reviewService.getReviewStatistic(this.productSlug)
-            .subscribe(statistics => this.reviewStatistic = statistics)
+            .subscribe({
+                next: statistics => {
+                    this.reviewStatistic = statistics
+                    this.loading = false;
+                },
+                error: () => this.loading = false
+            },)
     }
 
     private cleanFilter(filter: ReviewRequestFilter): ReviewRequestFilter {
