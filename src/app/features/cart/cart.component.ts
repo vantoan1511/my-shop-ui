@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {CurrencyPipe, NgForOf, NgIf, PercentPipe} from "@angular/common";
+import {CurrencyPipe, PercentPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Cart} from "../../types/cart.type";
@@ -19,18 +19,17 @@ import {environment} from "../../../environments/environment";
     standalone: true,
     imports: [
         TranslateModule,
-        NgIf,
         CurrencyPipe,
         RouterLink,
         FormsModule,
-        NgForOf,
         PercentPipe
     ],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
 export class CartComponent implements OnInit {
-
+    isCheckout = false
+    selectedPaymentMethod = 'CASH';
     cartResponse: PagedResponse<Cart> | null = null;
     cartItems: Cart[] = [];
     products: Map<string, Product> = new Map();
@@ -73,13 +72,17 @@ export class CartComponent implements OnInit {
 
     get totalAmount(): number {
         return this.cartItems.reduce((sum, item) => {
-            const product = this.getProduct(item)
-            if (product) {
-                const price = product.salePrice;
-                return sum + price * item.quantity;
-            }
-            return sum;
+            return sum + this.getAmount(item);
         }, 0);
+    }
+
+    getAmount(item: Cart): number {
+        const product = this.getProduct(item)
+        if (product) {
+            const price = product.salePrice;
+            return price * item.quantity;
+        }
+        return 0;
     }
 
     increaseQuantity(item: Cart): void {
@@ -130,10 +133,6 @@ export class CartComponent implements OnInit {
         })
     }
 
-    checkout(): void {
-        console.log('Proceed to checkout');
-    }
-
     stock(item: Cart) {
         const product = this.getProduct(item)
 
@@ -150,6 +149,14 @@ export class CartComponent implements OnInit {
 
     getImage(item: Cart) {
         return this.productFeaturedImage.get(item.productSlug);
+    }
+
+    proceedToCheckout() {
+        this.isCheckout = true;
+    }
+
+    placeOrder() {
+        console.log('Order placed with payment method:', this.selectedPaymentMethod);
     }
 
     private fetchCarts() {

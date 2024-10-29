@@ -10,7 +10,7 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
         },
         loadUserProfileAtStartUp: true,
         initOptions: {
-            onLoad: 'login-required',
+            onLoad: 'check-sso',
             // flow: 'standard',
             enableLogging: true,
             checkLoginIframe: true,
