@@ -10,5 +10,6 @@ export const environment = {
     USER_SERVICE_API: 'http://103.188.83.167:8081/api',
     IMAGE_SERVICE_API: 'http://103.188.83.167:8082/api',
     PRODUCT_SERVICE_API: 'http://103.188.83.167:8083/api',
-    REVIEW_SERVICE_API: 'http://103.188.83.167:8086/api'
+    CART_SERVICE_API: 'http://103.188.83.167:8085/api',
+    REVIEW_SERVICE_API: 'http://103.188.83.167:8086/api',
 };

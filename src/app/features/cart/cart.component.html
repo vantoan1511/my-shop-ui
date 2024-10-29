@@ -1,79 +1,90 @@
-<div class="container my-3">
-    <div class="row p-3 bg-white">
-        <div class="p-3">
+<div class="container my-4">
+    <div class="row mb-3 p-3 bg-white rounded shadow-sm">
+        <div class="col">
             <h2 class="fs-2 fw-light text-muted">{{ "My Cart" | translate }}</h2>
         </div>
     </div>
 
-    <div class="row my-3">
-        @if (cartItems.length > 0) {
-            <div class="col-md-8 bg-white">
-                @for (item of cartItems; track $index) {
-                    <div class="row mb-3 p-3 border-bottom">
-                        <div class="col-md-1">
-                            <img [src]="constant.defaultThumbnail" width="64" alt="{{item.product.name}}"
-                                 class="img-fluid rounded">
+    <div class="row g-3">
+        @if (!loading && cartItems.length > 0) {
+            <!-- Cart Items Section -->
+            <div class="col-lg-8">
+                <div class="bg-white p-3 rounded shadow-sm">
+                    @for (item of cartItems; track $index) {
+                        <div class="row mb-3 py-3 border-bottom align-items-center">
+                            <div class="col-2 col-md-1 text-center">
+                                <img [src]="constant.defaultThumbnail"
+                                     width="64"
+                                     alt="{{ products.get(item.productSlug) }}"
+                                     class="img-fluid rounded">
+                            </div>
+                            <div class="col-6 col-md-5">
+                                <h5 class="fs-5 fw-normal text-dark text-truncate"
+                                    [routerLink]="['/may-tinh-xach-tay',getProduct(item)?.slug]">
+                                    {{ getProduct(item)?.name }}
+                                </h5>
+                                <p class="text-muted small description-truncate">
+                                    <del>{{ getProduct(item)?.basePrice | currency:'VND' }}</del>
+                                </p>
+                            </div>
+                            <div class="col-4 col-md-3 d-flex align-items-center gap-2">
+                                <button class="btn quantity-input-btn"
+                                        (click)="decreaseQuantity(item)"
+                                        [disabled]="item.quantity <= 1">
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+                                <input type="number" class="form-control text-center w-50"
+                                       [(ngModel)]="item.quantity"
+                                       (change)="updateQuantity(item)">
+                                <button class="btn quantity-input-btn" (click)="increaseQuantity(item)"
+                                        [disabled]="item.quantity >= stock(item)">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-3 d-flex align-items-center justify-content-between mt-2 mt-md-0">
+                                <span class="text-muted fs-6">{{ getProduct(item)?.salePrice | currency:'VND' }}</span>
+                                <button class="btn btn-link text-danger p-0" (click)="removeFromCart(item)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                            <h5 class="fs-5 fw-light text-muted">{{ item.product.name }}</h5>
-                            <p class="text-muted">{{ item.product.description }}</p>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-center gap-2">
-                            <button class="btn quantity-input-btn"
-                                    (click)="decreaseQuantity(item)"
-                                    [disabled]="item.quantity <= 1">
-                                <i class="bi bi-dash-lg"></i>
-                            </button>
-                            <input type="number"
-                                   class="form-control text-center"
-                                   [(ngModel)]="item.quantity"
-                                   (change)="validateQuantity(item)">
-                            <button class="btn quantity-input-btn"
-                                    (click)="increaseQuantity(item)"
-                                    [disabled]="item.quantity >= 10 ">
-                                <i class="bi bi-plus-lg"></i>
-                            </button>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-center justify-content-between">
-                            <span class="text-muted">{{ item.product.salePrice | currency:'VND' }}</span>
-                            <button class="btn" (click)="removeFromCart(item)">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                }
+                    }
+                </div>
             </div>
 
-            <div class="col-md-4 bg-white">
-                <div class="row p-3">
-                    <div class="col">
-                        <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
-                        <div class="d-flex justify-content-between">
-                        <span class="fw-light text-muted">{{ 'Total Price' | translate }}
-                            :</span><span>{{ totalPrice | currency:"VND" }}</span>
-                        </div>
-                        <hr/>
-                        <div class="d-flex justify-content-between">
-                        <span class="fw-light text-muted">{{ 'Total Discounted Price' | translate }}
-                            :</span><span>{{ totalPrice | currency:"VND" }}</span>
-                        </div>
-                        <hr/>
-                        <div class="d-flex justify-content-between">
-                        <span class="fw-light text-muted">{{ 'Amount' | translate }}
-                            :</span><span class="amount">{{ totalPrice | currency:"VND" }}</span>
-                        </div>
-                        <hr/>
-                        <button class="btn w-100 checkout-btn" (click)="checkout()">
-                            {{ 'Proceed to Checkout' | translate }}
-                        </button>
+            <!-- Order Summary Section -->
+            <div class="col-lg-4">
+                <div class="bg-white p-3 rounded shadow-sm">
+                    <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+                    <div class="d-flex justify-content-between mt-3">
+                        <span class="fw-light text-muted">{{ 'Total Price' | translate }}:</span>
+                        <span class="fs-6">{{ totalBasePrice() | currency:"VND" }}</span>
                     </div>
+                    <hr/>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Total Discounted Price' | translate }}:</span>
+                        <span class="fs-6">{{ totalDiscountedPrice | currency:"VND" }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Discount' | translate }}:</span>
+                        <span class="fs-6">{{ discountedPercent | percent }}</span>
+                    </div>
+                    <hr/>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-light text-muted">{{ 'Amount' | translate }}:</span>
+                        <span class="amount">{{ totalAmount | currency:"VND" }}</span>
+                    </div>
+                    <hr/>
+                    <button class="btn checkout-btn mt-3 w-100" (click)="checkout()">
+                        {{ 'Proceed to Checkout' | translate }}
+                    </button>
                 </div>
             </div>
         } @else {
-            <div class="text-center bg-white p-3">
+            <!-- Empty Cart Section -->
+            <div class="text-center bg-white p-5 rounded shadow-sm">
                 <h2 class="fs-2 fw-light text-muted">{{ 'Your cart is empty' | translate }}</h2>
-                <a routerLink="/" class="btn mt-3 buy-now">{{ 'Shop Now' | translate }}</a>
+                <a routerLink="/" class="btn mt-4 buy-now">{{ 'Shop Now' | translate }}</a>
             </div>
         }
     </div>

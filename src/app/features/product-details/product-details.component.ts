@@ -13,6 +13,8 @@ import {Sort, SortField} from "../../types/sort.type";
 import {Review, ReviewRequestFilter, ReviewStatistic} from "../../types/review.type";
 import {environment} from "../../../environments/environment";
 import {PagedResponse} from "../../types/response.type";
+import {CartService} from "../../services/cart.service";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
     selector: 'app-product-details',
@@ -43,6 +45,8 @@ export class ProductDetailsComponent implements OnInit {
         private productService: ProductService,
         private router: ActivatedRoute,
         private reviewService: ReviewService,
+        private cartService: CartService,
+        private alertService: AlertService,
     ) {
         this.translateService.setDefaultLang("vi");
     }
@@ -107,6 +111,16 @@ export class ProductDetailsComponent implements OnInit {
 
         if (this.product && this.quantity > this.product?.stockQuantity) {
             this.quantity = this.product.stockQuantity;
+        }
+    }
+
+    addToCart(quantity: number, productSlug: string | null): void {
+        if (productSlug) {
+            const request = {productSlug, quantity};
+            this.cartService.addToCart(request).subscribe({
+                next: (cart) => this.alertService.showSuccessToast(`Added to cart`),
+                error: () => this.alertService.showErrorToast(`Error while adding to cart`)
+            })
         }
     }
 

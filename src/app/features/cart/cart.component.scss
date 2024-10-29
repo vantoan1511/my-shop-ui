@@ -1,38 +1,78 @@
-.buy-now {
+// Color Variables
+$purple-main: var(--purple-9);
+$purple-dark: var(--purple-10);
+$purple-light: var(--purple-3);
+$purple-contrast: var(--purple-contrast);
+$gray-bg: var(--gray-1);
+
+// Utility Classes
+.btn-primary {
+  color: $purple-contrast;
+  background: $purple-main;
   line-height: 2;
-  color: var(--purple-contrast);
-  background: var(--purple-9);
+  transition: background 0.3s ease, color 0.3s ease;
 
   &:active {
-    color: var(--purple-contrast);
-    background: var(--purple-10);
+    background: $purple-dark;
   }
-
 }
 
 .quantity-input-btn {
-  color: var(--purple-9);
-  border: 1px solid var(--purple-9);
+  color: $purple-main;
+  border: 1px solid $purple-main;
+  transition: background 0.3s ease, border-color 0.3s ease;
 
   &:disabled {
-    background: var(--purple-3);
-    border-color: var(--gray-1);
+    background: $purple-light;
+    border-color: $gray-bg;
   }
 }
 
+// Component Styles
 .amount {
-  color: var(--purple-9);
+  color: $purple-main;
   font-weight: bold;
   font-size: 1.2rem;
 }
 
 .checkout-btn {
-  line-height: 2;
-  color: var(--purple-contrast);
-  background: var(--purple-9);
+  @extend .btn-primary;
+  width: 100%;
+}
 
-  &:active {
-    color: var(--purple-contrast);
-    background: var(--purple-10);
+.buy-now {
+  @extend .btn-primary;
+}
+
+.product-thumbnail {
+  width: 64px;
+  height: auto;
+}
+
+.text-muted-light {
+  color: var(--gray-5); // Replace with a lighter shade of muted color if needed
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+// Media Queries
+@media (max-width: 768px) {
+  .checkout-btn,
+  .buy-now {
+    width: 100%;
+    font-size: 1rem;
   }
 }

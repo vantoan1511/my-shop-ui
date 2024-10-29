@@ -1,10 +1,17 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
+import {CurrencyPipe, NgForOf, NgIf, PercentPipe} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {CartItem} from "../../types/cart.type";
+import {Cart} from "../../types/cart.type";
 import {constant} from "../../shared/constant";
+import {CartService} from "../../services/cart.service";
+import {PagedResponse} from "../../types/response.type";
+import {PageRequest} from "../../types/page-request.type";
+import {ProductService} from "../../services/product.service";
+import {Product} from "../../types/product.type";
+import {forkJoin, map, switchMap} from "rxjs";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
     selector: 'app-cart',
@@ -15,110 +22,158 @@ import {constant} from "../../shared/constant";
         CurrencyPipe,
         RouterLink,
         FormsModule,
-        NgForOf
+        NgForOf,
+        PercentPipe
     ],
     templateUrl: './cart.component.html',
     styleUrl: './cart.component.scss'
 })
-export class CartComponent {
-    cartItems: CartItem[] = [
-        {
-            quantity: 1,
-            product: {
-                id: 1,
-                name: 'Product 1',
-                slug: 'product-1',
-                basePrice: 20000000,
-                salePrice: 20000000,
-                stockQuantity: 10,
-                model: {
-                    id: 1,
-                    name: 'model1',
-                    slug: 'model1',
-                    brand: {
-                        id: 1,
-                        name: 'brand',
-                        slug: 'brand'
-                    }
+export class CartComponent implements OnInit {
 
-                },
-                category: {
-                    id: 1,
-                    name: 'cate',
-                    slug: 'cate'
-                }
-            }
-        },
-        {
-            quantity: 1,
-            product: {
-                id: 2,
-                name: 'Product 2',
-                slug: 'product-2',
-                basePrice: 20000000,
-                salePrice: 16000000,
-                stockQuantity: 6,
-                model: {
-                    id: 1,
-                    name: 'model1',
-                    slug: 'model1',
-                    brand: {
-                        id: 1,
-                        name: 'brand',
-                        slug: 'brand'
-                    }
-
-                },
-                category: {
-                    id: 1,
-                    name: 'cate',
-                    slug: 'cate'
-                }
-            }
-        },
-    ];
+    cartResponse: PagedResponse<Cart> | null = null;
+    cartItems: Cart[] = [];
+    products: Map<string, Product> = new Map();
+    pageRequest: PageRequest = {page: 1, size: 20}
+    loading = false;
 
     constructor(
-        private translate: TranslateService
+        private cartService: CartService,
+        private productService: ProductService,
+        private translate: TranslateService,
+        private alertService: AlertService
     ) {
         this.translate.setDefaultLang("vi");
     }
 
-    get totalItems(): number {
-        return this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    ngOnInit(): void {
+        this.fetchCarts();
     }
 
-    get totalPrice(): number {
-        return this.cartItems.reduce((sum, item) => sum + (item.product.salePrice * item.quantity), 0);
+    get totalDiscountedPrice(): number {
+        return this.totalBasePrice() - this.totalAmount;
+
     }
 
-    increaseQuantity(item: CartItem): void {
-        if (item.quantity < item.product.stockQuantity) {
+    get discountedPercent(): number {
+        return ((this.totalDiscountedPrice / this.totalBasePrice()));
+    }
+
+    totalBasePrice(): number {
+        return this.cartItems.reduce((sum, item) => {
+            const product = this.getProduct(item)
+            if (product) {
+                const price = product.basePrice;
+                return sum + price * item.quantity;
+            }
+            return sum;
+        }, 0);
+    }
+
+    get totalAmount(): number {
+        return this.cartItems.reduce((sum, item) => {
+            const product = this.getProduct(item)
+            if (product) {
+                const price = product.salePrice;
+                return sum + price * item.quantity;
+            }
+            return sum;
+        }, 0);
+    }
+
+    increaseQuantity(item: Cart): void {
+        const product = this.getProduct(item)
+        if (!product) {
+            return;
+        }
+
+        const stock = product.stockQuantity;
+        if (item.quantity < stock) {
             item.quantity++;
+            this.updateQuantity(item)
         }
     }
 
-    decreaseQuantity(item: CartItem): void {
+    decreaseQuantity(item: Cart): void {
         if (item.quantity > 1) {
             item.quantity--;
+            this.updateQuantity(item)
         }
     }
 
-    validateQuantity(item: CartItem): void {
+    updateQuantity(item: Cart): void {
+        this.validateQuantity(item);
+        this.cartService.updateQuantity(item.id, item.quantity).subscribe({
+            next: () => console.log("Update cart quantity successfully"),
+        });
+    }
+
+    validateQuantity(item: Cart): void {
         if (item.quantity < 1) {
             item.quantity = 1;
-        } else if (item.quantity > item.product.stockQuantity) {
-            item.quantity = item.product.stockQuantity;
+        }
+
+        const stock = this.stock(item)
+        if (item.quantity > stock) {
+            item.quantity = stock
         }
     }
 
-    removeFromCart(item: CartItem): void {
-        this.cartItems = this.cartItems.filter(cartItem => cartItem.product.id !== item.product.id);
+    removeFromCart(item: Cart): void {
+        this.cartService.removeCartItem(item.id).subscribe({
+            next: () => {
+                this.cartItems = this.cartItems.filter(cart => cart.id !== item.id)
+                this.alertService.showSuccessToast("Removed successfully")
+            },
+            error: () => this.alertService.showErrorToast("An error occurred")
+        })
     }
 
     checkout(): void {
-        // Logic for proceeding to checkout
         console.log('Proceed to checkout');
+    }
+
+    stock(item: Cart) {
+        const product = this.getProduct(item)
+
+        if (!product) {
+            return 0;
+        }
+
+        return product.stockQuantity
+    }
+
+    getProduct(item: Cart) {
+        return this.products.get(item.productSlug);
+    }
+
+    private fetchCarts() {
+        this.loading = true
+
+        this.cartService.getCart(this.pageRequest).pipe(
+            switchMap(cartResponse => {
+                this.cartResponse = cartResponse;
+                this.cartItems = cartResponse.items;
+
+                const productObservables = cartResponse.items.map(item => this.fetchProduct(item.productSlug))
+
+                return forkJoin(productObservables);
+            }),
+
+            map(products => products.reduce((acc, product) => {
+                acc.set(product.slug, product)
+                return acc;
+            }, new Map<string, Product>))
+        ).subscribe({
+            next: productMap => {
+                this.products = productMap;
+                this.loading = false;
+            },
+            error: () => this.loading = false
+        })
+    }
+
+    private fetchProduct(productSlug: string) {
+        return this.productService.getBySlug(productSlug);
     }
 
     protected readonly constant = constant;
