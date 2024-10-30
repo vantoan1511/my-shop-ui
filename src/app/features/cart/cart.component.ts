@@ -13,6 +13,10 @@ import {Product} from "../../types/product.type";
 import {forkJoin, map, switchMap} from "rxjs";
 import {AlertService} from "../../services/alert.service";
 import {environment} from "../../../environments/environment";
+import {AuthenticationService} from "../../services/authentication.service";
+import {UserService} from "../../services/user.service";
+import {User} from "../../types/user.type";
+import {OrderType} from "../../types/order.type";
 
 @Component({
     selector: 'app-cart',
@@ -37,21 +41,20 @@ export class CartComponent implements OnInit {
     pageRequest: PageRequest = {page: 1, size: 20}
     loading = false;
 
-    userAddresses: string[] = [
-        '123 Main St, City, Country',
-        '456 Elm St, City, Country',
-        '789 Oak St, City, Country',
-        '101 Pine St, City, Country',
-        '202 Maple St, City, Country'
-    ]; // List of current addresses for the user
-    selectedAddress = ''; // Holds the selected address
-    newAddress = ''; // Holds the new address input
+    user: User | null = null;
+    userAddresses: string[] = [];
+    selectedAddress = '';
+    newAddress = '';
+    selectedPhoneNumber = '';
+
 
     constructor(
         private cartService: CartService,
         private productService: ProductService,
         private translate: TranslateService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private authService: AuthenticationService,
+        private userService: UserService,
     ) {
         this.translate.setDefaultLang("vi");
     }
@@ -163,6 +166,8 @@ export class CartComponent implements OnInit {
 
     proceedToCheckout() {
         this.isCheckout = true;
+
+        this.fetchUser();
     }
 
     placeOrder() {
@@ -173,6 +178,10 @@ export class CartComponent implements OnInit {
         if (this.selectedAddress !== this.newAddress) {
             this.newAddress = '';
         }
+    }
+
+    backToCart() {
+        this.isCheckout = false;
     }
 
     private fetchCarts() {
@@ -220,6 +229,23 @@ export class CartComponent implements OnInit {
 
     private imageUrl(imageId: number) {
         return `${environment.IMAGE_SERVICE_API}/images/${imageId}?size=SMALL`;
+    }
+
+    private fetchUser() {
+        const username = this.authService.username;
+        this.userService.getByUsername(username).pipe(
+            map(user => {
+                this.user = user;
+                this.selectedPhoneNumber = user.phone
+                return this.listAddresses(user)
+            })
+        ).subscribe({
+            next: addresses => this.userAddresses = addresses
+        })
+    }
+
+    private listAddresses(user: User) {
+        return Array.of(user.address, user.address1, user.address2, user.address3, user.address4).filter(each => each);
     }
 
     protected readonly constant = constant;

@@ -76,6 +76,24 @@
                     }
                 </div>
 
+                <!-- Phone number Section -->
+                <div class="bg-white p-3 mt-3 rounded shadow-sm">
+                    <h5 class="fs-5 fw-light text-muted">{{ "Choose phone number" | translate }}</h5>
+
+                    <div class="form-check mt-3">
+                        <input [id]="user?.phone"
+                               class="form-check-input"
+                               type="radio"
+                               name="phoneNumber"
+                               [value]="user?.phone"
+                               [(ngModel)]="selectedPhoneNumber">
+                        <label [for]="user?.phone"
+                               class="form-check-label text-muted">
+                            {{ user?.phone }}
+                        </label>
+                    </div>
+                </div>
+
                 <!-- Shipping Address Section -->
                 <div class="bg-white p-3 mt-3 rounded shadow-sm">
                     <h5 class="fs-5 fw-light text-muted">{{ "Choose Shipping Address" | translate }}</h5>
@@ -122,14 +140,14 @@
                 <div class="bg-white p-3 mt-3 rounded shadow-sm">
                     <h5 class="fs-5 fw-light text-muted">{{ "Choose Payment Method" | translate }}</h5>
                     <div class="form-check mt-3">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="cash"
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="CASH"
                                [(ngModel)]="selectedPaymentMethod">
                         <label class="form-check-label text-muted" for="cash">
                             {{ "Cash on Delivery" | translate }}
                         </label>
                     </div>
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="banking" value="banking"
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="banking" value="BANKING"
                                [(ngModel)]="selectedPaymentMethod">
                         <label class="form-check-label text-muted" for="banking">
                             {{ "Bank Transfer" | translate }}
@@ -161,9 +179,14 @@
                         <span class="amount">{{ totalAmount | currency:"VND" }}</span>
                     </div>
                     <hr/>
-                    <button class="btn checkout-btn mt-3 w-100" (click)="placeOrder()">
-                        {{ 'Place Order' | translate }}
-                    </button>
+                    <div class="d-flex gap-3">
+                        <button class="btn mt-3 w-20" (click)="backToCart()">
+                            {{ 'Back' | translate }}
+                        </button>
+                        <button class="btn checkout-btn mt-3 w-100" (click)="placeOrder()">
+                            {{ 'Place Order' | translate }}
+                        </button>
+                    </div>
                 </div>
             </div>
         } @else if (cartItems.length > 0) {
