@@ -114,26 +114,6 @@
                         </div>
                     }
 
-                    <!-- Option to Enter New Address -->
-                    <div class="form-check mt-3">
-                        <input id="new-address"
-                               class="form-check-input"
-                               type="radio"
-                               name="shippingAddress"
-                               [value]="newAddress"
-                               [(ngModel)]="selectedAddress"
-                               (change)="clearNewAddress()">
-                        <label for="new-address" class="form-check-label text-muted">
-                            {{ "Enter a new address" | translate }}
-                        </label>
-                    </div>
-
-                    <!-- New Address Input Field -->
-                    @if (selectedAddress === newAddress) {
-                        <textarea class="form-control mt-2"
-                                  [(ngModel)]="newAddress"
-                                  placeholder="{{ 'Enter your address' | translate }}"></textarea>
-                    }
                 </div>
 
                 <!-- Payment Method Section -->
@@ -189,7 +169,7 @@
                     </div>
                 </div>
             </div>
-        } @else if (cartItems.length > 0) {
+        } @else if (cartResponse?.items) {
             <!-- Cart Items Section -->
             <div class="col-lg-8">
                 <div class="bg-white p-3 rounded shadow-sm">

@@ -16,7 +16,8 @@ import {environment} from "../../../environments/environment";
 import {AuthenticationService} from "../../services/authentication.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../types/user.type";
-import {OrderType} from "../../types/order.type";
+import {CreateOrderRequest} from "../../types/createOrderRequest";
+import {OrderService} from "../../services/order.service";
 
 @Component({
     selector: 'app-cart',
@@ -33,7 +34,7 @@ import {OrderType} from "../../types/order.type";
 })
 export class CartComponent implements OnInit {
     isCheckout = false
-    selectedPaymentMethod = 'CASH';
+    selectedPaymentMethod: 'CASH' | 'BANKING' = 'CASH';
     cartResponse: PagedResponse<Cart> | null = null;
     cartItems: Cart[] = [];
     products: Map<string, Product> = new Map();
@@ -47,7 +48,6 @@ export class CartComponent implements OnInit {
     newAddress = '';
     selectedPhoneNumber = '';
 
-
     constructor(
         private cartService: CartService,
         private productService: ProductService,
@@ -55,6 +55,7 @@ export class CartComponent implements OnInit {
         private alertService: AlertService,
         private authService: AuthenticationService,
         private userService: UserService,
+        private orderService: OrderService
     ) {
         this.translate.setDefaultLang("vi");
     }
@@ -171,7 +172,29 @@ export class CartComponent implements OnInit {
     }
 
     placeOrder() {
-        console.log('Order placed with payment method:', this.selectedPaymentMethod);
+        const order: CreateOrderRequest = {
+            shippingAddress: this.selectedAddress,
+            paymentMethod: this.selectedPaymentMethod,
+            items: this.cartItems
+        }
+
+        if (order.shippingAddress.length <= 0) {
+            this.alertService.showErrorToast("Please enter an address");
+            return;
+        }
+
+        this.orderService.createOrder(order).subscribe({
+            next: () => {
+                this.alertService.showSuccessToast("Placed order successfully");
+                this.cartService.clearCart().subscribe({
+                    next: () => {
+                        this.cartResponse = null;
+                        this.cartItems = []
+                        this.isCheckout = false;
+                    }
+                })
+            }
+        })
     }
 
     clearNewAddress() {
