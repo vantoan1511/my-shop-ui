@@ -1,279 +1,356 @@
 <div class="container">
-    <div class="row mt-3 bg-white">
-        <nav class="col-md-3 col-lg-2 d-md-block p-3">
-            <div class="position-sticky">
-                <div class="d-flex align-items-center gap-3 text-center mb-3">
-                    <div class="avatar rounded-circle">
-                        <img [src]="avatarUrl"
-                             alt="User Avatar"
-                             class="img-fluid"
-                             width="48"
-                             height="48"/>
-                    </div>
-                    <h5 class="username">{{ username }}</h5>
-                </div>
-                <hr/>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#profile" data-bs-toggle="tab">
-                            <i class="bi bi-person me-2"></i>{{ "Profile" | translate }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#change-password" data-bs-toggle="tab">
-                            <i class="bi bi-shield-lock me-2"></i>{{ "Change password" | translate }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#orders" data-bs-toggle="tab">
-                            <i class="bi bi-journals me-2"></i>{{ "Orders" | translate }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+  <div class="row mt-4 bg-white shadow-sm rounded">
+    <nav class="col-md-3 col-lg-2 d-md-block p-3 bg-light border-end">
+      <div class="position-sticky">
+        <div class="d-flex align-items-center gap-3 text-center mb-4">
+          <div class="avatar">
+            <img [src]="avatarUrl"
+                 alt="User Avatar"
+                 class="img-fluid"
+                 width="48"
+                 height="48"/>
+          </div>
+          <h5 class="username">{{ username }}</h5>
+        </div>
+        <hr/>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#profile" data-bs-toggle="tab">
+              <i class="bi bi-person me-2"></i>{{ "Profile" | translate }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#change-password" data-bs-toggle="tab">
+              <i class="bi bi-shield-lock me-2"></i>{{ "Change password" | translate }}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#orders" data-bs-toggle="tab">
+              <i class="bi bi-journals me-2"></i>{{ "Orders" | translate }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
-            <div class="tab-content p-3">
-                <div class="tab-pane fade show active" id="profile">
-                    <span class="fs-3 fw-lighter">{{ "PROFILE INFORMATION" | translate }}</span>
-                    <hr/>
-                    <div class="row">
-                        <div class="profile col-md-8">
-                            <form [formGroup]="userForm" (ngSubmit)="onProfileFormSubmit()">
-                                <div class="mb-3 row">
-                                    <label for="username"
-                                           class="col-sm-4 col-form-label text-end">
-                                        {{ "Username" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="username"
-                                               type="text"
-                                               class="readonly form-control"
-                                               id="username"
-                                               [disabled]="true"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="firstname"
-                                           class="col-sm-4 col-form-label text-end">
-                                        {{ "First name" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="firstName"
-                                               type="text"
-                                               class="form-control"
-                                               id="firstname"
-                                               [placeholder]="'First name' | translate"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="lastname"
-                                           class="col-sm-4 col-form-label text-end">
-                                        {{ "Last name" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="lastName"
-                                               type="text"
-                                               class="form-control"
-                                               id="lastname"
-                                               [placeholder]="'First name' | translate"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="email" class="col-sm-4 col-form-label text-end">
-                                        {{ "Email" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="email"
-                                               type="email"
-                                               class="form-control"
-                                               id="email"
-                                               placeholder="Email"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="phone" class="col-sm-4 col-form-label text-end">
-                                        {{ "Phone number" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="phone"
-                                               type="tel"
-                                               class="form-control"
-                                               id="phone"
-                                               [placeholder]="'Phone number' | translate"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="address" class="col-sm-4 col-form-label text-end">
-                                        {{ "Address" | translate }} ({{ "Default" | translate }})
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="address"
-                                               type="text"
-                                               class="form-control"
-                                               id="address"
-                                               [placeholder]="'Address' | translate"
-                                               required/>
-                                    </div>
-                                </div>
-                                @for (i of [1, 2, 3, 4]; track i) {
-                                    <div class="mb-3 row">
-                                        <label [for]="'address'+i" class="col-sm-4 col-form-label text-end">
-                                            {{ "Address" | translate }} {{ i }}
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <input [formControlName]="'address'+i"
-                                                   type="text"
-                                                   class="form-control"
-                                                   [id]="'address'+i"
-                                                   [placeholder]="'Address'+i"/>
-                                        </div>
-                                    </div>
-                                }
-                                <div class="mb-3 row">
-                                    <label for="gender" class="col-sm-4 col-form-label text-end">
-                                        {{ "Gender" | translate }}
-                                    </label>
-                                    <div id="gender" class="col-sm-8 col-form-label">
-                                        <div class="form-check form-check-inline">
-                                            <input formControlName="gender"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   value="MALE"
-                                                   id="male"/>
-                                            <label class="form-check-label"
-                                                   for="male"> {{ "Male" | translate }} </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input formControlName="gender"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="female"
-                                                   value="FEMALE"/>
-                                            <label class="form-check-label" for="female">
-                                                {{ "Female" | translate }}
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input formControlName="gender"
-                                                   class="form-check-input"
-                                                   type="radio"
-                                                   id="other"
-                                                   value="UNKNOWN"/>
-                                            <label class="form-check-label" for="other">
-                                                {{ "Other" | translate }}
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-8">
-                                        <button [disabled]="!isValidProfileForm || !dirtyProfileForm"
-                                                type="submit"
-                                                class="btn btn-primary">
-                                            {{ "Save" | translate }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="d-flex flex-column justify-content-center align-items-center">
-                                <input type="file"
-                                       class="d-none"
-                                       id="avatar"
-                                       accept="image/jpeg, image/png"
-                                       (change)="previewImage($event)"/>
-                                <label for="avatar"
-                                       class="text-center mb-3"
-                                       style="cursor: pointer">
-                                    <div class="avatar-preview rounded-circle">
-                                        <img id="avatar-preview"
-                                             [src]="avatarUrl"
-                                             alt="Avatar Preview"
-                                             class="rounded-circle"/>
-                                    </div>
-                                </label>
-                                <div class="helper-text text-muted fs-6">
-                                    <span>{{ "File size limit" | translate }}: 1MB. {{ "Accepted format" | translate }}: PNG, JPG.</span>
-                                </div>
-                            </div>
-                            <hr/>
-                            <div class="row">
-                                <div class="helper-text text-muted fs-6">
-                                    <span>{{ "Or choose from uploaded" | translate }}.</span>
-                                </div>
-                                <div class="gallery row row-cols-md-2 g-2 overflow-auto"
-                                     (scroll)="onScrollGallery($event)">
-                                    @for (image of uploaded?.items; track $index) {
-                                        <div class="col">
-                                            <div class="card">
-                                                <img [src]="createImageUrl(image.id)"
-                                                     class="card-img-top"
-                                                     [alt]="image.altText"
-                                                     (click)="setAvatar(image)">
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
+      <div class="tab-content p-3">
+        <div class="tab-pane fade show active" id="profile">
+          <span class="fs-3 fw-lighter">{{ "PROFILE INFORMATION" | translate }}</span>
+          <hr/>
+          <div class="row">
+            <div class="profile col-md-8">
+              <form [formGroup]="userForm" (ngSubmit)="onProfileFormSubmit()">
+                <div class="mb-3 row">
+                  <label for="username"
+                         class="col-sm-4 col-form-label text-end">
+                    {{ "Username" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="username"
+                           type="text"
+                           class="readonly form-control"
+                           id="username"
+                           [disabled]="true"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="firstname"
+                         class="col-sm-4 col-form-label text-end">
+                    {{ "First name" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="firstName"
+                           type="text"
+                           class="form-control"
+                           id="firstname"
+                           [placeholder]="'First name' | translate"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="lastname"
+                         class="col-sm-4 col-form-label text-end">
+                    {{ "Last name" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="lastName"
+                           type="text"
+                           class="form-control"
+                           id="lastname"
+                           [placeholder]="'First name' | translate"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="email" class="col-sm-4 col-form-label text-end">
+                    {{ "Email" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="email"
+                           type="email"
+                           class="form-control"
+                           id="email"
+                           placeholder="Email"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="phone" class="col-sm-4 col-form-label text-end">
+                    {{ "Phone number" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="phone"
+                           type="tel"
+                           class="form-control"
+                           id="phone"
+                           [placeholder]="'Phone number' | translate"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="address" class="col-sm-4 col-form-label text-end">
+                    {{ "Address" | translate }} ({{ "Default" | translate }})
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="address"
+                           type="text"
+                           class="form-control"
+                           id="address"
+                           [placeholder]="'Address' | translate"
+                           required/>
+                  </div>
+                </div>
+                @for (i of [1, 2, 3, 4]; track i) {
+                  <div class="mb-3 row">
+                    <label [for]="'address'+i" class="col-sm-4 col-form-label text-end">
+                      {{ "Address" | translate }} {{ i }}
+                    </label>
+                    <div class="col-sm-8">
+                      <input [formControlName]="'address'+i"
+                             type="text"
+                             class="form-control"
+                             [id]="'address'+i"
+                             [placeholder]="'Address'+i"/>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="change-password">
-                    <span class="fs-3 fw-lighter">{{ "Change password" | translate }}</span>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <form [formGroup]="passwordForm"
-                                  (ngSubmit)="onPasswordFormSubmit()">
-                                <div class="mb-3 row">
-                                    <label for="password"
-                                           class="col-sm-4 col-form-label text-end">
-                                        {{ "New password" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input formControlName="password"
-                                               type="password"
-                                               class="form-control"
-                                               id="password"
-                                               [placeholder]="'Enter your new password' | translate"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <label for="re-password"
-                                           class="col-sm-4 col-form-label text-end">
-                                        {{ "Confirm password" | translate }}
-                                    </label>
-                                    <div class="col-sm-8">
-                                        <input [class.ng-invalid]="this.notMatchedPassword"
-                                               formControlName="rePassword"
-                                               type="password"
-                                               class="form-control"
-                                               id="re-password"
-                                               [placeholder]="'Confirm new password' | translate"/>
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <div class="col-sm-4"></div>
-                                    <div class="col-sm-8">
-                                        <button [disabled]="passwordForm.invalid || !passwordForm.dirty"
-                                                type="submit"
-                                                class="btn btn-primary">
-                                            {{ "Save" | translate }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                  </div>
+                }
+                <div class="mb-3 row">
+                  <label for="gender" class="col-sm-4 col-form-label text-end">
+                    {{ "Gender" | translate }}
+                  </label>
+                  <div id="gender" class="col-sm-8 col-form-label">
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender"
+                             class="form-check-input"
+                             type="radio"
+                             value="MALE"
+                             id="male"/>
+                      <label class="form-check-label"
+                             for="male"> {{ "Male" | translate }} </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender"
+                             class="form-check-input"
+                             type="radio"
+                             id="female"
+                             value="FEMALE"/>
+                      <label class="form-check-label" for="female">
+                        {{ "Female" | translate }}
+                      </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender"
+                             class="form-check-input"
+                             type="radio"
+                             id="other"
+                             value="UNKNOWN"/>
+                      <label class="form-check-label" for="other">
+                        {{ "Other" | translate }}
+                      </label>
+                    </div>
+                  </div>
                 </div>
-                <div class="tab-pane fade" id="orders">
-                    <span class="fs-3 fw-lighter">{{ "Your Orders" | translate }}</span>
+                <div class="mb-3 row">
+                  <div class="col-sm-4"></div>
+                  <div class="col-sm-8">
+                    <button [disabled]="!isValidProfileForm || !dirtyProfileForm"
+                            type="submit"
+                            class="btn btn-primary">
+                      {{ "Save" | translate }}
+                    </button>
+                  </div>
                 </div>
+              </form>
             </div>
-        </main>
-    </div>
+            <div class="col-md-4">
+              <div class="d-flex flex-column justify-content-center align-items-center">
+                <input type="file"
+                       class="d-none"
+                       id="avatar"
+                       accept="image/jpeg, image/png"
+                       (change)="previewImage($event)"/>
+                <label for="avatar"
+                       class="text-center mb-3"
+                       style="cursor: pointer">
+                  <div class="avatar-preview rounded-circle">
+                    <img id="avatar-preview"
+                         [src]="avatarUrl"
+                         alt="Avatar Preview"/>
+                  </div>
+                </label>
+                <div class="helper-text text-muted fs-6">
+                  <span>{{ "File size limit" | translate }}: 1MB. {{ "Accepted format" | translate }}: PNG, JPG.</span>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="helper-text text-muted fs-6">
+                  <span>{{ "Or choose from uploaded" | translate }}.</span>
+                </div>
+                <div class="gallery row row-cols-md-2 g-2 overflow-auto"
+                     (scroll)="onScrollGallery($event)">
+                  @for (image of uploaded?.items; track $index) {
+                    <div class="col">
+                      <div class="card">
+                        <img [src]="createImageUrl(image.id)"
+                             class="card-img-top"
+                             [alt]="image.altText"
+                             (click)="setAvatar(image)">
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="change-password">
+          <span class="fs-3 fw-lighter">{{ "Change password" | translate }}</span>
+          <hr/>
+          <div class="row">
+            <div class="col-md-8">
+              <form [formGroup]="passwordForm"
+                    (ngSubmit)="onPasswordFormSubmit()">
+                <div class="mb-3 row">
+                  <label for="password"
+                         class="col-sm-4 col-form-label text-end">
+                    {{ "New password" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input formControlName="password"
+                           type="password"
+                           class="form-control"
+                           id="password"
+                           [placeholder]="'Enter your new password' | translate"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="re-password"
+                         class="col-sm-4 col-form-label text-end">
+                    {{ "Confirm password" | translate }}
+                  </label>
+                  <div class="col-sm-8">
+                    <input [class.ng-invalid]="this.notMatchedPassword"
+                           formControlName="rePassword"
+                           type="password"
+                           class="form-control"
+                           id="re-password"
+                           [placeholder]="'Confirm new password' | translate"/>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-sm-4"></div>
+                  <div class="col-sm-8">
+                    <button [disabled]="passwordForm.invalid || !passwordForm.dirty"
+                            type="submit"
+                            class="btn btn-primary">
+                      {{ "Save" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="orders">
+          <span class="fs-3 fw-lighter">{{ "Your Orders" | translate }}</span>
+          <hr/>
+          <div class="row">
+            <!-- Order List on the Left -->
+            <div class="col-lg-4 col-md-5">
+              <ul class="list-group mb-4">
+                @for (order of orders; track $index) {
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="mb-1">#{{ order.id }}</h6>
+                      <small class="text-muted me-2">{{ order.createdAt | date }}</small>
+                      <span class="badge bg-primary mt-2">{{ order.orderStatus | translate }}</span>
+                    </div>
+                    <button class="btn view-order-details-btn p-1" (click)="viewOrderDetails(order)">
+                      {{ "View Details" | translate }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <!-- Order Details on the Right -->
+            @if (selectedOrder) {
+              <div class="col-lg-8 col-md-7">
+                <div class="card shadow-sm">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>{{ "Order Details" | translate }} - #{{ selectedOrder.id }}</h5>
+                    <button class="btn btn-outline-secondary btn-sm" (click)="selectedOrder = null">
+                      {{ "Back to Orders" | translate }}
+                    </button>
+                  </div>
+
+                  <div class="card-body">
+                    <h6>{{ "Order Summary" | translate }}</h6>
+                    <div class="row mb-3">
+                      <div class="col-md-4">
+                        <p class="mb-0"><strong>{{ "Order Date" | translate }}:</strong> {{ selectedOrder.createdAt | date }}
+                        </p>
+                      </div>
+                      <div class="col-md-4">
+                        <p class="mb-0"><strong>{{ "Total Amount" | translate }}
+                          :</strong> {{ selectedOrder.totalAmount | currency: "VND" }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <p class="mb-0"><strong>{{ "Status" | translate }}
+                          :</strong> {{ selectedOrder.orderStatus | translate }}</p>
+                      </div>
+                    </div>
+
+                    <h6 class="mt-4">{{ "Items" | translate }}</h6>
+                    <ul class="list-group">
+<!--                      @for (item of selectedOrder.items; track $index) {-->
+<!--                        <li class="list-group-item d-flex justify-content-between align-items-center">-->
+<!--                          <div>-->
+<!--                            <strong>{{ item.name }}</strong>-->
+<!--                            <small class="text-muted d-block">{{ item.quantity }}-->
+<!--                              x {{ item.price | currency:"VND" }}</small>-->
+<!--                          </div>-->
+<!--                          <span>{{ item.quantity * item.price | currency:"VND" }}</span>-->
+<!--                        </li>-->
+<!--                      }-->
+
+                    </ul>
+
+                    <div class="d-flex justify-content-end mt-4">
+                      <button class="btn btn-outline-primary me-2" (click)="trackOrder(selectedOrder)">
+                        {{ "Track Order" | translate }}
+                      </button>
+                      <button class="btn btn-outline-secondary" (click)="downloadInvoice(selectedOrder)">
+                        {{ "Download Invoice" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            }
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
 </div>

@@ -66,21 +66,111 @@
 }
 
 .gallery {
-  height: 200px;
+  height: 400px;
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  //display: flex;
+  //flex-wrap: wrap;
+  //gap: 0.5rem;
 
   img {
     cursor: pointer;
     width: 100%;
     border-radius: 5px;
     transition: transform 0.2s ease;
-    
+
     &:hover {
       transform: scale(1.05);
-      border-color: var(--purple-9);
+      border: 1px solid var(--purple-9);
+    }
+  }
+}
+
+#orders {
+  .bg-primary {
+    background: var(--purple-9) !important;
+  }
+
+  .list-group-item {
+    border-radius: 0;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: all .3s ease;
+    }
+
+    .view-order-details-btn {
+      color: var(--purple-9);
+      border: 1px solid var(--purple-9);
+    }
+  }
+
+  .order-card {
+    border: 1px solid var(--gray-3);
+    border-radius: 8px;
+
+    .card-body {
+      padding: 1rem;
+      background-color: var(--gray-1);
+
+      .badge {
+        font-size: 0.85rem;
+        padding: 0.25em 0.5em;
+      }
+
+      .btn-link {
+        font-size: 0.9rem;
+        color: var(--primary-color);
+      }
+
+      hr {
+        border-top: 1px solid var(--gray-2);
+      }
+    }
+  }
+
+  .card {
+    border: 1px solid var(--gray-3);
+    border-radius: 0;
+
+    .card-header {
+      border-top: 2px solid var(--purple-9);;
+      border-radius: 0;
+      color: var(--purple-9);
+      font-weight: 500;
+    }
+
+    .order-summary {
+      padding: 1rem;
+      background-color: var(--gray-2);
+      border-radius: 6px;
+    }
+
+    .order-items {
+      .list-group-item {
+        color: var(--purple-9);
+        border: none;
+        border-bottom: 1px solid var(--gray-2);
+        padding: 0.75rem 1rem;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+      }
+    }
+
+    .btn {
+      transition: all 0.2s;
+
+      &.btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      &.btn-outline-secondary:hover {
+        background-color: var(--gray-3);
+        color: var(--secondary-color);
+      }
     }
   }
 }
