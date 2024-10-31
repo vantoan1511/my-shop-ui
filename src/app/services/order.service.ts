@@ -32,4 +32,8 @@ export class OrderService {
     return this.http.get<Order>(`${this.BASE_URL}/orders/${orderId}`)
   }
 
+  cancelOrder(orderId: number) {
+    return this.http.patch(`${this.BASE_URL}/orders/${orderId}/cancel`, {})
+  }
+
 }

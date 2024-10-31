@@ -122,6 +122,15 @@
       color: var(--purple-9);
       font-size: 1.25rem;
     }
+
+    .product-slug {
+      text-decoration: none;
+      color: var(--purple-9) !important;
+
+      &:hover {
+        color: var(--purple-10) !important;
+      }
+    }
   }
 
   .order-card {

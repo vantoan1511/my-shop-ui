@@ -338,7 +338,10 @@
                       @for (item of orderDetails.get(selectedOrder.id); track $index) {
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                           <div>
-                            <strong>{{ item.productSlug }}</strong>
+                            <a [routerLink]="['/may-tinh-xach-tay', item.productSlug]"
+                               class="text-uppercase fw-bold text-muted product-slug">
+                              {{ item.productSlug }}
+                            </a>
                             <small class="text-muted d-block">{{ item.quantity }}
                               x {{ item.price | currency:"VND" }}</small>
                           </div>
@@ -349,12 +352,10 @@
                     </ul>
 
                     <div class="d-flex justify-content-end mt-4">
-                      <!--                      <button class="btn btn-outline-primary me-2" (click)="trackOrder(selectedOrder)">-->
-                      <!--                        {{ "Track Order" | translate }}-->
-                      <!--                      </button>-->
-                      <!--                      <button class="btn btn-outline-secondary" (click)="downloadInvoice(selectedOrder)">-->
-                      <!--                        {{ "Download Invoice" | translate }}-->
-                      <!--                      </button>-->
+                      <button class="btn cancel-order-btn me-2"
+                              (click)="cancelOrder(selectedOrder)">
+                        {{ "Cancel order" | translate }}
+                      </button>
                     </div>
                   </div>
                 </div>

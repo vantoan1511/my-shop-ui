@@ -81,6 +81,30 @@ export class UserComponent implements OnInit, OnDestroy {
     })
   }
 
+  cancelOrder(selectedOrder: Order | null) {
+    if (!selectedOrder) {
+      return
+    }
+
+    this.alertService.showConfirmationAlert('Confirm cancel order', 'Do you want to cancel this order?', 'warning', () => {
+      this.orderService.cancelOrder(selectedOrder.id).subscribe({
+        next: () => {
+          this.alertService.showSuccessToast('Canceled order successfully')
+          this.updateCanceledOrderStatus(selectedOrder);
+        },
+        error: () => this.alertService.showErrorToast('Can not cancel this order')
+      })
+    })
+  }
+
+  private updateCanceledOrderStatus(selectedOrder: Order) {
+    this.orders.forEach(order => {
+      if (order.id === selectedOrder.id) {
+        order.orderStatus = 'CANCELLED';
+      }
+    })
+  }
+
   private getUsername() {
     const username = this.route.snapshot.paramMap.get('username');
     return username ?? this.authService.username;
