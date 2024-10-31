@@ -14,7 +14,8 @@ import {PageRequest} from "../../types/page-request.type";
 import {Image} from "../../types/image.type";
 import {PagedResponse} from "../../types/response.type";
 import {CurrencyPipe, DatePipe} from "@angular/common";
-import {Order} from "../../types/createOrderRequest";
+import {Order, OrderDetail} from "../../types/createOrderRequest";
+import {OrderService} from "../../services/order.service";
 
 @Component({
   selector: 'app-user',
@@ -33,29 +34,13 @@ export class UserComponent implements OnInit, OnDestroy {
   uploaded: PagedResponse<Image> | null = null;
   private unsubscribe$ = new Subject<void>();
 
-  orders: Order[] = [
-    {
-      id: 123456,
-      createdAt: new Date().toString(),
-      modifiedAt: new Date().toString(),
-      orderStatus: 'COMPLETED',
-      totalAmount: 150.0,
-      paymentMethod: 'BANKING',
-      username: 'test',
-      shippingAddress: 'ABC 123'
-    },
-    {
-      id: 123456,
-      createdAt: new Date().toString(),
-      modifiedAt: new Date().toString(),
-      orderStatus: 'DECLINED',
-      totalAmount: 150.0,
-      paymentMethod: 'CASH',
-      username: 'test',
-      shippingAddress: 'ABC 123'
-    },
-  ];
+  orderResponse: PagedResponse<Order> | null = null;
+  orders: Order[] = [];
   selectedOrder: Order | null = null;
+  orderDetails: Map<number, OrderDetail[]> = new Map()
+
+  page = 0;
+  size = 20;
 
   constructor(
     private translate: TranslateService,
@@ -66,6 +51,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private validator: ValidationService,
     private imageService: ImageService,
+    private orderService: OrderService
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -81,12 +67,12 @@ export class UserComponent implements OnInit, OnDestroy {
     this.selectedOrder = order;
   }
 
-  trackOrder(order: Order | null) {
-    // Add tracking logic here
-  }
-
-  downloadInvoice(order: Order | null) {
-    // Add invoice download logic here
+  loadOrders() {
+    this.page = this.page + 1;
+    this.orderService.getOrders({page: this.page, size: this.size}, '').subscribe(orders => {
+      this.orderResponse = orders;
+      this.orders = [...this.orders, ...orders.items];
+    })
   }
 
   private getUsername() {

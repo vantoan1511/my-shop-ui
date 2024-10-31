@@ -25,7 +25,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#orders" data-bs-toggle="tab">
+            <a class="nav-link" href="#orders" data-bs-toggle="tab" (click)="loadOrders()">
               <i class="bi bi-journals me-2"></i>{{ "Orders" | translate }}
             </a>
           </li>
@@ -277,15 +277,14 @@
             <div class="col-lg-4 col-md-5">
               <ul class="list-group mb-4">
                 @for (order of orders; track $index) {
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <li class="list-group-item d-flex justify-content-between align-items-center"
+                      [class.active]="selectedOrder === order"
+                      (click)="viewOrderDetails(order)">
                     <div>
                       <h6 class="mb-1">#{{ order.id }}</h6>
-                      <small class="text-muted me-2">{{ order.createdAt | date }}</small>
-                      <span class="badge bg-primary mt-2">{{ order.orderStatus | translate }}</span>
+                      <small class="text-muted me-2">{{ order.createdAt | date:"HH:mm dd-MM-yyyy" }}</small>
                     </div>
-                    <button class="btn view-order-details-btn p-1" (click)="viewOrderDetails(order)">
-                      {{ "View Details" | translate }}
-                    </button>
+                    <span class="badge bg-primary mt-2">{{ order.orderStatus | translate }}</span>
                   </li>
                 }
               </ul>
@@ -296,51 +295,66 @@
               <div class="col-lg-8 col-md-7">
                 <div class="card shadow-sm">
                   <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5>{{ "Order Details" | translate }} - #{{ selectedOrder.id }}</h5>
-                    <button class="btn btn-outline-secondary btn-sm" (click)="selectedOrder = null">
-                      {{ "Back to Orders" | translate }}
+                    <h6 class="fs-5 fw-light text-muted">
+                      {{ "Order Summary" | translate }}  - #{{ selectedOrder.id }}
+                    </h6>
+                    <button class="btn close-detail-btn btn-sm" (click)="selectedOrder = null">
+                      <i class="bi bi-x-lg"></i>
                     </button>
                   </div>
 
                   <div class="card-body">
-                    <h6>{{ "Order Summary" | translate }}</h6>
                     <div class="row mb-3">
-                      <div class="col-md-4">
-                        <p class="mb-0"><strong>{{ "Order Date" | translate }}:</strong> {{ selectedOrder.createdAt | date }}
+                      <div class="col-md-6">
+                        <p class="mb-0">
+                          <span class="fw-light text-muted">{{ "Order Date" | translate }}:</span>
+                          {{ selectedOrder.createdAt | date:"HH:mm dd-MM-yyyy" }}
                         </p>
                       </div>
-                      <div class="col-md-4">
-                        <p class="mb-0"><strong>{{ "Total Amount" | translate }}
-                          :</strong> {{ selectedOrder.totalAmount | currency: "VND" }}</p>
+                      <div class="col-md-6">
+                        <p class="mb-0">
+                          <span class="fw-light text-muted">{{ "Total Amount" | translate }}:</span>
+                          {{ selectedOrder.totalAmount | currency: "VND" }}
+                        </p>
                       </div>
-                      <div class="col-md-4">
-                        <p class="mb-0"><strong>{{ "Status" | translate }}
-                          :</strong> {{ selectedOrder.orderStatus | translate }}</p>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <p class="mb-0">
+                          <span class="fw-light text-muted">{{ "Payment method" | translate }}:</span>
+                          {{ selectedOrder.paymentMethod }}
+                        </p>
+                      </div>
+                      <div class="col-md-6">
+                        <p class="mb-0 text-wrap">
+                          <span class="fw-light text-muted">{{ "Shipping address" | translate }}:</span>
+                          {{ selectedOrder.shippingAddress }}
+                        </p>
                       </div>
                     </div>
 
-                    <h6 class="mt-4">{{ "Items" | translate }}</h6>
+                    <hr/>
                     <ul class="list-group">
-<!--                      @for (item of selectedOrder.items; track $index) {-->
-<!--                        <li class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--                          <div>-->
-<!--                            <strong>{{ item.name }}</strong>-->
-<!--                            <small class="text-muted d-block">{{ item.quantity }}-->
-<!--                              x {{ item.price | currency:"VND" }}</small>-->
-<!--                          </div>-->
-<!--                          <span>{{ item.quantity * item.price | currency:"VND" }}</span>-->
-<!--                        </li>-->
-<!--                      }-->
+                      @for (item of orderDetails.get(selectedOrder.id); track $index) {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div>
+                            <strong>{{ item.productSlug }}</strong>
+                            <small class="text-muted d-block">{{ item.quantity }}
+                              x {{ item.price | currency:"VND" }}</small>
+                          </div>
+                          <span>{{ item.quantity * item.price | currency:"VND" }}</span>
+                        </li>
+                      }
 
                     </ul>
 
                     <div class="d-flex justify-content-end mt-4">
-                      <button class="btn btn-outline-primary me-2" (click)="trackOrder(selectedOrder)">
-                        {{ "Track Order" | translate }}
-                      </button>
-                      <button class="btn btn-outline-secondary" (click)="downloadInvoice(selectedOrder)">
-                        {{ "Download Invoice" | translate }}
-                      </button>
+                      <!--                      <button class="btn btn-outline-primary me-2" (click)="trackOrder(selectedOrder)">-->
+                      <!--                        {{ "Track Order" | translate }}-->
+                      <!--                      </button>-->
+                      <!--                      <button class="btn btn-outline-secondary" (click)="downloadInvoice(selectedOrder)">-->
+                      <!--                        {{ "Download Invoice" | translate }}-->
+                      <!--                      </button>-->
                     </div>
                   </div>
                 </div>
@@ -348,7 +362,11 @@
 
             }
           </div>
-
+          @if (orderResponse?.hasNext) {
+            <div class="text-center">
+              <button class="btn load-more-order-btn" (click)="loadOrders()">{{ 'Load more' | translate }}</button>
+            </div>
+          }
         </div>
       </div>
     </main>

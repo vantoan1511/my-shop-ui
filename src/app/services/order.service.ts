@@ -6,26 +6,26 @@ import {PageRequest} from "../types/page-request.type";
 import {PagedResponse} from "../types/response.type";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class OrderService {
 
-    protected BASE_URL = environment.ORDER_SERVICE_API;
+  protected BASE_URL = environment.ORDER_SERVICE_API;
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    createOrder(createOrderRequest: CreateOrderRequest) {
-        return this.http.post<Order>(`${this.BASE_URL}/orders`, createOrderRequest);
-    }
+  createOrder(createOrderRequest: CreateOrderRequest) {
+    return this.http.post<Order>(`${this.BASE_URL}/orders`, createOrderRequest);
+  }
 
-    getOrders(productSlug: string, pageRequest: PageRequest) {
-        return this.http.get<PagedResponse<Order>>(`${this.BASE_URL}/orders/`, {
-            params: {
-                productSlug,
-                ...pageRequest
-            }
-        })
-    }
+  getOrders(pageRequest: PageRequest, productSlug: string,) {
+    return this.http.get<PagedResponse<Order>>(`${this.BASE_URL}/orders/`, {
+      params: {
+        productSlug,
+        ...pageRequest
+      }
+    })
+  }
 
 }

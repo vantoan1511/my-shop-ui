@@ -68,9 +68,6 @@
 .gallery {
   height: 400px;
   overflow-y: auto;
-  //display: flex;
-  //flex-wrap: wrap;
-  //gap: 0.5rem;
 
   img {
     cursor: pointer;
@@ -86,8 +83,31 @@
 }
 
 #orders {
+
+  .active {
+    background-color: var(--purple-3);
+    border-color: var(--purple-9);
+    color: var(--purple-10);
+  }
+
   .bg-primary {
     background: var(--purple-9) !important;
+  }
+
+  .load-more-order-btn {
+    padding: 1rem;
+    border-radius: 0;
+    color: var(--purple-9);
+    border: 1px solid var(--purple-9);
+
+    &:hover {
+      background-color: var(--purple-3);
+    }
+
+    &:active {
+      color: var(--purple-10);
+      background-color: var(--purple-6);
+    }
   }
 
   .list-group-item {
@@ -100,7 +120,7 @@
 
     .view-order-details-btn {
       color: var(--purple-9);
-      border: 1px solid var(--purple-9);
+      font-size: 1.25rem;
     }
   }
 
@@ -137,6 +157,10 @@
       border-radius: 0;
       color: var(--purple-9);
       font-weight: 500;
+
+      .close-detail-btn {
+        color: var(--purple-9);
+      }
     }
 
     .order-summary {
