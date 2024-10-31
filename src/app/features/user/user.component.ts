@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet,} from '@angular/router';
-import {catchError, Subject, switchMap, takeUntil} from 'rxjs';
+import {catchError, map, Subject, switchMap, takeUntil} from 'rxjs';
 import {AlertService} from '../../services/alert.service';
 import {AuthenticationService} from '../../services/authentication.service';
 import {ImageService} from '../../services/image.service';
@@ -51,7 +51,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private validator: ValidationService,
     private imageService: ImageService,
-    private orderService: OrderService
+    private orderService: OrderService,
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -65,6 +65,12 @@ export class UserComponent implements OnInit, OnDestroy {
 
   viewOrderDetails(order: Order) {
     this.selectedOrder = order;
+
+    this.orderService.getOrderById(order.id).pipe(map(order => order.orderDetails ?? [])).subscribe({
+      next: (orderDetail) => {
+        this.orderDetails.set(order.id, orderDetail)
+      }
+    })
   }
 
   loadOrders() {

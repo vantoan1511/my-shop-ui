@@ -28,4 +28,8 @@ export class OrderService {
     })
   }
 
+  getOrderById(orderId: number) {
+    return this.http.get<Order>(`${this.BASE_URL}/orders/${orderId}`)
+  }
+
 }
