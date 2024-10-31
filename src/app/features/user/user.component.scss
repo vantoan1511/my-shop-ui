@@ -133,6 +133,16 @@
     }
   }
 
+  .cancel-order-btn {
+    border: none;
+    border-radius: 0;
+    background: var(--gray-3);
+
+    &:hover {
+      background: var(--gray-6);
+    }
+  }
+
   .order-card {
     border: 1px solid var(--gray-3);
     border-radius: 8px;

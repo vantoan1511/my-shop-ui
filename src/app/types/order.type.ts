@@ -1,6 +1,9 @@
 import {Cart} from "./cart.type";
 
-export interface CreateOrderRequest {
+export const allowedStatus = ['CREATED', 'ACCEPTED', 'PENDING', 'AWAITING_PICKUP', 'AWAITING_SHIP', 'SHIPPED']
+
+
+export interface OrderType {
   paymentMethod: 'CASH' | 'BANKING'
   shippingAddress: string
   items: Cart[]

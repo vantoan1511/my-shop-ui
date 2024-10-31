@@ -14,7 +14,7 @@ import {PageRequest} from "../../types/page-request.type";
 import {Image} from "../../types/image.type";
 import {PagedResponse} from "../../types/response.type";
 import {CurrencyPipe, DatePipe} from "@angular/common";
-import {Order, OrderDetail} from "../../types/createOrderRequest";
+import {allowedStatus, Order, OrderDetail} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 
 @Component({
@@ -86,6 +86,11 @@ export class UserComponent implements OnInit, OnDestroy {
       return
     }
 
+    if (!this.isAllowedToCancel(selectedOrder)) {
+      this.alertService.showErrorToast(`Cannot cancel ${selectedOrder.orderStatus} order`);
+      return
+    }
+
     this.alertService.showConfirmationAlert('Confirm cancel order', 'Do you want to cancel this order?', 'warning', () => {
       this.orderService.cancelOrder(selectedOrder.id).subscribe({
         next: () => {
@@ -95,6 +100,10 @@ export class UserComponent implements OnInit, OnDestroy {
         error: () => this.alertService.showErrorToast('Can not cancel this order')
       })
     })
+  }
+
+  isAllowedToCancel(selectedOrder: Order) {
+    return allowedStatus.some(status => selectedOrder.orderStatus === status);
   }
 
   private updateCanceledOrderStatus(selectedOrder: Order) {

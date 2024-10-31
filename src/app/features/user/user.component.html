@@ -352,10 +352,12 @@
                     </ul>
 
                     <div class="d-flex justify-content-end mt-4">
-                      <button class="btn cancel-order-btn me-2"
-                              (click)="cancelOrder(selectedOrder)">
-                        {{ "Cancel order" | translate }}
-                      </button>
+                      @if (selectedOrder && isAllowedToCancel(selectedOrder)) {
+                        <button class="btn cancel-order-btn me-2"
+                                (click)="cancelOrder(selectedOrder)">
+                          {{ "Cancel order" | translate }}
+                        </button>
+                      }
                     </div>
                   </div>
                 </div>

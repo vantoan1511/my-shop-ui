@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {CreateOrderRequest, Order} from "../types/createOrderRequest";
+import {OrderType, Order} from "../types/order.type";
 import {PageRequest} from "../types/page-request.type";
 import {PagedResponse} from "../types/response.type";
 
@@ -15,7 +15,7 @@ export class OrderService {
   constructor(private http: HttpClient) {
   }
 
-  createOrder(createOrderRequest: CreateOrderRequest) {
+  createOrder(createOrderRequest: OrderType) {
     return this.http.post<Order>(`${this.BASE_URL}/orders`, createOrderRequest);
   }
 

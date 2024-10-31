@@ -16,7 +16,7 @@ import {environment} from "../../../environments/environment";
 import {AuthenticationService} from "../../services/authentication.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../types/user.type";
-import {CreateOrderRequest} from "../../types/createOrderRequest";
+import {OrderType} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 
 @Component({
@@ -172,7 +172,7 @@ export class CartComponent implements OnInit {
     }
 
     placeOrder() {
-        const order: CreateOrderRequest = {
+        const order: OrderType = {
             shippingAddress: this.selectedAddress,
             paymentMethod: this.selectedPaymentMethod,
             items: this.cartItems
