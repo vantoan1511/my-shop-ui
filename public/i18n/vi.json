@@ -60,5 +60,7 @@
   "File size limit": "Giới hạn kích thước tệp tin",
   "Accepted format": "Định dạng hỗ trợ",
   "Or choose from uploaded": "Hoặc chọn từ ảnh tải lên",
-  "Your Orders": "ĐƠN HÀNG CỦA TÔI"
+  "Your Orders": "ĐƠN HÀNG CỦA TÔI",
+  "NO_ORDERS": "Bạn chưa có đơn hàng nào",
+  "SHOPPING_NOW": "Mua ngay"
 }

@@ -335,4 +335,5 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   protected readonly constant = constant;
+  protected readonly Array = Array;
 }

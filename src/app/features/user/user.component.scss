@@ -143,6 +143,17 @@
     }
   }
 
+  .shopping-now-btn {
+    border: none;
+    border-radius: 0;
+    background: var(--purple-9);
+    color: var(--purple-contrast);
+
+    &:hover {
+      background: var(--purple-10);
+    }
+  }
+
   .order-card {
     border: 1px solid var(--gray-3);
     border-radius: 8px;
