@@ -1,0 +1,51 @@
+.card {
+  border: none;
+  border-radius: 0;
+
+  .card-header {
+    border-bottom: none;
+    border-radius: 0;
+
+    &:first-child {
+      background: var(--purple-9);
+      color: var(--purple-contrast);
+    }
+  }
+
+  .card-body {
+    .table {
+      th {
+        font-weight: bold;
+        font-size: .85rem;
+        color: var(--gray-10);
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .card-footer {
+    border-top: none;
+  }
+}
+
+.skeleton-loader {
+  background: linear-gradient(
+      90deg,
+      var(--gray-2) 25%,
+      var(--gray-3) 50%,
+      var(--gray-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  height: 20px;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
