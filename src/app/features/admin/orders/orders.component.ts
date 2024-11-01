@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
 import {PagedResponse} from "../../../types/response.type";
-import {Order} from "../../../types/order.type";
+import {Order, ORDER_STATUS} from "../../../types/order.type";
 import {OrderService} from "../../../services/order.service";
 import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {Sort, SortField} from "../../../types/sort.type";
@@ -34,6 +34,7 @@ export class OrdersComponent implements OnInit {
   ascending = false;
 
   selectedOrder: Order | null = null;
+  selectedStatus = 'ALL'
 
   constructor(
     private translateService: TranslateService,
@@ -68,6 +69,12 @@ export class OrdersComponent implements OnInit {
     this.fetchOrders()
   }
 
+  onSelectStatus(status: string) {
+    this.selectedStatus = status
+    this.page = 1
+    this.fetchOrders()
+  }
+
   onClickOnOrder(selectedOrder: Order) {
     this.selectedOrder = selectedOrder;
   }
@@ -86,7 +93,8 @@ export class OrdersComponent implements OnInit {
     this.loading = true;
     const pageRequest = {page: this.page, size: this.size}
     const sort = {sortBy: this.sortBy, ascending: this.ascending}
-    this.orderService.getOrders('', pageRequest, sort).subscribe({
+    const filter = this.selectedStatus === 'ALL' ? {} : {status: this.selectedStatus}
+    this.orderService.getOrders(filter, pageRequest, sort).subscribe({
       next: orderResponse => {
         this.orderResponse = orderResponse;
         this.orders = orderResponse.items
@@ -99,4 +107,6 @@ export class OrdersComponent implements OnInit {
   protected readonly Array = Array;
   protected readonly sortableFields = SortField;
   protected readonly SortField = SortField;
+  protected readonly ORDER_STATUS = ORDER_STATUS;
+  protected readonly Object = Object;
 }

@@ -5,7 +5,18 @@
       <span class="fs-2 fw-medium">{{ 'ORDER_MANAGEMENT' | translate }}</span>
     </div>
 
-    <div class="card-header d-flex justify-content-end">
+    <div class="card-header d-flex justify-content-between">
+      <ul class="nav nav-underline text-uppercase">
+        <li class="nav-item" (click)="onSelectStatus('ALL')">
+          <a class="nav-link" [class.active]="selectedStatus==='ALL'">{{ 'ALL'| translate }}</a>
+        </li>
+        @for (status of Object.keys(ORDER_STATUS); track $index) {
+          <li class="nav-item"
+              (click)="onSelectStatus(status)">
+            <a class="nav-link" [class.active]="status===selectedStatus">{{ status| translate }}</a>
+          </li>
+        }
+      </ul>
       <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
     </div>
 
@@ -70,6 +81,9 @@
             }
           </tbody>
         </table>
+        @if (!orders || orders.length === 0) {
+          <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
+        }
       </div>
     </div>
 

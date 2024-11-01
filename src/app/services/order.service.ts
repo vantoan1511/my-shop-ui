@@ -20,10 +20,10 @@ export class OrderService {
     return this.http.post<Order>(`${this.BASE_URL}/orders`, createOrderRequest);
   }
 
-  getOrders(productSlug: string, pageRequest: PageRequest, sort: Sort) {
+  getOrders(filter: Filter, pageRequest: PageRequest, sort: Sort) {
     return this.http.get<PagedResponse<Order>>(`${this.BASE_URL}/orders/`, {
       params: {
-        productSlug,
+        ...filter,
         ...pageRequest,
         ...sort
       }
@@ -38,4 +38,10 @@ export class OrderService {
     return this.http.patch(`${this.BASE_URL}/orders/${orderId}/cancel`, {})
   }
 
+}
+
+export interface Filter {
+  keyword?: string;
+  status?: string;
+  productSlug?: string;
 }

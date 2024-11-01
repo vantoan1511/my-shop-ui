@@ -6,6 +6,15 @@
     border-bottom: none;
     border-radius: 0;
 
+    .nav-link {
+      color: var(--gray-9);
+      cursor: pointer;
+
+      &.active {
+        color: var(--purple-9);
+      }
+    }
+
     &:first-child {
       background: var(--purple-9);
       color: var(--purple-contrast);

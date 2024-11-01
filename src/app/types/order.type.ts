@@ -1,6 +1,19 @@
 import {Cart} from "./cart.type";
 
-export const allowedStatus = ['CREATED', 'ACCEPTED', 'PENDING', 'AWAITING_PICKUP', 'AWAITING_SHIP', 'SHIPPED']
+export enum ORDER_STATUS {
+  'CREATED' = 'CREATED',
+  'PENDING' = 'PENDING',
+  'ACCEPTED' = 'ACCEPTED',
+  'DECLINED' = 'DECLINED',
+  'AWAITING_PICKUP' = 'AWAITING_PICKUP',
+  'AWAITING_SHIPPING' = 'AWAITING_SHIPPING',
+  'SHIPPED' = 'SHIPPED',
+  'COMPLETED' = 'COMPLETED',
+  'CANCELED' = 'CANCELED',
+  'REFUNDED' = 'REFUNDED',
+}
+
+export const allowedCanceledStatus = ['CREATED', 'ACCEPTED', 'PENDING', 'AWAITING_PICKUP', 'AWAITING_SHIPPING', 'SHIPPED']
 
 
 export interface OrderType {
