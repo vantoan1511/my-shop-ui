@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {OrderType, Order} from "../types/order.type";
+import {Order, OrderType} from "../types/order.type";
 import {PageRequest} from "../types/page-request.type";
 import {PagedResponse} from "../types/response.type";
+import {Sort} from "../types/sort.type";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,12 @@ export class OrderService {
     return this.http.post<Order>(`${this.BASE_URL}/orders`, createOrderRequest);
   }
 
-  getOrders(pageRequest: PageRequest, productSlug: string,) {
+  getOrders(productSlug: string, pageRequest: PageRequest, sort: Sort) {
     return this.http.get<PagedResponse<Order>>(`${this.BASE_URL}/orders/`, {
       params: {
         productSlug,
-        ...pageRequest
+        ...pageRequest,
+        ...sort
       }
     })
   }

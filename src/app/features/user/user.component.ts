@@ -75,7 +75,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   loadOrders() {
     this.page = this.page + 1;
-    this.orderService.getOrders({page: this.page, size: this.size}, '').subscribe(orders => {
+    this.orderService.getOrders('', {page: this.page, size: this.size}, {}).subscribe(orders => {
       this.orderResponse = orders;
       this.orders = [...this.orders, ...orders.items];
     })

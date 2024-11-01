@@ -1,34 +1,102 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
 import {PagedResponse} from "../../../types/response.type";
 import {Order} from "../../../types/order.type";
+import {OrderService} from "../../../services/order.service";
+import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
+import {Sort, SortField} from "../../../types/sort.type";
+import {SortableDirective} from "../../../directives/sortable.directive";
 
 @Component({
   selector: 'app-orders',
   standalone: true,
   imports: [
     TranslateModule,
-    DataTableFooterComponent
+    DataTableFooterComponent,
+    CurrencyPipe,
+    DatePipe,
+    NgTemplateOutlet,
+    NgClass,
+    SortableDirective
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
 
   loading = true
   orderResponse: PagedResponse<Order> | null = null;
+  orders: Order[] = []
+  page = 0;
+  size = 20;
+  sortBy = SortField.CREATED_AT
+  ascending = false;
 
-  constructor(private translateService: TranslateService) {
+  selectedOrder: Order | null = null;
+
+  constructor(
+    private translateService: TranslateService,
+    private orderService: OrderService) {
     translateService.setDefaultLang("vi");
   }
 
-  onPageChange(pageChange: 'next' | 'previous') {
+  ngOnInit(): void {
+    this.fetchOrdersNext();
+  }
 
+  onPageChange(pageChange: 'next' | 'previous') {
+    if (pageChange === 'next') {
+      this.fetchOrdersNext()
+    } else {
+      this.fetchOrdersPrevious();
+    }
   }
 
   onPageSizeChange(sizeChange: number) {
+    this.size = sizeChange;
+    this.fetchOrders();
+  }
+
+  onSortChange(sort: Sort) {
+    if (sort.sortBy) {
+      this.sortBy = sort.sortBy;
+    }
+
+    this.ascending = sort.ascending ?? this.ascending;
+
+    this.fetchOrders()
+  }
+
+  onClickOnOrder(selectedOrder: Order) {
+    this.selectedOrder = selectedOrder;
+  }
+
+  fetchOrdersNext() {
+    this.page = this.page + 1
+    this.fetchOrders();
+  }
+
+  fetchOrdersPrevious() {
+    this.page = this.page - 1
+    this.fetchOrders();
+  }
+
+  fetchOrders() {
+    this.loading = true;
+    const pageRequest = {page: this.page, size: this.size}
+    const sort = {sortBy: this.sortBy, ascending: this.ascending}
+    this.orderService.getOrders('', pageRequest, sort).subscribe({
+      next: orderResponse => {
+        this.orderResponse = orderResponse;
+        this.orders = orderResponse.items
+        this.loading = false;
+      },
+      error: () => this.loading = false
+    })
   }
 
   protected readonly Array = Array;
+  protected readonly sortableFields = SortField;
+  protected readonly SortField = SortField;
 }

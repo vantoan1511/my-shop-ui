@@ -14,11 +14,33 @@
 
   .card-body {
     .table {
+
       th {
         font-weight: bold;
         font-size: .85rem;
         color: var(--gray-10);
         text-transform: uppercase;
+      }
+
+      tbody {
+        td {
+          line-height: 1.75rem;
+          cursor: pointer;
+        }
+      }
+
+      .active {
+        border-bottom: 2px solid var(--purple-9);
+
+        td {
+          background: var(--purple-3);
+          color: var(--purple-10) !important;
+          font-weight: bold;
+        }
+      }
+
+      .badge {
+        background: var(--purple-9);
       }
     }
   }
@@ -37,7 +59,7 @@
   );
   background-size: 200% 100%;
   animation: loading 1.5s infinite;
-  height: 20px;
+  height: 2rem;
   border-radius: 4px;
 }
 
