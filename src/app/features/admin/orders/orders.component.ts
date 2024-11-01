@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
 import {PagedResponse} from "../../../types/response.type";
-import {Order, ORDER_STATUS} from "../../../types/order.type";
+import {Order, ORDER_STATUS, OrderDetail} from "../../../types/order.type";
 import {OrderService} from "../../../services/order.service";
 import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {Sort, SortField} from "../../../types/sort.type";
@@ -10,6 +10,7 @@ import {SortableDirective} from "../../../directives/sortable.directive";
 import {TruncatePipe} from "../../../shared/pipes/truncate.pipe";
 import {FormsModule} from "@angular/forms";
 import {AlertService} from "../../../services/alert.service";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-orders',
@@ -23,7 +24,8 @@ import {AlertService} from "../../../services/alert.service";
     NgClass,
     SortableDirective,
     TruncatePipe,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
@@ -33,6 +35,7 @@ export class OrdersComponent implements OnInit {
   loading = true
   orderResponse: PagedResponse<Order> | null = null;
   orders: Order[] = []
+  orderDetails: Map<number, OrderDetail[]> = new Map()
   page = 0;
   size = 20;
   sortBy = SortField.CREATED_AT
@@ -86,6 +89,7 @@ export class OrdersComponent implements OnInit {
   onClickOnOrder(selectedOrder: Order) {
     this.selectedOrder = selectedOrder;
     this.selectedOrderStatus = selectedOrder.orderStatus;
+    this.fetchOrderDetails(selectedOrder.id)
   }
 
   onChangeOrderStatus(status: string | null = null) {
@@ -127,6 +131,15 @@ export class OrdersComponent implements OnInit {
         this.loading = false;
       },
       error: () => this.loading = false
+    })
+  }
+
+  fetchOrderDetails(orderId: number) {
+    this.orderService.getOrderById(orderId).subscribe({
+      next: (order) => {
+        const orderDetails = order.orderDetails ?? []
+        this.orderDetails.set(orderId, [...orderDetails])
+      }
     })
   }
 

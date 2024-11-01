@@ -108,25 +108,25 @@
             </div>
           </div>
           <div class="card-body">
-            <div class="row">
+            <div class="row mb-3">
               <div class="col-4">
                 <span class="fw-light text-muted">{{ 'TOTAL_AMOUNT' | translate }}</span>
               </div>
               <div class="col-8">{{ selectedOrder.totalAmount | currency:"VND" }}</div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
               <div class="col-4">
                 <span class="fw-light text-muted">{{ 'PAYMENT_METHOD' | translate }}</span>
               </div>
               <div class="col-8">{{ selectedOrder.paymentMethod | translate }}</div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
               <div class="col-4">
                 <span class="fw-light text-muted">{{ 'ORDER_DATE' | translate }}</span>
               </div>
               <div class="col-8">{{ selectedOrder.createdAt | date:"HH:mm dd-MM-yyyy" }}</div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
               <div class="col-4">
                 <span class="fw-light text-muted">{{ 'ORDER_STATUS' | translate }}</span>
               </div>
@@ -146,7 +146,22 @@
             </div>
           </div>
           <div class="card-body">
-
+            <ul class="list-group">
+              @for (item of orderDetails.get(selectedOrder.id); track $index) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <a [routerLink]="['/may-tinh-xach-tay', item.productSlug]"
+                       class="text-uppercase fw-bold text-muted product-slug">
+                      {{ item.productSlug }}
+                    </a>
+                    <small class="text-muted d-block">
+                      {{ item.quantity }} x {{ item.price | currency:"VND" }}
+                    </small>
+                  </div>
+                  <span>{{ item.quantity * item.price | currency:"VND" }}</span>
+                </li>
+              }
+            </ul>
           </div>
         </div>
       </div>
