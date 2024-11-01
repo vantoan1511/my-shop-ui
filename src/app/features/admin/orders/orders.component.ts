@@ -8,6 +8,8 @@ import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common
 import {Sort, SortField} from "../../../types/sort.type";
 import {SortableDirective} from "../../../directives/sortable.directive";
 import {TruncatePipe} from "../../../shared/pipes/truncate.pipe";
+import {FormsModule} from "@angular/forms";
+import {AlertService} from "../../../services/alert.service";
 
 @Component({
   selector: 'app-orders',
@@ -20,7 +22,8 @@ import {TruncatePipe} from "../../../shared/pipes/truncate.pipe";
     NgTemplateOutlet,
     NgClass,
     SortableDirective,
-    TruncatePipe
+    TruncatePipe,
+    FormsModule
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
@@ -36,11 +39,14 @@ export class OrdersComponent implements OnInit {
   ascending = false;
 
   selectedOrder: Order | null = null;
+  selectedOrderStatus: string | null = null;
   selectedStatus = 'ALL'
 
   constructor(
     private translateService: TranslateService,
-    private orderService: OrderService) {
+    private orderService: OrderService,
+    private alertService: AlertService,
+  ) {
     translateService.setDefaultLang("vi");
   }
 
@@ -79,7 +85,25 @@ export class OrdersComponent implements OnInit {
 
   onClickOnOrder(selectedOrder: Order) {
     this.selectedOrder = selectedOrder;
+    this.selectedOrderStatus = selectedOrder.orderStatus;
   }
+
+  onChangeOrderStatus(status: string | null = null) {
+    if (status && this.selectedOrder) {
+      this.orderService.changeOrderStatus(status, this.selectedOrder?.id).subscribe({
+        next: () => {
+          this.alertService.showSuccessToast("Updated order status successfully")
+          if (this.selectedOrder) {
+            this.selectedOrder.orderStatus = status
+          }
+        },
+        error: () => {
+          this.alertService.showErrorToast("Failed to update order status")
+        }
+      })
+    }
+  }
+
 
   fetchOrdersNext() {
     this.page = this.page + 1
@@ -111,4 +135,5 @@ export class OrdersComponent implements OnInit {
   protected readonly SortField = SortField;
   protected readonly ORDER_STATUS = ORDER_STATUS;
   protected readonly Object = Object;
+  protected readonly console = console;
 }

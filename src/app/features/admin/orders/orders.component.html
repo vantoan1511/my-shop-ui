@@ -95,8 +95,61 @@
       </div>
 
     </div>
+
     @if (selectedOrder) {
-      <div class="col-4"></div>
+      <div id="selected-order" class="col-4">
+        <div class="card shadow-sm">
+          <div class="card-header py-3">
+            <div class="d-flex justify-content-between fs-2 fw-medium">
+              <span>{{ ('ORDER' | translate) + ' - #' + selectedOrder.id }}</span>
+              <button class="btn" (click)="selectedOrder=null">
+                <span class="fs-5 fw-medium"><i class="bi bi-x-lg"></i></span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'TOTAL_AMOUNT' | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedOrder.totalAmount | currency:"VND" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'PAYMENT_METHOD' | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedOrder.paymentMethod | translate }}</div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'ORDER_DATE' | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedOrder.createdAt | date:"HH:mm dd-MM-yyyy" }}</div>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'ORDER_STATUS' | translate }}</span>
+              </div>
+              <div class="col-auto">
+                <select [(ngModel)]="selectedOrderStatus" class="form-select">
+                  @for (status of Object.keys(ORDER_STATUS); track $index) {
+                    <option [value]="status"
+                            [disabled]="status===selectedOrder.orderStatus">
+                      {{ status | translate }}
+                    </option>
+                  }
+                </select>
+              </div>
+              <div class="col-1">
+                <button class="btn" (click)="onChangeOrderStatus(selectedOrderStatus)">{{ 'SAVE' | translate }}</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
     }
   </div>
 

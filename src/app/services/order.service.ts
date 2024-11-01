@@ -38,6 +38,12 @@ export class OrderService {
     return this.http.patch(`${this.BASE_URL}/orders/${orderId}/cancel`, {})
   }
 
+  changeOrderStatus(status: string, orderId: number) {
+    return this.http.patch(`${this.BASE_URL}/orders/${orderId}`, {
+      status,
+    })
+  }
+
 }
 
 export interface Filter {
