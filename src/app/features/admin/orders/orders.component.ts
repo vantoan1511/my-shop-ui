@@ -7,6 +7,7 @@ import {OrderService} from "../../../services/order.service";
 import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {Sort, SortField} from "../../../types/sort.type";
 import {SortableDirective} from "../../../directives/sortable.directive";
+import {TruncatePipe} from "../../../shared/pipes/truncate.pipe";
 
 @Component({
   selector: 'app-orders',
@@ -18,7 +19,8 @@ import {SortableDirective} from "../../../directives/sortable.directive";
     DatePipe,
     NgTemplateOutlet,
     NgClass,
-    SortableDirective
+    SortableDirective,
+    TruncatePipe
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'

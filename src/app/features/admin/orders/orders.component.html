@@ -1,95 +1,103 @@
 <div class="container-fluid my-5">
 
-  <div class="card shadow-sm">
-    <div class="card-header py-3">
-      <span class="fs-2 fw-medium">{{ 'ORDER_MANAGEMENT' | translate }}</span>
-    </div>
+  <div class="row">
+    <div class="col">
+      <div class="card shadow-sm">
+        <div class="card-header py-3">
+          <span class="fs-2 fw-medium">{{ 'ORDER_MANAGEMENT' | translate }}</span>
+        </div>
 
-    <div class="card-header d-flex justify-content-between">
-      <ul class="nav nav-underline text-uppercase">
-        <li class="nav-item" (click)="onSelectStatus('ALL')">
-          <a class="nav-link" [class.active]="selectedStatus==='ALL'">{{ 'ALL'| translate }}</a>
-        </li>
-        @for (status of Object.keys(ORDER_STATUS); track $index) {
-          <li class="nav-item"
-              (click)="onSelectStatus(status)">
-            <a class="nav-link" [class.active]="status===selectedStatus">{{ status| translate }}</a>
-          </li>
-        }
-      </ul>
-      <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
-    </div>
-
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-          <tr>
-            <th class="col-auto">#ID</th>
-            <th class="col-md-2">
-              {{ 'TOTAL_AMOUNT' | translate }}
-            </th>
-            <th class="col-md-1"
-                appSortable
-                [sortField]="SortField.STATUS"
-                (sortChange)="onSortChange($event)">
-              {{ 'ORDER_STATUS' | translate }}
-            </th>
-            <th class="col-md-1">{{ 'PAYMENT_METHOD' | translate }}</th>
-            <th class="col-md-2"
-                appSortable
-                [sortField]="SortField.CREATED_AT"
-                (sortChange)="onSortChange($event)">
-              {{ 'ORDER_DATE' | translate }}
-            </th>
-            <th class="col-md-2"
-                appSortable
-                [sortField]="sortableFields.USERNAME"
-                (sortChange)="onSortChange($event)">
-              {{ 'CUSTOMER' | translate }}
-            </th>
-            <th class="col-md-4">{{ 'SHIPPING_ADDRESS' | translate }}</th>
-          </tr>
-          </thead>
-          <tbody>
-            @if (loading) {
-              @for (row of Array(10); track $index) {
-                <tr>
-                  @for (col of Array(8); track $index) {
-                    <td>
-                      <div class="skeleton-loader"></div>
-                    </td>
-                  }
-                </tr>
-              }
-            } @else {
-              @for (order of orders; track order.id) {
-                <tr [class.active]="selectedOrder?.id===order.id" (click)="onClickOnOrder(order)">
-                  <td>{{ order.id }}</td>
-                  <td>{{ order.totalAmount | currency:"VND" }}</td>
-                  <td>
-                    <span class="badge">
-                      {{ order.orderStatus }}
-                    </span>
-                  </td>
-                  <td>{{ order.paymentMethod }}</td>
-                  <td>{{ order.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
-                  <td>{{ order.username }}</td>
-                  <td>{{ order.shippingAddress }}</td>
-                </tr>
-              }
+        <div class="card-header d-flex justify-content-between">
+          <ul class="nav nav-underline text-uppercase">
+            <li class="nav-item" (click)="onSelectStatus('ALL')">
+              <a class="nav-link" [class.active]="selectedStatus==='ALL'">{{ 'ALL'| translate }}</a>
+            </li>
+            @for (status of Object.keys(ORDER_STATUS); track $index) {
+              <li class="nav-item"
+                  (click)="onSelectStatus(status)">
+                <a class="nav-link" [class.active]="status===selectedStatus">{{ status| translate }}</a>
+              </li>
             }
-          </tbody>
-        </table>
-        @if (!orders || orders.length === 0) {
-          <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
-        }
-      </div>
-    </div>
+          </ul>
+          <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+        </div>
 
-    <div class="card-footer d-flex justify-content-end">
-      <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+              <tr>
+                <th class="col-auto">#ID</th>
+                <th class="col-md-2">
+                  {{ 'TOTAL_AMOUNT' | translate }}
+                </th>
+                <th class="col-md-1"
+                    appSortable
+                    [sortField]="SortField.STATUS"
+                    (sortChange)="onSortChange($event)">
+                  {{ 'ORDER_STATUS' | translate }}
+                </th>
+                <th class="col-md-1">{{ 'PAYMENT_METHOD' | translate }}</th>
+                <th class="col-md-2"
+                    appSortable
+                    [sortField]="SortField.CREATED_AT"
+                    (sortChange)="onSortChange($event)">
+                  {{ 'ORDER_DATE' | translate }}
+                </th>
+                <th class="col-md-2"
+                    appSortable
+                    [sortField]="sortableFields.USERNAME"
+                    (sortChange)="onSortChange($event)">
+                  {{ 'CUSTOMER' | translate }}
+                </th>
+                <th class="col-md-4">{{ 'SHIPPING_ADDRESS' | translate }}</th>
+              </tr>
+              </thead>
+              <tbody>
+                @if (loading) {
+                  @for (row of Array(10); track $index) {
+                    <tr>
+                      @for (col of Array(8); track $index) {
+                        <td>
+                          <div class="skeleton-loader"></div>
+                        </td>
+                      }
+                    </tr>
+                  }
+                } @else {
+                  @for (order of orders; track order.id) {
+                    <tr [class.active]="selectedOrder?.id===order.id" (click)="onClickOnOrder(order)">
+                      <td>{{ order.id }}</td>
+                      <td>{{ order.totalAmount | currency:"VND" }}</td>
+                      <td>
+                        <span class="badge">
+                          {{ order.orderStatus }}
+                        </span>
+                      </td>
+                      <td>{{ order.paymentMethod }}</td>
+                      <td>{{ order.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
+                      <td>{{ order.username }}</td>
+                      <td><span class="shipping-address">{{ order.shippingAddress }}</span></td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+            @if (!orders || orders.length === 0) {
+              <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
+            }
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end">
+          <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+        </div>
+      </div>
+
     </div>
+    @if (selectedOrder) {
+      <div class="col-4"></div>
+    }
   </div>
 
 </div>

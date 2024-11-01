@@ -35,6 +35,15 @@
         td {
           line-height: 1.75rem;
           cursor: pointer;
+
+          .shipping-address {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 2;
+            max-height: calc(2em * 1);
+          }
         }
       }
 
