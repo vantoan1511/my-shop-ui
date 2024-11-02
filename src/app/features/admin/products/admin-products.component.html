@@ -1,161 +1,161 @@
 <main class="container-fluid my-5">
-    <div class="card border-0 shadow">
-        <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
-            <h2 class="mb-0 text-white">Products</h2>
-        </div>
-
-        <div class="card-footer border-0 d-flex align-items-center justify-content-between">
-            <app-list-controls (refreshButtonClick)="onRefreshButtonClick()"
-                               (deleteButtonClick)="onDeleteSelected()">
-            </app-list-controls>
-            <app-pagination [pageRequest]="pageRequest"
-                            [items]="products"
-                            [loading]="loading"
-                            (pageChange)="onPageChange($event)"
-                            (pageSizeChange)="onPageSizeChange($event)">
-            </app-pagination>
-        </div>
-
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead>
-                    <tr>
-                        <th>
-                            <input id="selectAll"
-                                   type="checkbox"
-                                   class="form-check-input custom-checkbox"
-                                   (change)="onSelectAll($event)"/>
-                        </th>
-                        <th style="width: 5%">ID</th>
-                        <th style="width: 20%"
-                            appSortable
-                            [sortField]="sortableFields.NAME"
-                            (sortChange)="onSortChange($event)">
-                            Name
-                        </th>
-                        <th style="width: 20%"
-                            appSortable
-                            [sortField]="sortableFields.SLUG"
-                            (sortChange)="onSortChange($event)">
-                            Slug
-                        </th>
-                        <th style="width: 5%"
-                            appSortable
-                            [sortField]="sortableFields.FIRST_NAME"
-                            (sortChange)="onSortChange($event)">
-                            Status
-                        </th>
-                        <th style="width: 10%"
-                            appSortable
-                            [sortField]="sortableFields.BASE_PRICE"
-                            (sortChange)="onSortChange($event)">
-                            Base price
-                        </th>
-                        <th style="width: 10%"
-                            appSortable
-                            [sortField]="sortableFields.SALE_PRICE"
-                            (sortChange)="onSortChange($event)">
-                            Sale price
-                        </th>
-                        <th style="width: 10%"
-                            appSortable
-                            [sortField]="sortableFields.STOCK_QUANTITY"
-                            (sortChange)="onSortChange($event)">
-                            Stock
-                        </th>
-                        <th style="width: 10%"
-                            appSortable
-                            [sortField]="sortableFields.VIEW_COUNT"
-                            (sortChange)="onSortChange($event)">
-                            View count
-                        </th>
-                        <th style="width: 10%"
-                            appSortable
-                            [sortField]="sortableFields.CREATED_AT"
-                            (sortChange)="onSortChange($event)">
-                            Created at
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @if (loading) {
-                            @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track
-                                item) {
-                                <tr class="skeleton-row">
-                                    <td>
-                                        <input type="checkbox"
-                                               class="form-check-input custom-checkbox"/>
-                                    </td>
-                                    <td>
-                                        <div class="skeleton-loader" style="width: 30px"></div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="skeleton-loader rounded-circle me-3"
-                                                 style="width: 40px; height: 40px">
-                                            </div>
-                                            <div class="skeleton-loader" style="width: 100px"></div>
-                                        </div>
-                                    </td>
-                                    @for (col of [1, 2, 3, 4, 5, 6, 7]; track $index) {
-                                        <td>
-                                            <div class="skeleton-loader" style="width: 60px"></div>
-                                        </td>
-                                    }
-                                </tr>
-                            }
-                        } @else {
-                            @for (product of products?.items; track $index) {
-                                <tr>
-                                    <td>
-                                        <input [id]="product.id"
-                                               type="checkbox"
-                                               class="form-check-input custom-checkbox"
-                                               (change)="onSelect()"/>
-                                    </td>
-                                    <td>{{ product.id }}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://via.placeholder.com/50"
-                                                 alt="Product image"
-                                                 width="40"
-                                                 height="40"
-                                                 class="me-3 user-avatar"/>
-                                            <a [routerLink]="['.', product.slug]"
-                                               class="user-link text-decoration-none fw-bold">
-                                                {{ product.name }}
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>{{ product.slug }}</td>
-                                    <td>
-                                        <span class="badge"
-                                              [class.inactive-badge]="!product.active"
-                                              [class.active-badge]="product.active">
-                                            {{ product.active ? 'Active' : 'Inactive' }}
-                                        </span>
-                                    </td>
-                                    <td>{{ product.basePrice | currency:"VND" }}</td>
-                                    <td>{{ product.salePrice | currency:"VND" }}</td>
-                                    <td>{{ product.stockQuantity }}</td>
-                                    <td>{{ product.viewCount }}</td>
-                                    <td>{{ product.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="card-footer border-0 d-flex justify-content-end">
-            <app-pagination
-                    [pageRequest]="pageRequest"
-                    [items]="products"
-                    (pageChange)="onPageChange($event)"
-                    (pageSizeChange)="onPageSizeChange($event)"
-            ></app-pagination>
-        </div>
+  <div class="card border-0 shadow">
+    <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
+      <h2 class="mb-0 text-white">Products</h2>
     </div>
+
+    <div class="card-footer border-0 d-flex align-items-center justify-content-between">
+      <app-list-controls (refreshButtonClick)="onRefreshButtonClick()"
+                         (deleteButtonClick)="onDeleteSelected()">
+      </app-list-controls>
+      <app-pagination [pageRequest]="pageRequest"
+                      [items]="productResponse"
+                      [loading]="loading"
+                      (pageChange)="onPageChange($event)"
+                      (pageSizeChange)="onPageSizeChange($event)">
+      </app-pagination>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+          <tr>
+            <th>
+              <input id="selectAll"
+                     type="checkbox"
+                     class="form-check-input custom-checkbox"
+                     (change)="onSelectAll($event)"/>
+            </th>
+            <th style="width: 5%">ID</th>
+            <th style="width: 20%"
+                appSortable
+                [sortField]="sortableFields.NAME"
+                (sortChange)="onSortChange($event)">
+              Name
+            </th>
+            <th style="width: 20%"
+                appSortable
+                [sortField]="sortableFields.SLUG"
+                (sortChange)="onSortChange($event)">
+              Slug
+            </th>
+            <th style="width: 5%"
+                appSortable
+                [sortField]="sortableFields.FIRST_NAME"
+                (sortChange)="onSortChange($event)">
+              Status
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.BASE_PRICE"
+                (sortChange)="onSortChange($event)">
+              Base price
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.SALE_PRICE"
+                (sortChange)="onSortChange($event)">
+              Sale price
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.STOCK_QUANTITY"
+                (sortChange)="onSortChange($event)">
+              Stock
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.VIEW_COUNT"
+                (sortChange)="onSortChange($event)">
+              View count
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.CREATED_AT"
+                (sortChange)="onSortChange($event)">
+              Created at
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            @if (loading) {
+              @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track
+                item) {
+                <tr class="skeleton-row">
+                  <td>
+                    <input type="checkbox"
+                           class="form-check-input custom-checkbox"/>
+                  </td>
+                  <td>
+                    <div class="skeleton-loader" style="width: 30px"></div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="skeleton-loader rounded-circle me-3"
+                           style="width: 40px; height: 40px">
+                      </div>
+                      <div class="skeleton-loader" style="width: 100px"></div>
+                    </div>
+                  </td>
+                  @for (col of Array(7); track $index) {
+                    <td>
+                      <div class="skeleton-loader" style="width: 60px"></div>
+                    </td>
+                  }
+                </tr>
+              }
+            } @else {
+              @for (product of products; track $index) {
+                <tr>
+                  <td>
+                    <input [id]="product.id"
+                           type="checkbox"
+                           class="form-check-input custom-checkbox"
+                           (change)="onSelect()"/>
+                  </td>
+                  <td>{{ product.id }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img [src]="productImage.get(product.id) ?? constant.defaultThumbnail"
+                           alt="Product image"
+                           width="40"
+                           height="40"
+                           class="me-3 user-avatar"/>
+                      <a [routerLink]="['.', product.slug]"
+                         class="user-link text-decoration-none fw-bold">
+                        {{ product.name }}
+                      </a>
+                    </div>
+                  </td>
+                  <td>{{ product.slug }}</td>
+                  <td>
+                    <span class="badge"
+                          [class.inactive-badge]="!product.active"
+                          [class.active-badge]="product.active">
+                        {{ product.active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </td>
+                  <td>{{ product.basePrice | currency:"VND" }}</td>
+                  <td>{{ product.salePrice | currency:"VND" }}</td>
+                  <td>{{ product.stockQuantity }}</td>
+                  <td>{{ product.viewCount }}</td>
+                  <td>{{ product.createdAt | date : "HH:mm dd-MM-yyyy" }}</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer border-0 d-flex justify-content-end">
+      <app-pagination
+        [pageRequest]="pageRequest"
+        [items]="productResponse"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
 </main>
