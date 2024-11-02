@@ -65,6 +65,16 @@
         background: var(--purple-9);
       }
     }
+
+    .save-status-btn {
+      border-radius: 0;
+      background: var(--purple-9);
+      color: var(--purple-contrast);
+
+      &:hover {
+        background: var(--purple-10);
+      }
+    }
   }
 
   .card-footer {

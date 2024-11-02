@@ -97,7 +97,7 @@
     </div>
 
     @if (selectedOrder) {
-      <div id="selected-order" class="col-4">
+      <div id="selected-order" class="col-lg-4 col-md-12">
         <div class="card shadow-sm">
           <div class="card-header py-3">
             <div class="d-flex justify-content-between fs-2 fw-medium">
@@ -108,6 +108,12 @@
             </div>
           </div>
           <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'CUSTOMER' | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedOrder.username }}</div>
+            </div>
             <div class="row mb-3">
               <div class="col-4">
                 <span class="fw-light text-muted">{{ 'TOTAL_AMOUNT' | translate }}</span>
@@ -141,8 +147,18 @@
                 </select>
               </div>
               <div class="col-1">
-                <button class="btn" (click)="onChangeOrderStatus(selectedOrderStatus)">{{ 'SAVE' | translate }}</button>
+                <button class="btn save-status-btn"
+                        [disabled]="selectedOrderStatus === selectedOrder.orderStatus"
+                        (click)="onChangeOrderStatus(selectedOrderStatus)">
+                  {{ 'SAVE' | translate }}
+                </button>
               </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ 'SHIPPING_ADDRESS' | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedOrder.shippingAddress }}</div>
             </div>
           </div>
           <div class="card-body">
@@ -150,8 +166,7 @@
               @for (item of orderDetails.get(selectedOrder.id); track $index) {
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                   <div>
-                    <a [routerLink]="['/may-tinh-xach-tay', item.productSlug]"
-                       class="text-uppercase fw-bold text-muted product-slug">
+                    <a class="text-uppercase fw-bold text-muted product-slug">
                       {{ item.productSlug }}
                     </a>
                     <small class="text-muted d-block">
