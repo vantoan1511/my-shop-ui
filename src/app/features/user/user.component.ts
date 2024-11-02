@@ -14,7 +14,7 @@ import {PageRequest} from "../../types/page-request.type";
 import {Image} from "../../types/image.type";
 import {PagedResponse} from "../../types/response.type";
 import {CurrencyPipe, DatePipe} from "@angular/common";
-import {allowedCanceledStatus, Order, OrderDetail} from "../../types/order.type";
+import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 
 @Component({
@@ -103,7 +103,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   isAllowedToCancel(selectedOrder: Order) {
-    return allowedCanceledStatus.some(status => selectedOrder.orderStatus === status);
+    const allowedTransition = StatusTransition.get(OrderStatus.CANCELED)
+    return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
   }
 
   private updateCanceledOrderStatus(selectedOrder: Order) {

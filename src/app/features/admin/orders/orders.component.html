@@ -140,7 +140,7 @@
                 <select [(ngModel)]="selectedOrderStatus" class="form-select">
                   @for (status of Object.keys(ORDER_STATUS); track $index) {
                     <option [value]="status"
-                            [disabled]="status===selectedOrder.orderStatus">
+                            [disabled]="!canTransitionTo(status)">
                       {{ status | translate }}
                     </option>
                   }

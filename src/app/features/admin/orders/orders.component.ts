@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
 import {PagedResponse} from "../../../types/response.type";
-import {Order, ORDER_STATUS, OrderDetail} from "../../../types/order.type";
+import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../../types/order.type";
 import {OrderService} from "../../../services/order.service";
 import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {Sort, SortField} from "../../../types/sort.type";
@@ -143,10 +143,20 @@ export class OrdersComponent implements OnInit {
     })
   }
 
+  canTransitionTo(status: string) {
+    const currentStatus = this.selectedOrder?.orderStatus;
+    if (currentStatus) {
+      const orderStatus = status as OrderStatus;
+      const allowedTransition = StatusTransition.get(orderStatus)
+      return allowedTransition ? allowedTransition.includes(currentStatus as OrderStatus) : false;
+    }
+    return false;
+  }
+
   protected readonly Array = Array;
   protected readonly sortableFields = SortField;
   protected readonly SortField = SortField;
-  protected readonly ORDER_STATUS = ORDER_STATUS;
+  protected readonly ORDER_STATUS = OrderStatus;
   protected readonly Object = Object;
   protected readonly console = console;
 }
