@@ -1,108 +1,100 @@
 <nav class="navbar sticky-top">
-    <div class="container-fluid">
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <span class="navbar-brand mb-0 h1">Shopbee Admin</span>
+  <div class="container-fluid">
+    <button class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar"
+            aria-controls="offcanvasNavbar"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <span class="navbar-brand mb-0 h1">Shopbee Admin</span>
 
-        <div class="nav-item dropdown">
-            <button class="nav-link dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                <strong>Admin</strong>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-lg-end">
-                <li>
-                    <button routerLink="profile" class="dropdown-item">
-                        <i class="bi bi-person"></i> Profile
-                    </button>
-                </li>
-                <li>
-                    <hr class="dropdown-divider"/>
-                </li>
-                <li>
-                    <button class="dropdown-item" (click)="logout()">
-                        <i class="bi bi-box-arrow-right"></i> Logout
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <aside class="sidebar-menu offcanvas offcanvas-start"
-               tabindex="-1"
-               id="offcanvasNavbar"
-               aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header justify-content-between">
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="offcanvas"
-                        aria-label="Close">
-                </button>
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shopbee Admin</h5>
-            </div>
-            <div class="sidebar-items list-group list-group-flush">
-                <a routerLink="dashboard"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-house"></i>
-                    </div>
-                    Dashboard
-                </a>
-                <a routerLink="users"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    Users
-                </a>
-                <a routerLink="brands"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-amazon"></i>
-                    </div>
-                    Brands
-                </a>
-                <a routerLink="models"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-box-seam"></i>
-                    </div>
-                    Models
-                </a>
-                <a routerLink="categories"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-tags"></i>
-                    </div>
-                    Categories
-                </a>
-                <a routerLink="products"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-box"></i>
-                    </div>
-                    Products
-                </a>
-                <a routerLink="orders"
-                   routerLinkActive="active"
-                   class="list-group-item list-group-item-action">
-                    <div class="icon">
-                        <i class="bi bi-bag"></i>
-                    </div>
-                    Orders
-                </a>
-            </div>
-            <div class="sidebar-footer">Ver 1.0.0</div>
-        </aside>
+    <div class="nav-item dropdown">
+      <button class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <strong>Admin</strong>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-lg-end">
+        <li>
+          <button class="dropdown-item" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </li>
+      </ul>
     </div>
+    <aside class="sidebar-menu offcanvas offcanvas-start"
+           tabindex="-1"
+           id="offcanvasNavbar"
+           aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header justify-content-between">
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close">
+        </button>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shopbee Admin</h5>
+      </div>
+      <div class="sidebar-items list-group list-group-flush">
+        <a routerLink="dashboard"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-house"></i>
+          </div>
+          Dashboard
+        </a>
+        <a routerLink="users"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-people"></i>
+          </div>
+          Users
+        </a>
+        <a routerLink="brands"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-amazon"></i>
+          </div>
+          Brands
+        </a>
+        <a routerLink="models"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-box-seam"></i>
+          </div>
+          Models
+        </a>
+        <a routerLink="categories"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-tags"></i>
+          </div>
+          Categories
+        </a>
+        <a routerLink="products"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-box"></i>
+          </div>
+          Products
+        </a>
+        <a routerLink="orders"
+           routerLinkActive="active"
+           class="list-group-item list-group-item-action">
+          <div class="icon">
+            <i class="bi bi-bag"></i>
+          </div>
+          Orders
+        </a>
+      </div>
+      <div class="sidebar-footer">Ver 1.0.0</div>
+    </aside>
+  </div>
 </nav>
