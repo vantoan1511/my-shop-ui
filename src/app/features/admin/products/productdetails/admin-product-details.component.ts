@@ -14,302 +14,305 @@ import {ContextMenuComponent} from "../../../../shared/components/context-menu/c
 import {ProductImage} from "../../../../types/image.type";
 import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
+import {constant} from "../../../../shared/constant";
+import {environment} from "../../../../../environments/environment";
 
 @Component({
-    selector: 'admin-product-details',
-    standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        RouterLink,
-        AsyncPipe,
-        ContextMenuComponent,
-        NgxEditorModule
-    ],
-    templateUrl: './admin-product-details.component.html',
-    styleUrl: './admin-product-details.component.scss'
+  selector: 'admin-product-details',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    AsyncPipe,
+    ContextMenuComponent,
+    NgxEditorModule
+  ],
+  templateUrl: './admin-product-details.component.html',
+  styleUrl: './admin-product-details.component.scss'
 })
 export class AdminProductDetailsComponent implements OnInit, OnDestroy {
-    editor: Editor = new Editor()
-    toolbar: Toolbar = [
-        ['bold', 'italic'],
-        ['underline', 'strike'],
-        ['code', 'blockquote'],
-        ['ordered_list', 'bullet_list'],
-        [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
-        ['link', 'image'],
-        ['text_color', 'background_color'],
-        ['align_left', 'align_center', 'align_right', 'align_justify'],
-    ];
-    productForm!: FormGroup;
-    product: Product | null = null;
-    productSlug?: string;
-    products$: Observable<Product> | null = null;
-    models$: Observable<PagedResponse<Model>> | null = null;
-    categories$: Observable<PagedResponse<Category>> | null = null;
+  editor: Editor = new Editor()
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']}],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+  productForm!: FormGroup;
+  product: Product | null = null;
+  productSlug?: string;
+  products$: Observable<Product> | null = null;
+  models$: Observable<PagedResponse<Model>> | null = null;
+  categories$: Observable<PagedResponse<Category>> | null = null;
 
-    heroImageId = -1;
+  heroImageId = -1;
+  heroImageUrl = constant.defaultHeroImageUrl
 
-    productImages: ProductImage[] | null = null;
-    imageMap: Map<number, SafeUrl> = new Map();
+  productImages: ProductImage[] | null = null;
+  imageUrls: Map<number, string> = new Map();
 
-    uploadedImageMenuOpen = false;
+  uploadedImageMenuOpen = false;
 
-    selectedImageId: number | null = null;
+  selectedImageId: number | null = null;
 
-    @ViewChild('contextMenu') contextMenu?: ContextMenuComponent;
+  @ViewChild('contextMenu') contextMenu?: ContextMenuComponent;
 
-    protected defaultHeroImage = 'https://via.placeholder.com/600x400';
-    protected defaultThumbnail = 'https://via.placeholder.com/150';
-    private destroy$: Subject<void> = new Subject<void>();
+  protected defaultHeroImage = 'https://via.placeholder.com/600x400';
+  protected defaultThumbnail = 'https://via.placeholder.com/150';
+  private destroy$: Subject<void> = new Subject<void>();
 
-    constructor(
-        private fb: FormBuilder,
-        private productService: ProductService,
-        private imageService: ImageService,
-        private modelService: ModelService,
-        private categoryService: CategoryService,
-        private alertService: AlertService,
-        private router: Router,
-        private sanitizer: DomSanitizer
-    ) {
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService,
+    private imageService: ImageService,
+    private modelService: ModelService,
+    private categoryService: CategoryService,
+    private alertService: AlertService,
+    private router: Router,
+    private sanitizer: DomSanitizer
+  ) {
+  }
+
+  @Input()
+  set slug(productSlug: string) {
+    if (productSlug && productSlug !== 'new') {
+      this.productSlug = productSlug;
+      this.products$ = this.productService.getBySlug(productSlug);
     }
+  }
 
-    @Input()
-    set slug(productSlug: string) {
-        if (productSlug && productSlug !== 'new') {
-            this.productSlug = productSlug;
-            this.products$ = this.productService.getBySlug(productSlug);
-        }
-    }
+  ngOnInit(): void {
+    this.initForm();
+    this.products$
+      ?.pipe(takeUntil(this.destroy$))
+      .subscribe(product => {
+        this.product = product;
+        this.updateForm(product);
 
-    ngOnInit(): void {
-        this.initForm();
-        this.products$
-            ?.pipe(takeUntil(this.destroy$))
-            .subscribe(product => {
-                this.product = product;
-                this.updateForm(product);
-
-                this.productService.getImagesById(product.id).subscribe((productImages) => {
-                    this.productImages = productImages;
-                    this.heroImageId = productImages.filter(each => each.featured)
-                        .map(each => each.imageId).at(0) || -1;
-                    productImages.forEach(productImage => {
-                        this.imageService.getById(productImage.imageId).subscribe(image => {
-                            this.imageMap.set(productImage.imageId, this.sanitizer.bypassSecurityTrustUrl(this.createUrl(image)));
-                        })
-                    })
-                })
-            });
-        this.models$ = this.modelService.getAll();
-        this.categories$ = this.categoryService.getAll();
-    }
-
-    generateSlug() {
-        const productName = this.productForm.value.name;
-        let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        slug = slug.toLowerCase()
-            .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
-            .replace(/\-\-+/g, '-')
-            .replace(/^-+|-+$/g, '')
-        this.productForm.patchValue({
-            slug: slug
+        this.productService.getImagesById(product.id).subscribe((productImages) => {
+          this.productImages = productImages;
+          const featured = productImages.find(image => image.featured)
+          if (featured) {
+            this.heroImageUrl = this.createImageUrl(featured.id)
+          }
+          productImages.forEach(image => {
+            this.imageUrls.set(image.imageId, this.createImageUrl(image.imageId))
+          });
         })
+      });
+    this.models$ = this.modelService.getAll();
+    this.categories$ = this.categoryService.getAll();
+  }
+
+  generateSlug() {
+    const productName = this.productForm.value.name;
+    let slug = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    slug = slug.toLowerCase()
+      .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+    this.productForm.patchValue({
+      slug: slug
+    })
+  }
+
+  isInvalid(fieldName: string) {
+    const field = this.productForm.get(fieldName);
+    return field?.invalid && (field?.dirty || field?.touched);
+  }
+
+  onSaveButtonClick() {
+    const product = this.productForm.value;
+
+    const save$ = this.product?.slug
+      ? this.productService.update(product)
+      : this.productService.create(product);
+
+    save$.subscribe({
+      next: (result) => {
+        const createdProduct = result as Product;
+        const slug = createdProduct?.slug || this.product?.slug;
+        this.router.navigate(['/admin/products/', slug]);
+        this.alertService.showSuccessToast(
+          `Product has been saved successfully`
+        );
+      },
+      error: (error) => this.handleError(error)
+    });
+  }
+
+  showContextMenu(event: MouseEvent, imageId: number) {
+    this.selectedImageId = imageId;
+    this.contextMenu?.onContextMenu(event);
+  }
+
+  onUploadImageButtonClick(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.[0]) {
+      return;
     }
 
-    isInvalid(fieldName: string) {
-        const field = this.productForm.get(fieldName);
-        return field?.invalid && (field?.dirty || field?.touched);
+    const file = input.files[0];
+
+    if (!this.validateFile(file)) {
+      return;
     }
 
-    onSaveButtonClick() {
-        const product = this.productForm.value;
+    this.imageService
+      .uploadImage(file)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((resp) => {
+          const imageId = resp.id;
+          if (this.product) {
+            return this.productService.updateImages(this.product?.id, [imageId]);
+          }
+          this.imageUrls.set(resp.id, this.createImageUrl(resp.id));
+          return [];
+        }),
+        catchError(() => {
+          this.alertService.showErrorToast('Failed to upload image');
+          return [];
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.alertService.showSuccessToast('Updated product image successfully')
+        },
+        error: () =>
+          this.alertService.showErrorToast('Failed to update product image'),
+      });
+  }
 
-        const save$ = this.product?.slug
-            ? this.productService.update(product)
-            : this.productService.create(product);
+  onChooseFromUploadedClick() {
+    this.uploadedImageMenuOpen = !this.uploadedImageMenuOpen;
+  }
 
-        save$.subscribe({
-            next: (result) => {
-                const createdProduct = result as Product;
-                const slug = createdProduct?.slug || this.product?.slug;
-                this.router.navigate(['/admin/products/', slug]);
-                this.alertService.showSuccessToast(
-                    `Product has been saved successfully`
-                );
-            },
-            error: (error) => this.handleError(error)
-        });
+  onImageSetFeatured(imageId: number) {
+    if (this.product) {
+      this.productService.setFeaturedImage(this.product.id, imageId).subscribe({
+        next: () => {
+          this.heroImageUrl = this.createImageUrl(imageId)
+          this.alertService.showSuccessToast('Featured image successfully')
+        },
+      });
     }
+  }
 
-    showContextMenu(event: MouseEvent, imageId: number) {
-        this.selectedImageId = imageId;
-        this.contextMenu?.onContextMenu(event);
-    }
-
-    onUploadImageButtonClick(event: Event) {
-        const input = event.target as HTMLInputElement;
-        if (!input.files?.[0]) {
-            return;
+  onImageRemove(imageId: number) {
+    console.log('Set feature: ', imageId);
+    if (this.product) {
+      this.productService.removeImage(this.product.id, [imageId]).subscribe({
+        next: () => {
+          this.imageUrls.delete(imageId);
+          this.alertService.showSuccessToast('Removed image successfully')
         }
+      })
+    }
+  }
 
-        const file = input.files[0];
+  private initForm() {
+    this.productForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      slug: ['', Validators.required],
+      description: [''],
+      stockQuantity: [0, Validators.min(0)],
+      basePrice: [0, Validators.min(0)],
+      salePrice: [0, Validators.min(0)],
+      active: [false],
+      weight: [0, Validators.min(0)],
+      color: [''],
+      processor: [''],
+      gpu: [''],
+      ram: [0, Validators.min(0)],
+      storageType: [''],
+      storageCapacity: [0, Validators.min(0)],
+      os: [''],
+      screenSize: [0, Validators.min(0)],
+      batteryCapacity: [0, Validators.min(0)],
+      warranty: [0, Validators.min(0)],
+      viewCount: [0],
+      userId: [],
+      model: [''],
+      category: ['']
+    });
+  }
 
-        if (!this.validateFile(file)) {
-            return;
-        }
+  private updateForm(product: Product) {
+    this.productForm.patchValue({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      description: product.description,
+      stockQuantity: product.stockQuantity,
+      basePrice: product.basePrice,
+      salePrice: product.salePrice,
+      active: product.active,
+      weight: product.weight,
+      color: product.color,
+      processor: product.processor,
+      gpu: product.gpu,
+      ram: product.ram,
+      storageType: product.storageType,
+      storageCapacity: product.storageCapacity,
+      os: product.os,
+      screenSize: product.screenSize,
+      batteryCapacity: product.batteryCapacity,
+      warranty: product.warranty,
+      viewCount: product.viewCount,
+      userId: product.userId,
+      model: product.model.slug,
+      category: product.category.slug
+    });
+  }
 
-        this.imageService
-            .uploadImage(file)
-            .pipe(
-                takeUntil(this.destroy$),
-                switchMap((resp) => {
-                    const imageId = resp.id;
-                    if (this.product) {
-                        return this.productService.updateImages(this.product?.id, [imageId]);
-                    }
-                    return [];
-                }),
-                catchError(() => {
-                    this.alertService.showErrorToast('Failed to upload image');
-                    return [];
-                })
-            )
-            .subscribe({
-                next: () => {
-                    this.alertService.showSuccessToast('Updated product image successfully')
-                },
-                error: () =>
-                    this.alertService.showErrorToast('Failed to update product image'),
-            });
+  private handleError(error: any) {
+    const errorMessage = error.error?.errorMessage || 'An unknown error occurred';
+    this.alertService.showErrorToast(errorMessage);
+  }
+
+  private validateFile(file: File) {
+    if (!file) {
+      this.alertService.showErrorToast('File is empty');
+      return false;
     }
 
-    onChooseFromUploadedClick() {
-        this.uploadedImageMenuOpen = !this.uploadedImageMenuOpen;
+    if (!this.validFileSize(file)) {
+      this.alertService.showErrorToast('File exceeds limit of 1MB');
+      return false;
     }
 
-    onImageSetFeatured(imageId: number) {
-        console.log('Set feature: ', imageId);
-        if (this.product) {
-            this.productService.setFeaturedImage(this.product.id, imageId).subscribe({
-                next: () => {
-                    this.heroImageId = imageId;
-                    this.alertService.showSuccessToast('Featured image successfully')
-                },
-            });
-        }
+    if (!this.validFileType(file)) {
+      this.alertService.showErrorToast(
+        'Invalid file type. Only JPEG and PNG allowed'
+      );
+      return false;
     }
 
-    onImageRemove(imageId: number) {
-        console.log('Set feature: ', imageId);
-        if (this.product) {
-            this.productService.removeImage(this.product.id, [imageId]).subscribe({
-                next: () => {
-                    this.imageMap.delete(imageId);
-                    this.alertService.showSuccessToast('Removed image successfully')
-                }
-            })
-        }
-    }
+    return true;
+  }
 
-    private initForm() {
-        this.productForm = this.fb.group({
-            id: [0],
-            name: ['', Validators.required],
-            slug: ['', Validators.required],
-            description: [''],
-            stockQuantity: [0, Validators.min(0)],
-            basePrice: [0, Validators.min(0)],
-            salePrice: [0, Validators.min(0)],
-            active: [false],
-            weight: [0, Validators.min(0)],
-            color: [''],
-            processor: [''],
-            gpu: [''],
-            ram: [0, Validators.min(0)],
-            storageType: [''],
-            storageCapacity: [0, Validators.min(0)],
-            os: [''],
-            screenSize: [0, Validators.min(0)],
-            batteryCapacity: [0, Validators.min(0)],
-            warranty: [0, Validators.min(0)],
-            viewCount: [0],
-            userId: [],
-            model: [''],
-            category: ['']
-        });
-    }
+  private validFileSize(file: File) {
+    const MAX_FILE_SIZE = 1048576;
+    return file.size <= MAX_FILE_SIZE;
+  }
 
-    private updateForm(product: Product) {
-        this.productForm.patchValue({
-            id: product.id,
-            name: product.name,
-            slug: product.slug,
-            description: product.description,
-            stockQuantity: product.stockQuantity,
-            basePrice: product.basePrice,
-            salePrice: product.salePrice,
-            active: product.active,
-            weight: product.weight,
-            color: product.color,
-            processor: product.processor,
-            gpu: product.gpu,
-            ram: product.ram,
-            storageType: product.storageType,
-            storageCapacity: product.storageCapacity,
-            os: product.os,
-            screenSize: product.screenSize,
-            batteryCapacity: product.batteryCapacity,
-            warranty: product.warranty,
-            viewCount: product.viewCount,
-            userId: product.userId,
-            model: product.model.slug,
-            category: product.category.slug
-        });
-    }
+  private validFileType(file: File) {
+    const validTypes = ['image/jpeg', 'image/png'];
+    return validTypes.includes(file.type);
+  }
 
-    private handleError(error: any) {
-        const errorMessage = error.error?.errorMessage || 'An unknown error occurred';
-        this.alertService.showErrorToast(errorMessage);
-    }
+  private createImageUrl(imageId: number) {
+    return `${environment.IMAGE_SERVICE_API}/images/${imageId}`;
+  }
 
-    private validateFile(file: File) {
-        if (!file) {
-            this.alertService.showErrorToast('File is empty');
-            return false;
-        }
-
-        if (!this.validFileSize(file)) {
-            this.alertService.showErrorToast('File exceeds limit of 1MB');
-            return false;
-        }
-
-        if (!this.validFileType(file)) {
-            this.alertService.showErrorToast(
-                'Invalid file type. Only JPEG and PNG allowed'
-            );
-            return false;
-        }
-
-        return true;
-    }
-
-    private validFileSize(file: File) {
-        const MAX_FILE_SIZE = 1048576;
-        return file.size <= MAX_FILE_SIZE;
-    }
-
-    private validFileType(file: File) {
-        const validTypes = ['image/jpeg', 'image/png'];
-        return validTypes.includes(file.type);
-    }
-
-    private createUrl(blob: Blob) {
-        return URL.createObjectURL(blob);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
