@@ -20,257 +20,251 @@ import {OrderType} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 
 @Component({
-    selector: 'app-cart',
-    standalone: true,
-    imports: [
-        TranslateModule,
-        CurrencyPipe,
-        RouterLink,
-        FormsModule,
-        PercentPipe
-    ],
-    templateUrl: './cart.component.html',
-    styleUrl: './cart.component.scss'
+  selector: 'app-cart',
+  standalone: true,
+  imports: [
+    TranslateModule,
+    CurrencyPipe,
+    RouterLink,
+    FormsModule,
+    PercentPipe
+  ],
+  templateUrl: './cart.component.html',
+  styleUrl: './cart.component.scss'
 })
 export class CartComponent implements OnInit {
-    isCheckout = false
-    selectedPaymentMethod: 'CASH' | 'BANKING' = 'CASH';
-    cartResponse: PagedResponse<Cart> | null = null;
-    cartItems: Cart[] = [];
-    products: Map<string, Product> = new Map();
-    productFeaturedImage: Map<string, string> = new Map();
-    pageRequest: PageRequest = {page: 1, size: 20}
-    loading = false;
+  isCheckout = false
+  selectedPaymentMethod: 'CASH' | 'BANKING' = 'CASH';
+  cartResponse: PagedResponse<Cart> | null = null;
+  cartItems: Cart[] = [];
+  products: Map<string, Product> = new Map();
+  productFeaturedImage: Map<string, string> = new Map();
+  pageRequest: PageRequest = {page: 1, size: 20}
+  loading = false;
 
-    user: User | null = null;
-    userAddresses: string[] = [];
-    selectedAddress = '';
-    newAddress = '';
-    selectedPhoneNumber = '';
+  user: User | null = null;
+  userAddresses: string[] = [];
+  selectedAddress = '';
+  selectedPhoneNumber = '';
 
-    constructor(
-        private cartService: CartService,
-        private productService: ProductService,
-        private translate: TranslateService,
-        private alertService: AlertService,
-        private authService: AuthenticationService,
-        private userService: UserService,
-        private orderService: OrderService
-    ) {
-        this.translate.setDefaultLang("vi");
+  constructor(
+    private cartService: CartService,
+    private productService: ProductService,
+    private translate: TranslateService,
+    private alertService: AlertService,
+    private authService: AuthenticationService,
+    private userService: UserService,
+    private orderService: OrderService
+  ) {
+    this.translate.setDefaultLang("vi");
+  }
+
+  ngOnInit(): void {
+    this.fetchCarts();
+  }
+
+  get totalDiscountedPrice(): number {
+    return this.totalBasePrice() - this.totalAmount;
+
+  }
+
+  get discountedPercent(): number {
+    return ((this.totalDiscountedPrice / this.totalBasePrice()));
+  }
+
+  totalBasePrice(): number {
+    return this.cartItems.reduce((sum, item) => {
+      const product = this.getProduct(item)
+      if (product) {
+        const price = product.basePrice;
+        return sum + price * item.quantity;
+      }
+      return sum;
+    }, 0);
+  }
+
+  get totalAmount(): number {
+    return this.cartItems.reduce((sum, item) => {
+      return sum + this.getAmount(item);
+    }, 0);
+  }
+
+  getAmount(item: Cart): number {
+    const product = this.getProduct(item)
+    if (product) {
+      const price = product.salePrice;
+      return price * item.quantity;
+    }
+    return 0;
+  }
+
+  increaseQuantity(item: Cart): void {
+    const product = this.getProduct(item)
+    if (!product) {
+      return;
     }
 
-    ngOnInit(): void {
-        this.fetchCarts();
+    const stock = product.stockQuantity;
+    if (item.quantity < stock) {
+      item.quantity++;
+      this.updateQuantity(item)
+    }
+  }
+
+  decreaseQuantity(item: Cart): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.updateQuantity(item)
+    }
+  }
+
+  updateQuantity(item: Cart): void {
+    this.validateQuantity(item);
+    this.cartService.updateQuantity(item.id, item.quantity).subscribe({
+      next: () => console.log("Update cart quantity successfully"),
+    });
+  }
+
+  validateQuantity(item: Cart): void {
+    if (item.quantity < 1) {
+      item.quantity = 1;
     }
 
-    get totalDiscountedPrice(): number {
-        return this.totalBasePrice() - this.totalAmount;
+    const stock = this.stock(item)
+    if (item.quantity > stock) {
+      item.quantity = stock
+    }
+  }
 
+  removeFromCart(item: Cart): void {
+    this.cartService.removeCartItem(item.id).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(cart => cart.id !== item.id)
+        this.alertService.showSuccessToast("Removed successfully")
+      },
+      error: () => this.alertService.showErrorToast("An error occurred")
+    })
+  }
+
+  stock(item: Cart) {
+    const product = this.getProduct(item)
+
+    if (!product) {
+      return 0;
     }
 
-    get discountedPercent(): number {
-        return ((this.totalDiscountedPrice / this.totalBasePrice()));
+    return product.stockQuantity
+  }
+
+  getProduct(item: Cart) {
+    return this.products.get(item.productSlug);
+  }
+
+  getImage(item: Cart) {
+    return this.productFeaturedImage.get(item.productSlug);
+  }
+
+  proceedToCheckout() {
+    this.isCheckout = true;
+
+    this.fetchUser();
+  }
+
+  placeOrder() {
+    if (this.selectedAddress.length <= 0) {
+      this.alertService.showErrorToast("Please enter an address");
+      return;
     }
 
-    totalBasePrice(): number {
-        return this.cartItems.reduce((sum, item) => {
-            const product = this.getProduct(item)
-            if (product) {
-                const price = product.basePrice;
-                return sum + price * item.quantity;
-            }
-            return sum;
-        }, 0);
+    const shippingAddress = [this.selectedPhoneNumber, this.selectedAddress].join(', ');
+    const order: OrderType = {
+      shippingAddress,
+      paymentMethod: this.selectedPaymentMethod,
+      items: this.cartItems
     }
 
-    get totalAmount(): number {
-        return this.cartItems.reduce((sum, item) => {
-            return sum + this.getAmount(item);
-        }, 0);
-    }
-
-    getAmount(item: Cart): number {
-        const product = this.getProduct(item)
-        if (product) {
-            const price = product.salePrice;
-            return price * item.quantity;
-        }
-        return 0;
-    }
-
-    increaseQuantity(item: Cart): void {
-        const product = this.getProduct(item)
-        if (!product) {
-            return;
-        }
-
-        const stock = product.stockQuantity;
-        if (item.quantity < stock) {
-            item.quantity++;
-            this.updateQuantity(item)
-        }
-    }
-
-    decreaseQuantity(item: Cart): void {
-        if (item.quantity > 1) {
-            item.quantity--;
-            this.updateQuantity(item)
-        }
-    }
-
-    updateQuantity(item: Cart): void {
-        this.validateQuantity(item);
-        this.cartService.updateQuantity(item.id, item.quantity).subscribe({
-            next: () => console.log("Update cart quantity successfully"),
-        });
-    }
-
-    validateQuantity(item: Cart): void {
-        if (item.quantity < 1) {
-            item.quantity = 1;
-        }
-
-        const stock = this.stock(item)
-        if (item.quantity > stock) {
-            item.quantity = stock
-        }
-    }
-
-    removeFromCart(item: Cart): void {
-        this.cartService.removeCartItem(item.id).subscribe({
-            next: () => {
-                this.cartItems = this.cartItems.filter(cart => cart.id !== item.id)
-                this.alertService.showSuccessToast("Removed successfully")
-            },
-            error: () => this.alertService.showErrorToast("An error occurred")
+    this.orderService.createOrder(order).subscribe({
+      next: () => {
+        this.alertService.showSuccessToast("Placed order successfully");
+        this.cartService.clearCart().subscribe({
+          next: () => {
+            this.cartResponse = null;
+            this.cartItems = []
+            this.isCheckout = false;
+          }
         })
-    }
+      }
+    })
+  }
 
-    stock(item: Cart) {
-        const product = this.getProduct(item)
+  backToCart() {
+    this.isCheckout = false;
+  }
 
-        if (!product) {
-            return 0;
+  private fetchCarts() {
+    this.loading = true
+
+    this.cartService.getCart(this.pageRequest).pipe(
+      switchMap(cartResponse => {
+        this.cartResponse = cartResponse;
+        this.cartItems = cartResponse.items;
+
+        const productObservables = cartResponse.items.map(item => this.fetchProduct(item.productSlug))
+
+        return forkJoin(productObservables);
+      }),
+
+      map(products => products.reduce((acc, product) => {
+        acc.set(product.slug, product)
+        return acc;
+      }, new Map<string, Product>)),
+    ).subscribe({
+      next: productMap => {
+        this.products = productMap;
+        this.loading = false;
+        this.fetchProductFeaturedImage(productMap)
+      },
+      error: () => this.loading = false
+    })
+  }
+
+  private fetchProduct(productSlug: string) {
+    return this.productService.getBySlug(productSlug);
+  }
+
+  private fetchProductFeaturedImage(productMap: Map<string, Product>) {
+    Array.from(productMap.entries()).map(([slug, product]) =>
+      this.productService.getImagesById(product.id).subscribe({
+        next: productImages => {
+          const featuredImage = productImages.find(image => image.featured);
+          const imageUrl = featuredImage ? this.imageUrl(featuredImage.imageId) : constant.defaultHeroImageUrl;
+          this.productFeaturedImage.set(slug, imageUrl);
         }
+      })
+    );
+  }
 
-        return product.stockQuantity
-    }
+  private imageUrl(imageId: number) {
+    return `${environment.IMAGE_SERVICE_API}/images/${imageId}?size=SMALL`;
+  }
 
-    getProduct(item: Cart) {
-        return this.products.get(item.productSlug);
-    }
+  private fetchUser() {
+    const username = this.authService.username;
+    this.userService.getByUsername(username).pipe(
+      map(user => {
+        this.user = user;
+        this.selectedPhoneNumber = user.phone
+        return this.listAddresses(user)
+      })
+    ).subscribe({
+      next: addresses => this.userAddresses = addresses
+    })
+  }
 
-    getImage(item: Cart) {
-        return this.productFeaturedImage.get(item.productSlug);
-    }
+  private listAddresses(user: User) {
+    return Array.of(user.address, user.address1, user.address2, user.address3, user.address4).filter(each => each);
+  }
 
-    proceedToCheckout() {
-        this.isCheckout = true;
-
-        this.fetchUser();
-    }
-
-    placeOrder() {
-        const order: OrderType = {
-            shippingAddress: this.selectedAddress,
-            paymentMethod: this.selectedPaymentMethod,
-            items: this.cartItems
-        }
-
-        if (order.shippingAddress.length <= 0) {
-            this.alertService.showErrorToast("Please enter an address");
-            return;
-        }
-
-        this.orderService.createOrder(order).subscribe({
-            next: () => {
-                this.alertService.showSuccessToast("Placed order successfully");
-                this.cartService.clearCart().subscribe({
-                    next: () => {
-                        this.cartResponse = null;
-                        this.cartItems = []
-                        this.isCheckout = false;
-                    }
-                })
-            }
-        })
-    }
-
-    clearNewAddress() {
-        if (this.selectedAddress !== this.newAddress) {
-            this.newAddress = '';
-        }
-    }
-
-    backToCart() {
-        this.isCheckout = false;
-    }
-
-    private fetchCarts() {
-        this.loading = true
-
-        this.cartService.getCart(this.pageRequest).pipe(
-            switchMap(cartResponse => {
-                this.cartResponse = cartResponse;
-                this.cartItems = cartResponse.items;
-
-                const productObservables = cartResponse.items.map(item => this.fetchProduct(item.productSlug))
-
-                return forkJoin(productObservables);
-            }),
-
-            map(products => products.reduce((acc, product) => {
-                acc.set(product.slug, product)
-                return acc;
-            }, new Map<string, Product>)),
-        ).subscribe({
-            next: productMap => {
-                this.products = productMap;
-                this.loading = false;
-                this.fetchProductFeaturedImage(productMap)
-            },
-            error: () => this.loading = false
-        })
-    }
-
-    private fetchProduct(productSlug: string) {
-        return this.productService.getBySlug(productSlug);
-    }
-
-    private fetchProductFeaturedImage(productMap: Map<string, Product>) {
-        Array.from(productMap.entries()).map(([slug, product]) =>
-            this.productService.getImagesById(product.id).subscribe({
-                next: productImages => {
-                    const featuredImage = productImages.find(image => image.featured);
-                    const imageUrl = featuredImage ? this.imageUrl(featuredImage.imageId) : constant.defaultHeroImageUrl;
-                    this.productFeaturedImage.set(slug, imageUrl);
-                }
-            })
-        );
-    }
-
-    private imageUrl(imageId: number) {
-        return `${environment.IMAGE_SERVICE_API}/images/${imageId}?size=SMALL`;
-    }
-
-    private fetchUser() {
-        const username = this.authService.username;
-        this.userService.getByUsername(username).pipe(
-            map(user => {
-                this.user = user;
-                this.selectedPhoneNumber = user.phone
-                return this.listAddresses(user)
-            })
-        ).subscribe({
-            next: addresses => this.userAddresses = addresses
-        })
-    }
-
-    private listAddresses(user: User) {
-        return Array.of(user.address, user.address1, user.address2, user.address3, user.address4).filter(each => each);
-    }
-
-    protected readonly constant = constant;
-    protected readonly Array = Array;
+  protected readonly constant = constant;
+  protected readonly Array = Array;
 }

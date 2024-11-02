@@ -44,6 +44,11 @@ $gray-bg: var(--gray-1);
   width: 100%;
 }
 
+.back-btn {
+  background: var(--purple-6);
+  color: $purple-main;
+}
+
 .buy-now {
   @extend .btn-primary;
 }
