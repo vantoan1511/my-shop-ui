@@ -15,6 +15,7 @@ import {environment} from "../../../environments/environment";
 import {PagedResponse} from "../../types/response.type";
 import {CartService} from "../../services/cart.service";
 import {AlertService} from "../../services/alert.service";
+import {AuthenticationService} from "../../services/authentication.service";
 
 @Component({
   selector: 'app-product-details',
@@ -48,6 +49,7 @@ export class ProductDetailsComponent implements OnInit {
     private reviewService: ReviewService,
     private cartService: CartService,
     private alertService: AlertService,
+    private authService: AuthenticationService
   ) {
     this.translateService.setDefaultLang("vi");
   }
@@ -116,6 +118,11 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart(quantity: number, productSlug: string | null): void {
+    if(!this.authService.isAuthenticated) {
+      this.alertService.showErrorToast("You must login first");
+      return
+    }
+
     if (!this.validQuantity(quantity)) {
       this.alertService.showErrorToast("Quantity must be greater than 0");
       return;
@@ -131,6 +138,11 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   onClickBuyNow() {
+    if(!this.authService.isAuthenticated) {
+      this.alertService.showErrorToast("You must login first");
+      return
+    }
+
     if (!this.validQuantity(this.quantity)) {
       this.alertService.showErrorToast("Quantity must be greater than 0");
       return;
