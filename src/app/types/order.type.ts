@@ -15,9 +15,9 @@ export enum OrderStatus {
 
 export const StatusTransition = new Map<OrderStatus, OrderStatus[]>([
   [OrderStatus.CREATED, []],
-  [OrderStatus.PENDING, []],
-  [OrderStatus.ACCEPTED, [OrderStatus.CREATED, OrderStatus.PENDING]],
-  [OrderStatus.DECLINED, [OrderStatus.CREATED, OrderStatus.PENDING]],
+  [OrderStatus.PENDING, [OrderStatus.CREATED]],
+  [OrderStatus.ACCEPTED, [OrderStatus.PENDING]],
+  [OrderStatus.DECLINED, [OrderStatus.PENDING]],
   [OrderStatus.AWAITING_PICKUP, [OrderStatus.ACCEPTED]],
   [OrderStatus.AWAITING_SHIPPING, [OrderStatus.AWAITING_PICKUP]],
   [OrderStatus.SHIPPED, [OrderStatus.AWAITING_SHIPPING]],
@@ -29,7 +29,6 @@ export const StatusTransition = new Map<OrderStatus, OrderStatus[]>([
     OrderStatus.DECLINED,
     OrderStatus.AWAITING_PICKUP,
     OrderStatus.AWAITING_SHIPPING,
-    OrderStatus.SHIPPED,
   ]],
   [OrderStatus.REFUNDED, [OrderStatus.COMPLETED, OrderStatus.CANCELED]],
 ]);
