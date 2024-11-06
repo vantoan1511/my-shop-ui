@@ -143,6 +143,18 @@
     }
   }
 
+  .complete-order-btn,
+  .leave-review-btn {
+    border: none;
+    border-radius: 0;
+    background: var(--purple-9);
+    color: var(--purple-contrast);
+
+    &:hover {
+      background: var(--purple-10);
+    }
+  }
+
   .shopping-now-btn {
     border: none;
     border-radius: 0;
@@ -227,4 +239,27 @@
       }
     }
   }
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.star-rating input[type="radio"] {
+  display: none; /* Hide the radio buttons */
+}
+
+.star-rating label.star {
+  font-size: 2rem;
+  color: lightgray;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.active,
+.star-rating label.star:hover,
+.star-rating label.star:hover ~ label.star {
+  color: var(--purple-9);
 }

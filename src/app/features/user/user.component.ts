@@ -16,6 +16,8 @@ import {PagedResponse} from "../../types/response.type";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
+import {ReviewService} from "../../services/review.service";
+import {CreateReviewRequest} from "../../types/review.type";
 
 @Component({
   selector: 'app-user',
@@ -42,6 +44,13 @@ export class UserComponent implements OnInit, OnDestroy {
   page = 0;
   size = 20;
 
+  isReviewDialogOpened = false;
+  rating = 0;
+  reviewForm = this.fb.group({
+    rating: [5, Validators.required],
+    text: ['', Validators.required]
+  })
+
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -52,6 +61,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private validator: ValidationService,
     private imageService: ImageService,
     private orderService: OrderService,
+    private reviewService: ReviewService
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -102,15 +112,54 @@ export class UserComponent implements OnInit, OnDestroy {
     })
   }
 
+  completeOrder(selectedOrder: Order | null) {
+    if (!selectedOrder) {
+      return
+    }
+
+    if (!this.isAllowedToComplete(selectedOrder)) {
+      this.alertService.showErrorToast(`Cannot complete ${selectedOrder.orderStatus} order`);
+      return
+    }
+
+    this.orderService.completeOrder(selectedOrder.id).subscribe({
+      next: () => {
+        this.alertService.showSuccessToast('Completed order successfully')
+        this.updateCompletedOrderStatus(selectedOrder);
+      },
+      error: () => this.alertService.showErrorToast('Can not cancel this order')
+    })
+  }
+
+  onStarClick(selectedRating: number): void {
+    this.rating = selectedRating;
+    this.reviewForm.patchValue({
+      rating: this.rating
+    });
+  }
+
   isAllowedToCancel(selectedOrder: Order) {
     const allowedTransition = StatusTransition.get(OrderStatus.CANCELED)
+    return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
+  }
+
+  isAllowedToComplete(selectedOrder: Order) {
+    const allowedTransition = StatusTransition.get(OrderStatus.COMPLETED)
     return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
   }
 
   private updateCanceledOrderStatus(selectedOrder: Order) {
     this.orders.forEach(order => {
       if (order.id === selectedOrder.id) {
-        order.orderStatus = 'CANCELLED';
+        order.orderStatus = OrderStatus.CANCELED;
+      }
+    })
+  }
+
+  private updateCompletedOrderStatus(selectedOrder: Order) {
+    this.orders.forEach(order => {
+      if (order.id === selectedOrder.id) {
+        order.orderStatus = OrderStatus.COMPLETED;
       }
     })
   }
@@ -337,4 +386,5 @@ export class UserComponent implements OnInit, OnDestroy {
 
   protected readonly constant = constant;
   protected readonly Array = Array;
+  protected readonly OrderStatus = OrderStatus;
 }
