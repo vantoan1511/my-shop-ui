@@ -2,7 +2,7 @@
   <div class="row mb-3 p-3 bg-white rounded shadow-sm">
     <div class="col">
       <h2 class="fs-2 fw-light text-muted">
-        {{ isCheckout ? ("Checkout" | translate) : ("My Cart" | translate) }}
+        {{ isCheckout ? ("CHECKOUT" | translate) : ("MY_CART" | translate) }}
       </h2>
     </div>
   </div>
@@ -37,7 +37,7 @@
 
       <div class="col-lg-4">
         <div class="bg-white p-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "ORDER_SUMMARY" | translate }}</h5>
           <div class="skeleton skeleton-text skeleton-summary"></div>
           <hr/>
           <div class="skeleton skeleton-text skeleton-summary"></div>
@@ -78,7 +78,7 @@
 
         <!-- Phone number Section -->
         <div class="bg-white p-3 mt-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Choose phone number" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PHONE" | translate }}</h5>
 
           <div class="form-check mt-3">
             <input [id]="user?.phone"
@@ -96,7 +96,7 @@
 
         <!-- Shipping Address Section -->
         <div class="bg-white p-3 mt-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Choose Shipping Address" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_SHIPPING_ADDRESS" | translate }}</h5>
 
           <!-- Existing Addresses -->
           @for (address of userAddresses; track $index) {
@@ -118,19 +118,19 @@
 
         <!-- Payment Method Section -->
         <div class="bg-white p-3 mt-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Choose Payment Method" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PAYMENT_METHOD" | translate }}</h5>
           <div class="form-check mt-3">
             <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="CASH"
                    [(ngModel)]="selectedPaymentMethod">
             <label class="form-check-label text-muted" for="cash">
-              {{ "Cash on Delivery" | translate }}
+              {{ "CASH" | translate }}
             </label>
           </div>
           <div class="form-check mt-2">
             <input class="form-check-input" type="radio" name="paymentMethod" id="banking" value="BANKING"
                    [(ngModel)]="selectedPaymentMethod">
             <label class="form-check-label text-muted" for="banking">
-              {{ "Bank Transfer" | translate }}
+              {{ "BANKING" | translate }}
             </label>
           </div>
         </div>
@@ -139,33 +139,33 @@
       <!-- Order Summary Section -->
       <div class="col-lg-4">
         <div class="bg-white p-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "ORDER_SUMMARY" | translate }}</h5>
           <div class="d-flex justify-content-between mt-3">
-            <span class="fw-light text-muted">{{ 'Total Price' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_BASE_PRICE" | translate }}:</span>
             <span class="fs-6">{{ totalBasePrice() | currency:"VND" }}</span>
           </div>
           <hr/>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Total Discounted Price' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_DISCOUNTED_PRICE" | translate }}:</span>
             <span class="fs-6">{{ totalDiscountedPrice | currency:"VND" }}</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Discount' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "DISCOUNT_PERCENT" | translate }}:</span>
             <span class="fs-6">{{ discountedPercent | percent }}</span>
           </div>
           <hr/>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Amount' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_AMOUNT" | translate }}:</span>
             <span class="amount">{{ totalAmount | currency:"VND" }}</span>
           </div>
           <hr/>
           <div class="d-flex gap-3">
             <button class="btn back-btn mt-3 w-20"
                     (click)="backToCart()">
-              {{ 'Back' | translate }}
+              {{ "BACK" | translate }}
             </button>
             <button class="btn checkout-btn mt-3 w-100" (click)="placeOrder()">
-              {{ 'Place Order' | translate }}
+              {{ "PLACE_ORDER" | translate }}
             </button>
           </div>
         </div>
@@ -219,36 +219,36 @@
       <!-- Order Summary Section -->
       <div class="col-lg-4">
         <div class="bg-white p-3 rounded shadow-sm">
-          <h5 class="fs-5 fw-light text-muted">{{ "Order Summary" | translate }}</h5>
+          <h5 class="fs-5 fw-light text-muted">{{ "ORDER_SUMMARY" | translate }}</h5>
           <div class="d-flex justify-content-between mt-3">
-            <span class="fw-light text-muted">{{ 'Total Price' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_BASE_PRICE" | translate }}:</span>
             <span class="fs-6">{{ totalBasePrice() | currency:"VND" }}</span>
           </div>
           <hr/>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Total Discounted Price' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_DISCOUNTED_PRICE" | translate }}:</span>
             <span class="fs-6">{{ totalDiscountedPrice | currency:"VND" }}</span>
           </div>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Discount' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "DISCOUNT_PERCENT" | translate }}:</span>
             <span class="fs-6">{{ discountedPercent | percent }}</span>
           </div>
           <hr/>
           <div class="d-flex justify-content-between">
-            <span class="fw-light text-muted">{{ 'Amount' | translate }}:</span>
+            <span class="fw-light text-muted">{{ "TOTAL_AMOUNT" | translate }}:</span>
             <span class="amount">{{ totalAmount | currency:"VND" }}</span>
           </div>
           <hr/>
           <button class="btn checkout-btn mt-3 w-100" (click)="proceedToCheckout()">
-            {{ 'Proceed to Checkout' | translate }}
+            {{ "PROCEED_TO_CHECKOUT" | translate }}
           </button>
         </div>
       </div>
     } @else {
       <!-- Empty Cart Section -->
       <div class="text-center bg-white p-5 rounded shadow-sm">
-        <h2 class="fs-2 fw-light text-muted">{{ 'Your cart is empty' | translate }}</h2>
-        <a routerLink="/" class="btn mt-4 buy-now">{{ 'Shop Now' | translate }}</a>
+        <h2 class="fs-2 fw-light text-muted">{{ "EMPTY_CART" | translate }}</h2>
+        <a routerLink="/" class="btn mt-4 buy-now">{{ "SHOPPING_NOW" | translate }}</a>
       </div>
     }
   </div>

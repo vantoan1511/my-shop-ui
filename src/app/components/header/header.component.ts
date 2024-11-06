@@ -1,24 +1,24 @@
 import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {AuthenticationService} from '../../services/authentication.service';
-import {TranslateModule} from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {constant} from "../../shared/constant";
-import {ImageService} from "../../services/image.service";
 
 @Component({
-    selector: 'app-header',
-    standalone: true,
-    imports: [RouterLink, TranslateModule],
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.scss',
+  selector: 'app-header',
+  standalone: true,
+  imports: [RouterLink, TranslateModule],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
 
-    constructor(
-        protected authService: AuthenticationService,
-        private imageService: ImageService,
-    ) {
-    }
+  constructor(
+    protected authService: AuthenticationService,
+    private translate: TranslateService,
+  ) {
+    this.translate.setDefaultLang('vi');
+  }
 
-    protected readonly constant = constant;
+  protected readonly constant = constant;
 }
