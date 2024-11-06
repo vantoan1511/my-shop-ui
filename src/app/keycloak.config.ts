@@ -11,10 +11,11 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
     loadUserProfileAtStartUp: true,
 
     initOptions: {
-      onLoad: 'check-sso',
-      enableLogging: true,
+      pkceMethod: 'S256',
+      // onLoad: 'check-sso',
+      // enableLogging: true,
       checkLoginIframe: false,
-      silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
+      // silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,
     },
     enableBearerInterceptor: true,
     bearerPrefix: 'Bearer',
