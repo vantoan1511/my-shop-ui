@@ -1,46 +1,44 @@
 <div class="row justify-content-center">
-    @if (loading) {
-        @for (_ of [].constructor(6); track $index) {
-            <div class="col-md-2 p-0 me-2 mt-2">
-                <app-card-loader/>
-            </div>
-        }
-    } @else {
-        @for (product of productResponse?.items; track $index) {
-            <div class="col-md-2 p-0 me-2 mt-2">
-                <div class="card">
-                    <img [src]="heroImages.get(product.id)"
-                         class="product-hero card-img-top"
-                         width="80"
-                         [alt]="product.name"/>
-                    <div class="card-body">
-                        <a [routerLink]="['/may-tinh-xach-tay', product.slug]"
-                           class="text-muted fw-light text-decoration-none truncate-multiline">
-                            {{ product.name }}
-                        </a>
-                        <div class="price">
-                            <div class="text-muted">
-                                <del>{{ product.basePrice | currency:'VND' }}</del>
-                            </div>
-                            <div class="fs-5 fw-bold">
-                                {{ product.salePrice | currency: 'VND' }}
-                            </div>
-                            @if (savedPrice(product)) {
-                                <div class="saved-price fw-light">
-                                    {{ 'Discount' | translate }} {{ savedPrice(product) | currency:'VND' }}
-                                </div>
-                            }
-                        </div>
-                        <div class="rating d-flex">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+  @if (loading) {
+    @for (_ of [].constructor(6); track $index) {
+      <div class="col-md-2 p-0 me-2 mt-2">
+        <app-card-loader/>
+      </div>
     }
+  } @else {
+    @for (product of productResponse?.items; track $index) {
+      <div class="col-md-2 p-0 me-2 mt-2">
+        <div class="card">
+          <img [src]="heroImages.get(product.id)"
+               class="product-hero card-img-top"
+               width="80"
+               [alt]="product.name"/>
+          <div class="card-body">
+            <a [routerLink]="['/may-tinh-xach-tay', product.slug]"
+               class="text-muted fw-light text-decoration-none truncate-multiline">
+              {{ product.name }}
+            </a>
+            <div class="price">
+              <div class="text-muted">
+                <del>{{ product.basePrice | currency:'VND' }}</del>
+              </div>
+              <div class="fs-5 fw-bold">
+                {{ product.salePrice | currency: 'VND' }}
+              </div>
+              @if (savedPrice(product)) {
+                <div class="saved-price fw-light">
+                  {{ "DISCOUNT" | translate }} {{ savedPrice(product) | currency:'VND' }}
+                </div>
+              }
+            </div>
+            <div class="rating d-flex">
+              @for (i of Array(5); track $index) {
+                <i class="bi bi-star-fill"></i>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
 </div>

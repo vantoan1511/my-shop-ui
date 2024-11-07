@@ -8,18 +8,20 @@ import {Observable, Subject, takeUntil} from "rxjs";
 import {AlertService} from "../../../../services/alert.service";
 import {CategoryService} from "../../../../services/category.service";
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'app-brand-details',
     standalone: true,
-    imports: [
-        AsyncPipe,
-        ContextMenuComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        RouterLink,
-        NgxEditorModule
-    ],
+  imports: [
+    AsyncPipe,
+    ContextMenuComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterLink,
+    NgxEditorModule,
+    TranslateModule
+  ],
     templateUrl: './category-details.component.html',
     styleUrl: './category-details.component.scss'
 })
@@ -47,7 +49,9 @@ export class CategoryDetailsComponent implements OnInit, OnDestroy {
         private categoryService: CategoryService,
         private alertService: AlertService,
         private router: Router,
+        private translate: TranslateService,
     ) {
+      this.translate.setDefaultLang("vi")
     }
 
     @Input()

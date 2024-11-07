@@ -19,7 +19,7 @@
       <ul class="dropdown-menu dropdown-menu-lg-end">
         <li>
           <button class="dropdown-item" (click)="logout()">
-            <i class="bi bi-box-arrow-right"></i> Logout
+            <i class="bi bi-box-arrow-right"></i> {{ "LOGOUT" | translate }}
           </button>
         </li>
       </ul>
@@ -43,7 +43,7 @@
           <div class="icon">
             <i class="bi bi-house"></i>
           </div>
-          Dashboard
+          {{ "DASHBOARD" | translate }}
         </a>
         <a routerLink="users"
            routerLinkActive="active"
@@ -51,7 +51,7 @@
           <div class="icon">
             <i class="bi bi-people"></i>
           </div>
-          Users
+          {{ "USERS" | translate }}
         </a>
         <a routerLink="brands"
            routerLinkActive="active"
@@ -59,7 +59,7 @@
           <div class="icon">
             <i class="bi bi-amazon"></i>
           </div>
-          Brands
+          {{ "BRANDS" | translate }}
         </a>
         <a routerLink="models"
            routerLinkActive="active"
@@ -67,7 +67,7 @@
           <div class="icon">
             <i class="bi bi-box-seam"></i>
           </div>
-          Models
+          {{ "MODELS" | translate }}
         </a>
         <a routerLink="categories"
            routerLinkActive="active"
@@ -75,7 +75,7 @@
           <div class="icon">
             <i class="bi bi-tags"></i>
           </div>
-          Categories
+          {{ "CATEGORIES" | translate }}
         </a>
         <a routerLink="products"
            routerLinkActive="active"
@@ -83,7 +83,7 @@
           <div class="icon">
             <i class="bi bi-box"></i>
           </div>
-          Products
+          {{ "PRODUCTS" | translate }}
         </a>
         <a routerLink="orders"
            routerLinkActive="active"
@@ -91,7 +91,7 @@
           <div class="icon">
             <i class="bi bi-bag"></i>
           </div>
-          Orders
+          {{ "ORDERS" | translate }}
         </a>
       </div>
       <div class="sidebar-footer">Ver 1.0.0</div>

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTableFooterComponent} from "../../../shared/components/pagination/pagination.component";
-import {CurrencyPipe, DatePipe, NgClass} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgClass, NgTemplateOutlet} from "@angular/common";
 import {ListControlsComponent} from "../../../shared/components/list-controls/list-controls.component";
 import {SortableDirective} from "../../../directives/sortable.directive";
 import {PageRequest} from "../../../types/page-request.type";
@@ -11,7 +11,7 @@ import {RouterLink} from "@angular/router";
 import {ProductService} from "../../../services/product.service";
 import {AlertService} from "../../../services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {TranslateModule} from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {environment} from "../../../../environments/environment";
 import {forkJoin, map, switchMap} from "rxjs";
 import {ProductImage} from "../../../types/image.type";
@@ -28,7 +28,8 @@ import {constant} from "../../../shared/constant";
     RouterLink,
     CurrencyPipe,
     NgClass,
-    TranslateModule
+    TranslateModule,
+    NgTemplateOutlet
   ],
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.scss'
@@ -45,8 +46,10 @@ export class AdminProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private translate: TranslateService,
   ) {
+    this.translate.setDefaultLang("vi")
   }
 
   ngOnInit(): void {

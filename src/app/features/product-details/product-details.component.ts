@@ -5,7 +5,7 @@ import {Product} from "../../types/product.type";
 import {CurrencyPipe, DatePipe, NgOptimizedImage, SlicePipe} from "@angular/common";
 import {constant} from "../../shared/constant";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {ReviewService} from "../../services/review.service";
 import {PageRequest} from "../../types/page-request.type";
@@ -20,7 +20,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe],
+  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })

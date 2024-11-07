@@ -1,36 +1,43 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PageRequest} from '../../../types/page-request.type';
-import {Perform} from '../../../types/perform.type';
 import {PagedResponse} from '../../../types/response.type';
-import {User} from '../../../types/user.type';
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
-    selector: 'app-pagination',
-    standalone: true,
-    imports: [],
-    templateUrl: './pagination.component.html',
-    styleUrl: './pagination.component.scss',
+  selector: 'app-pagination',
+  standalone: true,
+  imports: [
+    TranslateModule
+  ],
+  templateUrl: './pagination.component.html',
+  styleUrl: './pagination.component.scss',
 })
 export class DataTableFooterComponent<T> {
-    @Input() loading = false;
-    @Input() pageRequest!: PageRequest;
-    @Input() items: PagedResponse<T> | null = null;
-    @Output() pageChange = new EventEmitter<'next' | 'previous'>();
-    @Output() pageSizeChange = new EventEmitter<number>();
+  @Input() loading = false;
+  @Input() pageRequest!: PageRequest;
+  @Input() items: PagedResponse<T> | null = null;
+  @Output() pageChange = new EventEmitter<'next' | 'previous'>();
+  @Output() pageSizeChange = new EventEmitter<number>();
 
-    min(...values: number[]) {
-        return Math.min(...values);
-    }
+  constructor(
+    private translateService: TranslateService,
+  ) {
+    this.translateService.setDefaultLang("vi")
+  }
 
-    changePageSize(size: number) {
-        this.pageSizeChange.emit(size);
-    }
+  min(...values: number[]) {
+    return Math.min(...values);
+  }
 
-    previousPage() {
-        this.pageChange.emit('previous');
-    }
+  changePageSize(size: number) {
+    this.pageSizeChange.emit(size);
+  }
 
-    nextPage() {
-        this.pageChange.emit('next');
-    }
+  previousPage() {
+    this.pageChange.emit('previous');
+  }
+
+  nextPage() {
+    this.pageChange.emit('next');
+  }
 }

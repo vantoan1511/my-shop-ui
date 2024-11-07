@@ -4,7 +4,7 @@
     <div class="col">
       <div class="card shadow-sm">
         <div class="card-header py-3">
-          <span class="fs-2 fw-medium">{{ 'ORDER_MANAGEMENT' | translate }}</span>
+          <span class="fs-2 fw-medium">{{ "ORDER_MANAGEMENT" | translate }}</span>
         </div>
 
         <div class="card-header d-flex justify-content-between">
@@ -71,7 +71,7 @@
                       <td>{{ order.totalAmount | currency:"VND" }}</td>
                       <td>
                         <span class="badge">
-                          {{ order.orderStatus }}
+                          {{ order.orderStatus | translate }}
                         </span>
                       </td>
                       <td>{{ order.paymentMethod }}</td>

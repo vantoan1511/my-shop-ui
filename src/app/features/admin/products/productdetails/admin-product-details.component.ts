@@ -12,10 +12,10 @@ import {CategoryService} from "../../../../services/category.service";
 import {ImageService} from "../../../../services/image.service";
 import {ContextMenuComponent} from "../../../../shared/components/context-menu/context-menu.component";
 import {ProductImage} from "../../../../types/image.type";
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 import {constant} from "../../../../shared/constant";
 import {environment} from "../../../../../environments/environment";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'admin-product-details',
@@ -25,7 +25,8 @@ import {environment} from "../../../../../environments/environment";
     RouterLink,
     AsyncPipe,
     ContextMenuComponent,
-    NgxEditorModule
+    NgxEditorModule,
+    TranslateModule
   ],
   templateUrl: './admin-product-details.component.html',
   styleUrl: './admin-product-details.component.scss'
@@ -73,8 +74,9 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     private categoryService: CategoryService,
     private alertService: AlertService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private translate: TranslateService,
   ) {
+    this.translate.setDefaultLang("vi");
   }
 
   @Input()

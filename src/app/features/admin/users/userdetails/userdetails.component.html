@@ -1,266 +1,248 @@
 <main class="container my-5">
-    <div class="card border-0 shadow">
-        <div
-                class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3"
-        >
-            <h2 class="mb-0 text-white">
-                @if (user?.firstName || user?.lastName) {
-                    {{ user?.firstName }} {{ user?.lastName }}
-                } @else {
-                    New user
-                }
-            </h2>
-        </div>
-        <div class="card-footer">
-            <ul class="nav nav-underline">
-                <li class="nav-item">
-                    <button
-                            [class.active]="currentTabView === 'general'"
-                            class="nav-link"
-                            (click)="changeTab('general')"
-                    >
-                        General
-                    </button>
-                </li>
-                @if (user?.id) {
-                    <li class="nav-item">
-                        <button
-                                [class.active]="currentTabView === 'credentials'"
-                                class="nav-link"
-                                (click)="changeTab('credentials')"
-                        >
-                            Credentials
-                        </button>
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="card-body">
-            @if (currentTabView === 'general') {
-                <form [formGroup]="userForm">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row g-3 align-items-center mt-1">
-                                <div class="col-3">
-                                    <label for="firstName" class="col-form-label">First name</label>
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('firstName')"
-                                            formControlName="firstName"
-                                            type="text"
-                                            id="firstName"
-                                            class="form-control"
-                                            placeholder="Nguyen Van"
-                                    />
-                                </div>
-                                @if (isInvalid('firstName')) {
-                                    <div class="col-auto">
+  <div class="card border-0 shadow">
+    <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
+      <h2 class="mb-0 text-white">
+        @if (user?.firstName || user?.lastName) {
+          {{ user?.firstName }} {{ user?.lastName }}
+        } @else {
+          {{ "NEW_USER"|translate }}
+        }
+      </h2>
+    </div>
+    <div class="card-footer">
+      <ul class="nav nav-underline">
+        <li class="nav-item">
+          <button [class.active]="currentTabView === 'general'"
+                  class="nav-link"
+                  (click)="changeTab('general')">
+            {{ "GENERAL"|translate }}
+          </button>
+        </li>
+        @if (user?.id) {
+          <li class="nav-item">
+            <button [class.active]="currentTabView === 'credentials'"
+                    class="nav-link"
+                    (click)="changeTab('credentials')">
+              {{ "CREDENTIALS"|translate }}
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="card-body">
+      @if (currentTabView === 'general') {
+        <form [formGroup]="userForm">
+          <div class="row">
+            <div class="col">
+              <div class="row g-3 align-items-center mt-1">
+                <div class="col-3">
+                  <label for="firstName" class="col-form-label">{{ "FIRST_NAME"|translate }}</label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('firstName')"
+                    formControlName="firstName"
+                    type="text"
+                    id="firstName"
+                    class="form-control"
+                    placeholder="Nguyen Van"
+                  />
+                </div>
+                @if (isInvalid('firstName')) {
+                  <div class="col-auto">
                 <span class="form-text text-danger">
-                  First name is required
+                  {{ "FIRST_NAME_IS_REQUIRED"|translate }}
                 </span>
-                                    </div>
-                                }
-                            </div>
+                  </div>
+                }
+              </div>
 
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="lastName" class="col-form-label">Last name</label>
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('lastName')"
-                                            formControlName="lastName"
-                                            type="text"
-                                            id="lastName"
-                                            class="form-control"
-                                            placeholder="A"
-                                    />
-                                </div>
-                                @if (isInvalid('lastName')) {
-                                    <div class="col-auto">
-                                        <span class="form-text text-danger">Last name is required</span>
-                                    </div>
-                                }
-                            </div>
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="username" class="col-form-label">Username</label>
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('username')"
-                                            formControlName="username"
-                                            type="text"
-                                            id="username"
-                                            class="form-control"
-                                            placeholder="user1"
-                                    />
-                                </div>
-                                @if (isInvalid('username')) {
-                                    <div class="col-auto">
-                                        <span class="form-text text-danger">Username is required</span>
-                                    </div>
-                                }
-                            </div>
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="email" class="col-form-label">Email</label>
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('email')"
-                                            formControlName="email"
-                                            type="email"
-                                            id="email"
-                                            class="form-control"
-                                            placeholder="nguyenvana@gmail.com"
-                                    />
-                                </div>
-                                @if (isInvalid('email')) {
-                                    <div class="col-auto">
-                                        <span class="form-text text-danger">Email is invalid</span>
-                                    </div>
-                                }
-                            </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="lastName" class="col-form-label">{{ "LAST_NAME"|translate }}</label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('lastName')"
+                    formControlName="lastName"
+                    type="text"
+                    id="lastName"
+                    class="form-control"
+                    placeholder="A"
+                  />
+                </div>
+                @if (isInvalid('lastName')) {
+                  <div class="col-auto">
+                    <span class="form-text text-danger">{{ "LAST_NAME_IS_REQUIRED"|translate }}</span>
+                  </div>
+                }
+              </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="username" class="col-form-label">{{ "USERNAME"|translate }}</label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('username')"
+                    formControlName="username"
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    placeholder="user1"
+                  />
+                </div>
+                @if (isInvalid('username')) {
+                  <div class="col-auto">
+                    <span class="form-text text-danger">{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+                  </div>
+                }
+              </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="email" class="col-form-label">{{ "EMAIL"|translate }}</label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('email')"
+                    formControlName="email"
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="nguyenvana@gmail.com"
+                  />
+                </div>
+                @if (isInvalid('email')) {
+                  <div class="col-auto">
+                    <span class="form-text text-danger">{{ "EMAIL_IS_REQUIRED"|translate }}</span>
+                  </div>
+                }
+              </div>
 
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="emailVerified" class="col-form-label">
-                                        Email verified
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check form-switch">
-                                        <input
-                                                formControlName="emailVerified"
-                                                class="form-check-input custom-checkbox"
-                                                type="checkbox"
-                                                role="switch"
-                                                aria-checked="true"
-                                                id="emailVerified"
-                                        />
-                                        <label for="emailVerified">True</label>
-                                    </div>
-                                </div>
-                            </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="emailVerified" class="col-form-label">
+                    {{ "EMAIL_VERIFIED"|translate }}
+                  </label>
+                </div>
+                <div class="col">
+                  <div class="form-check form-switch">
+                    <input formControlName="emailVerified"
+                           class="form-check-input custom-checkbox"
+                           type="checkbox"
+                           role="switch"
+                           aria-checked="true"
+                           id="emailVerified"/>
+                    <label for="emailVerified">True</label>
+                  </div>
+                </div>
+              </div>
 
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="enabled" class="col-form-label"> Enabled </label>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check form-switch">
-                                        <input
-                                                formControlName="enabled"
-                                                class="form-check-input custom-checkbox"
-                                                type="checkbox"
-                                                role="switch"
-                                                aria-checked="true"
-                                                id="enabled"
-                                        />
-                                        <label for="enabled">True</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            } @else {
-                <form [formGroup]="passwordForm">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="password" class="col-form-label"
-                                    >New password</label
-                                    >
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('password')"
-                                            formControlName="password"
-                                            type="password"
-                                            id="password"
-                                            class="form-control"
-                                    />
-                                </div>
-                                @if (isInvalid('password')) {
-                                    <div class="col-auto">
-                                        <span class="form-text text-danger">Password is required</span>
-                                    </div>
-                                }
-                            </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="enabled" class="col-form-label"> {{ "ENABLED"|translate }} </label>
+                </div>
+                <div class="col">
+                  <div class="form-check form-switch">
+                    <input formControlName="enabled"
+                           class="form-check-input custom-checkbox"
+                           type="checkbox"
+                           role="switch"
+                           aria-checked="true"
+                           id="enabled"/>
+                    <label for="enabled">True</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      } @else {
+        <form [formGroup]="passwordForm">
+          <div class="row">
+            <div class="col">
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="password" class="col-form-label">{{ "NEW_PASSWORD"|translate }}</label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('password')"
+                    formControlName="password"
+                    type="password"
+                    id="password"
+                    class="form-control"
+                  />
+                </div>
+                @if (isInvalid('password')) {
+                  <div class="col-auto">
+                    <span class="form-text text-danger">{{ "PASSWORD_IS_REQUIRED"|translate }}</span>
+                  </div>
+                }
+              </div>
 
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="re-password" class="col-form-label">
-                                        Confirm password
-                                    </label>
-                                </div>
-                                <div class="col-auto">
-                                    <input
-                                            [class.invalid-input]="isInvalid('rePassword')"
-                                            formControlName="rePassword"
-                                            type="password"
-                                            id="re-password"
-                                            class="form-control"
-                                    />
-                                </div>
-                                @if (isInvalid('rePassword') || rePasswordNotMatched) {
-                                    <div class="col-auto">
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="re-password" class="col-form-label">
+                    {{ "CONFIRM_PASSWORD"|translate }}
+                  </label>
+                </div>
+                <div class="col-auto">
+                  <input
+                    [class.invalid-input]="isInvalid('rePassword')"
+                    formControlName="rePassword"
+                    type="password"
+                    id="re-password"
+                    class="form-control"
+                  />
+                </div>
+                @if (isInvalid('rePassword') || rePasswordNotMatched) {
+                  <div class="col-auto">
                 <span class="form-text text-danger">
                   @if (rePasswordNotMatched) {
-                      Re-password does not matched
+                    {{ "CONFIRM_PASSWORD_DOES_NOT_MATCHED"|translate }}
                   } @else {
-                      Re-password is required
+                    {{ "CONFIRM_PASSWORD_IS_REQUIRED"|translate }}
                   }
                 </span>
-                                    </div>
-                                }
-                            </div>
+                  </div>
+                }
+              </div>
 
-                            <div class="row g-3 align-items-center my-1">
-                                <div class="col-3">
-                                    <label for="temporary" class="col-form-label">
-                                        Temporary
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <div class="form-check form-switch">
-                                        <input
-                                                formControlName="temporary"
-                                                class="form-check-input custom-checkbox"
-                                                type="checkbox"
-                                                role="switch"
-                                                aria-checked="true"
-                                                id="temporary"
-                                        />
-                                        <label for="">True</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            }
-        </div>
-        <div
-                class="card-footer border-0 controls-bar d-flex justify-content-between align-items-center"
-        >
-            <button routerLink=".." class="btn return-btn border-0 fs-5">
-                <i class="bi bi-arrow-return-left me-3"></i>
-                <span>Back</span>
-            </button>
-
-            <button
-                    [disabled]="!userForm.valid"
-                    class="btn save-btn border-0 fs-5 fw-bold"
-                    (click)="onSaveButtonClick()"
-            >
-                <i class="bi bi-floppy me-3"></i>
-                <span>Save</span>
-            </button>
-        </div>
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="temporary" class="col-form-label">
+                    {{ "TEMPORARY"|translate }}
+                  </label>
+                </div>
+                <div class="col">
+                  <div class="form-check form-switch">
+                    <input formControlName="temporary"
+                           class="form-check-input custom-checkbox"
+                           type="checkbox"
+                           role="switch"
+                           aria-checked="true"
+                           id="temporary"/>
+                    <label for="temporary">True</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      }
     </div>
+    <div class="card-footer border-0 controls-bar d-flex justify-content-between align-items-center">
+      <button routerLink=".." class="btn return-btn border-0 fs-5">
+        <i class="bi bi-arrow-return-left me-3"></i>
+        <span>{{ "BACK"|translate }}</span>
+      </button>
+
+      <button [disabled]="!userForm.valid"
+              class="btn save-btn border-0 fs-5 fw-bold"
+              (click)="onSaveButtonClick()">
+        <i class="bi bi-floppy me-3"></i>
+        <span>{{ "SAVE"|translate }}</span>
+      </button>
+    </div>
+  </div>
 </main>

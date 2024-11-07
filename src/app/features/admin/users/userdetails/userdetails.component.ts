@@ -1,23 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AlertService } from '../../../../services/alert.service';
-import { UserService } from '../../../../services/user.service';
-import { ValidationService } from '../../../../services/validation.service';
-import { UserUpdate } from '../../../../types/user-update.type';
-import { User } from '../../../../types/user.type';
-import { PasswordReset } from '../../../../types/password-reset.type';
+import {Router, RouterLink} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AlertService} from '../../../../services/alert.service';
+import {UserService} from '../../../../services/user.service';
+import {ValidationService} from '../../../../services/validation.service';
+import {UserUpdate} from '../../../../types/user-update.type';
+import {User} from '../../../../types/user.type';
+import {PasswordReset} from '../../../../types/password-reset.type';
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, TranslateModule],
   templateUrl: './userdetails.component.html',
   styleUrl: './userdetails.component.scss',
 })
@@ -34,8 +35,11 @@ export class DetailsComponent implements OnInit {
     private validator: ValidationService,
     private userService: UserService,
     private alertService: AlertService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private translate: TranslateService,
+  ) {
+    this.translate.setDefaultLang("vi")
+  }
 
   ngOnInit(): void {
     this.initForm();

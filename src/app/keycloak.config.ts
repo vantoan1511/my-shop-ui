@@ -12,7 +12,7 @@ export const initializeKeycloak = (keycloak: KeycloakService) => async () =>
 
     initOptions: {
       pkceMethod: 'S256',
-      // onLoad: 'check-sso',
+      onLoad: 'check-sso',
       // enableLogging: true,
       checkLoginIframe: false,
       // silentCheckSsoRedirectUri: `${window.location.origin}/silent-check-sso.html`,

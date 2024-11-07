@@ -2,7 +2,7 @@
   <div class="card border-0 shadow">
     <div class="card-header bg-purple bg-gradient d-flex justify-content-between align-items-center py-3">
       <h2 class="mb-0 text-white">
-        {{ product?.name || 'New Product' }}
+        {{ product?.name || ("NEW_PRODUCT"|translate) }}
       </h2>
     </div>
     <div class="card-footer">
@@ -16,7 +16,7 @@
                   role="tab"
                   aria-controls="general"
                   aria-selected="true">
-            General
+            {{ "GENERAL"|translate }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -28,7 +28,7 @@
                   role="tab"
                   aria-controls="details"
                   aria-selected="false">
-            Details
+            {{ "DETAILS"|translate }}
           </button>
         </li>
         <li class="nav-item" role="presentation">
@@ -40,7 +40,7 @@
                   role="tab"
                   aria-controls="images"
                   aria-selected="false">
-            Images
+            {{ "IMAGES"|translate }}
           </button>
         </li>
       </ul>
@@ -56,7 +56,7 @@
               <div class="col">
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="name" class="col-form-label">Name</label>
+                    <label for="name" class="col-form-label">{{ "NAME"|translate }}</label>
                   </div>
                   <div class="col">
                     <input [class.invalid-input]="isInvalid('name')"
@@ -70,7 +70,7 @@
 
                 <div class="row g-3 align-items-center my-1">
                   <div class="col-3">
-                    <label for="slug" class="col-form-label">Slug</label>
+                    <label for="slug" class="col-form-label">{{ "SLUG"|translate }}</label>
                   </div>
                   <div class="col d-flex gap-2">
                     <input [class.invalid-input]="isInvalid('slug')"
@@ -89,7 +89,7 @@
 
                 <div class="row g-3 align-items-center my-1">
                   <div class="col-3">
-                    <label for="basePrice" class="col-form-label">Base price</label>
+                    <label for="basePrice" class="col-form-label">{{ "BASE_PRICE"|translate }}</label>
                   </div>
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('basePrice')"
@@ -103,7 +103,7 @@
 
                 <div class="row g-3 align-items-center my-1">
                   <div class="col-3">
-                    <label for="stock" class="col-form-label">Stock</label>
+                    <label for="stock" class="col-form-label">{{ "STOCK"|translate }}</label>
                   </div>
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('stockQuantity')"
@@ -117,7 +117,7 @@
 
                 <div class="row g-3 align-items-center my-1">
                   <div class="col-3">
-                    <label for="active" class="col-form-label">Active</label>
+                    <label for="active" class="col-form-label">{{ "STATUS"|translate }}</label>
                   </div>
                   <div class="col">
                     <div class="form-check form-switch">
@@ -135,14 +135,14 @@
               <div class="col">
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="category" class="col-form-label">Category</label>
+                    <label for="category" class="col-form-label">{{ "CATEGORY"|translate }}</label>
                   </div>
                   <div class="col-auto">
                     <select id="category"
                             class="form-select"
                             formControlName="category">
                       <option value="" disabled selected>
-                        Choose category
+                        {{ "CHOOSE_CATEGORY"|translate }}
                       </option>
                       @for (category of (categories$|async)?.items; track $index) {
                         <option [value]="category.slug">
@@ -155,12 +155,12 @@
 
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="model" class="col-form-label">Model</label>
+                    <label for="model" class="col-form-label">{{ "MODEL"|translate }}</label>
                   </div>
                   <div class="col-auto">
                     <select id="model" class="form-select" formControlName="model">
                       <option value="" disabled selected>
-                        Choose model
+                        {{ "CHOOSE_MODEL"|translate }}
                       </option>
                       @for (model of (models$|async)?.items; track $index) {
                         <option [value]="model.slug">
@@ -173,7 +173,7 @@
 
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="salePrice" class="col-form-label">Sale price</label>
+                    <label for="salePrice" class="col-form-label">{{ "SALE_PRICE"|translate }}</label>
                   </div>
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('salePrice')"
@@ -189,7 +189,7 @@
 
             <div class="row g-3 mt-1">
               <div class="col-3">
-                <label for="description" class="col-form-label">Description</label>
+                <label for="description" class="col-form-label">{{ "DESCRIPTION"|translate }}</label>
               </div>
               <div class="col">
                 <div id="description" class="NgxEditor__Wrapper">
@@ -210,7 +210,7 @@
               <div class="col">
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="processor" class="col-form-label">Processor</label>
+                    <label for="processor" class="col-form-label">{{ "PROCESSOR"|translate }}</label>
                   </div>
                   <div class="col">
                     <input [class.invalid-input]="isInvalid('processor')"
@@ -223,7 +223,7 @@
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="gpu" class="col-form-label">GPU</label>
+                    <label for="gpu" class="col-form-label">{{ "GPU"|translate }}</label>
                   </div>
                   <div class="col">
                     <input [class.invalid-input]="isInvalid('gpu')"
@@ -236,7 +236,7 @@
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="screenSize" class="col-form-label">Screen size (inches)</label>
+                    <label for="screenSize" class="col-form-label">{{ "SCREEN_SIZE"|translate }} (inches)</label>
                   </div>
                   <div class="col-auto">
                     <input [class.invalid-input]="isInvalid('screenSize')"
@@ -249,11 +249,11 @@
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="os" class="col-form-label">OS</label>
+                    <label for="os" class="col-form-label">{{ "OS"|translate }}</label>
                   </div>
                   <div class="col-auto">
                     <select id="os" class="form-select" formControlName="os">
-                      <option value="" selected disabled>Choose OS</option>
+                      <option value="" selected disabled>{{ "CHOOSE_OS"|translate }}</option>
                       <option value="WINDOW11">
                         Windows 11
                       </option>
@@ -265,28 +265,29 @@
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="color" class="col-form-label">Color</label>
+                    <label for="color" class="col-form-label">{{ "COLOR"|translate }}</label>
                   </div>
                   <div class="col-auto">
                     <select id="color" class="form-select" formControlName="color">
                       <option value="" disabled selected>
-                        Choose color
+                        {{ "CHOOSE_COLOR"|translate }}
                       </option>
                       <option value="SILVER">
-                        Silver
+                        {{ "SILVER"|translate }}
                       </option>
                       <option value="BLACK">
-                        Black
+                        {{ "BLACK"|translate }}
                       </option>
                       <option value="WHITE">
-                        White
+                        {{ "WHITE"|translate }}
                       </option>
                     </select>
                   </div>
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="warranty" class="col-form-label">Warranty (years)</label>
+                    <label for="warranty" class="col-form-label">{{ "WARRANTY"|translate }} ({{ "YEARS"|translate }}
+                      )</label>
                   </div>
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('warranty')"
@@ -301,7 +302,7 @@
               <div class="col">
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="ram" class="col-form-label">Ram (GB)</label>
+                    <label for="ram" class="col-form-label">RAM (GB)</label>
                   </div>
                   <div class="col-auto">
                     <input [class.invalid-input]="isInvalid('ram')"
@@ -314,11 +315,11 @@
                 </div>
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
-                    <label for="storageType" class="col-form-label">Storage type</label>
+                    <label for="storageType" class="col-form-label">{{ "STORAGE_TYPE" }}</label>
                   </div>
                   <div class="col-auto">
                     <select id="storageType" class="form-select" formControlName="storageType">
-                      <option value="" disabled selected>Choose storage type</option>
+                      <option value="" disabled selected>{{ "CHOOSE_STORAGE_TYPE"|translate }}</option>
                       <option value="HDD">HDD</option>
                       <option value="SSD">SSD</option>
                     </select>
@@ -328,7 +329,7 @@
                   <div class="col-3">
                     <label for="storageCapacity"
                            class="col-form-label">
-                      Storage Capacity (GB)
+                      {{ "STORAGE"|translate }} (GB)
                     </label>
                   </div>
                   <div class="col-auto">
@@ -344,7 +345,7 @@
                   <div class="col-3">
                     <label for="batteryCapacity"
                            class="col-form-label">
-                      Battery capacity (Wh)
+                      {{ "CAPACITY"|translate }} (Wh)
                     </label>
                   </div>
                   <div class="col-auto">
@@ -360,7 +361,7 @@
                   <div class="col-3">
                     <label for="weight"
                            class="col-form-label">
-                      Weight (Kg)
+                      {{ "WEIGHT"|translate }} (Kg)
                     </label>
                   </div>
                   <div class="col-auto">
@@ -383,7 +384,7 @@
 
             <div class="mb-4">
               <h4 class="text-muted fw-light">
-                <i class="bi bi-star"></i> FEATURED
+                <i class="bi bi-star"></i> {{ "FEATURED"|translate }}
               </h4>
               <div class="hero-image mb-3">
                 <img id="heroImage"
@@ -394,7 +395,7 @@
             </div>
 
             <div class="mb-4">
-              <h4 class="text-muted fw-light">ALL</h4>
+              <h4 class="text-muted fw-light">{{ "ALL"|translate }}</h4>
               <div class="d-flex gap-3"
                    id="productThumbnails">
                 @for (imageId of imageUrls.keys(); track imageId) {
@@ -415,55 +416,17 @@
                      (change)="onUploadImageButtonClick($event)"/>
               <label for="image"
                      style="cursor: pointer">
-                <i class="bi bi-upload me-2"></i>Upload new
+                <i class="bi bi-upload me-2"></i>{{ "UPLOAD_NEW"|translate }}
               </label>
 
-              <span class="text-muted fw-light">- or -</span>
+              <span class="text-muted fw-light">- {{ "OR"|translate }} -</span>
               <button class="btn"
                       data-bs-toggle="modal"
                       data-bs-target="#uploadedImageChooser"
                       (click)="onChooseFromUploadedClick()">
-                <i class="bi bi-images me-2"></i>Choose from uploaded
+                <i class="bi bi-images me-2"></i>{{ "CHOOSE_FROM_UPLOADED"|translate }}
               </button>
 
-              <!-- Modal -->
-              <div class="modal fade"
-                   id="uploadedImageChooser"
-                   data-bs-backdrop="static"
-                   data-bs-keyboard="false"
-                   tabindex="-1"
-                   aria-labelledby="uploadedImageChooserLabel"
-                   aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5"
-                          id="uploadedImageChooserLabel">
-                        Modal title
-                      </h1>
-                      <button type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close">
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      ...
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button"
-                              class="btn btn-secondary"
-                              data-bs-dismiss="modal">
-                        Close
-                      </button>
-                      <button type="button"
-                              class="btn btn-primary">
-                        Understood
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
           </div>
@@ -473,14 +436,14 @@
     <div class="card-footer border-0 controls-bar d-flex justify-content-between align-items-center">
       <button routerLink=".." class="btn return-btn border-0 fs-5">
         <i class="bi bi-arrow-return-left me-3"></i>
-        <span>Back</span>
+        <span>{{ "BACK"|translate }}</span>
       </button>
 
       <button [disabled]="!productForm.valid"
               class="btn save-btn border-0 fs-5 fw-bold"
               (click)="onSaveButtonClick()">
         <i class="bi bi-floppy me-3"></i>
-        <span>Save</span>
+        <span>{{ "SAVE"|translate }}</span>
       </button>
     </div>
   </div>

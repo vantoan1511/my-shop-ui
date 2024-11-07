@@ -5,7 +5,7 @@ import {Product} from "../../types/product.type";
 import {PagedResponse} from "../../types/response.type";
 import {PageRequest} from "../../types/page-request.type";
 import {Sort, SortField} from "../../types/sort.type";
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe, NgClass} from "@angular/common";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
 import {constant} from "../../shared/constant";
@@ -15,7 +15,7 @@ import {ProductImage} from "../../types/image.type";
 @Component({
     selector: 'app-product-list',
     standalone: true,
-    imports: [RouterLink, CurrencyPipe, TranslateModule, CardLoaderComponent],
+  imports: [RouterLink, CurrencyPipe, TranslateModule, CardLoaderComponent, NgClass],
     templateUrl: './product-list.component.html',
     styleUrl: './product-list.component.scss',
 })
@@ -93,4 +93,5 @@ export class ProductListComponent implements OnInit {
     }
 
     protected readonly environment = environment;
+  protected readonly Array = Array;
 }

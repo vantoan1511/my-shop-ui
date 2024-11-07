@@ -1,67 +1,67 @@
 <div class="pagination-container d-flex align-items-center">
   <span class="pagination-info text-muted me-3">
-    Showing {{ (pageRequest.page - 1) * pageRequest.size + 1 }} to
-      {{
-          min(
-              items?.totalItems || 0,
-              pageRequest.size + (pageRequest.page - 1) * pageRequest.size
-          )
-      }}
-      of {{ items?.totalItems || 0 }} entries
+    {{ "SHOWING" | translate }} {{ (pageRequest.page - 1) * pageRequest.size + 1 }} {{ "TO"|translate }}
+    {{
+      min(
+        items?.totalItems || 0,
+        pageRequest.size + (pageRequest.page - 1) * pageRequest.size
+      )
+    }}
+    {{ "OF"|translate }} {{ items?.totalItems || 0 }} {{ "ENTRIES"|translate }}
   </span>
-    <div class="d-flex align-items-center">
-        <div class="dropdown me-3">
-            <button class="btn border-0 bg-transparent"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
+  <div class="d-flex align-items-center">
+    <div class="dropdown me-3">
+      <button class="btn border-0 bg-transparent"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
         <span class="text-nowrap me-3">
           {{ (pageRequest.page - 1) * pageRequest.size + 1 }} -
-            {{
-                min(
-                    items?.totalItems || 0,
-                    pageRequest.size + (pageRequest.page - 1) * pageRequest.size
-                )
-            }}
+          {{
+            min(
+              items?.totalItems || 0,
+              pageRequest.size + (pageRequest.page - 1) * pageRequest.size
+            )
+          }}
         </span>
-                <i class="bi bi-chevron-down"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-lg-end">
-                <li>
-                    <button class="dropdown-item" (click)="changePageSize(10)">
-                        10 entries per page
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item" (click)="changePageSize(20)">
-                        20 entries per page
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item" (click)="changePageSize(50)">
-                        50 entries per page
-                    </button>
-                </li>
-                <li>
-                    <button class="dropdown-item" (click)="changePageSize(100)">
-                        100 entries per page
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <nav aria-label="list pagination">
-            <div class="btn-group">
-                <button class="btn btn-light btn-sm border-0 bg-transparent me-2"
-                        [disabled]="loading || !items?.hasPrevious"
-                        (click)="previousPage()">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="btn btn-light btn-sm border-0 bg-transparent"
-                        [disabled]="loading || !items?.hasNext"
-                        (click)="nextPage()">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
-        </nav>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-lg-end">
+        <li>
+          <button class="dropdown-item" (click)="changePageSize(10)">
+            10 {{ "ENTRIES_PER_PAGE"|translate }}
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" (click)="changePageSize(20)">
+            20 {{ "ENTRIES_PER_PAGE"|translate }}
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" (click)="changePageSize(50)">
+            50 {{ "ENTRIES_PER_PAGE"|translate }}
+          </button>
+        </li>
+        <li>
+          <button class="dropdown-item" (click)="changePageSize(100)">
+            100 {{ "ENTRIES_PER_PAGE"|translate }}
+          </button>
+        </li>
+      </ul>
     </div>
+    <nav aria-label="list pagination">
+      <div class="btn-group">
+        <button class="btn btn-light btn-sm border-0 bg-transparent me-2"
+                [disabled]="loading || !items?.hasPrevious"
+                (click)="previousPage()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="btn btn-light btn-sm border-0 bg-transparent"
+                [disabled]="loading || !items?.hasNext"
+                (click)="nextPage()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </nav>
+  </div>
 </div>
