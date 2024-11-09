@@ -13,7 +13,7 @@
       </button>
     </form>
     <button [routerLink]="['/cart']" class="btn rounded-pill bg-transparent border-0 fs-5 fw-bold text-white">
-      <i class="fs-3 bi bi-cart me-2"></i>{{ "CART" | translate }} (0)
+      <i class="fs-3 bi bi-cart me-2"></i>{{ "CART" | translate }} ({{ totalCarts }})
     </button>
     @if (authService.isAuthenticated) {
       <div class="dropdown">
