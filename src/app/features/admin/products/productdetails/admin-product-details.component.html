@@ -45,9 +45,12 @@
         </li>
       </ul>
     </div>
+
     <div class="card-body">
       <form [formGroup]="productForm">
         <div class="tab-content">
+
+          <!-- General section -->
           <div class="tab-pane fade show active"
                id="general"
                role="tabpanel"
@@ -127,7 +130,9 @@
                              role="switch"
                              aria-checked="true"
                              id="active"/>
-                      <label for="active">True</label>
+                      <label for="active">
+                        {{ productForm.get('active')?.value ? ("ON_SALE"|translate) : ("ON_STOCK"|translate) }}
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -202,6 +207,8 @@
               </div>
             </div>
           </div>
+
+          <!-- Details section -->
           <div class="tab-pane fade"
                id="details"
                role="tabpanel"
@@ -377,6 +384,7 @@
             </div>
           </div>
 
+          <!-- Images section -->
           <div class="tab-pane fade"
                id="images"
                role="tabpanel"
@@ -398,12 +406,19 @@
               <h4 class="text-muted fw-light">{{ "ALL"|translate }}</h4>
               <div class="d-flex gap-3"
                    id="productThumbnails">
-                @for (imageId of imageUrls.keys(); track imageId) {
-                  <img [src]="imageUrls.get(imageId)"
-                       [id]="imageId"
+                <!--                @for (imageId of imageUrls.keys(); track imageId) {-->
+                <!--                  <img [src]="imageUrls.get(imageId)"-->
+                <!--                       [id]="imageId"-->
+                <!--                       class="img-thumbnail"-->
+                <!--                       alt="Product Image"-->
+                <!--                       (contextmenu)="showContextMenu($event, imageId)">-->
+                <!--                }-->
+                @for (image of productImages$|async; track image.imageId) {
+                  <img [src]="createImageUrl(image.imageId)"
+                       [id]="image.imageId"
                        class="img-thumbnail"
                        alt="Product Image"
-                       (contextmenu)="showContextMenu($event, imageId)">
+                       (contextmenu)="showContextMenu($event, image.imageId)">
                 }
               </div>
             </div>
@@ -419,13 +434,13 @@
                 <i class="bi bi-upload me-2"></i>{{ "UPLOAD_NEW"|translate }}
               </label>
 
-              <span class="text-muted fw-light">- {{ "OR"|translate }} -</span>
-              <button class="btn"
-                      data-bs-toggle="modal"
-                      data-bs-target="#uploadedImageChooser"
-                      (click)="onChooseFromUploadedClick()">
-                <i class="bi bi-images me-2"></i>{{ "CHOOSE_FROM_UPLOADED"|translate }}
-              </button>
+              <!--              <span class="text-muted fw-light">- {{ "OR"|translate }} -</span>-->
+              <!--              <button class="btn"-->
+              <!--                      data-bs-toggle="modal"-->
+              <!--                      data-bs-target="#uploadedImageChooser"-->
+              <!--                      (click)="onChooseFromUploadedClick()">-->
+              <!--                <i class="bi bi-images me-2"></i>{{ "CHOOSE_FROM_UPLOADED"|translate }}-->
+              <!--              </button>-->
 
             </div>
 

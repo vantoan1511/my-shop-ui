@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
-import {catchError, Observable, Subject, switchMap, takeUntil} from "rxjs";
+import {BehaviorSubject, catchError, Observable, Subject, switchMap, takeUntil, tap} from "rxjs";
 import {AlertService} from "../../../../services/alert.service";
 import {Category, Model, Product} from "../../../../types/product.type";
 import {ProductService} from "../../../../services/product.service";
@@ -50,20 +50,16 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
   models$: Observable<PagedResponse<Model>> | null = null;
   categories$: Observable<PagedResponse<Category>> | null = null;
 
-  heroImageId = -1;
   heroImageUrl = constant.defaultHeroImageUrl
 
-  productImages: ProductImage[] | null = null;
   imageUrls: Map<number, string> = new Map();
-
-  uploadedImageMenuOpen = false;
-
   selectedImageId: number | null = null;
+
+  private productImagesSubject = new BehaviorSubject<ProductImage[]>([]);
+  productImages$ = this.productImagesSubject.asObservable()
 
   @ViewChild('contextMenu') contextMenu?: ContextMenuComponent;
 
-  protected defaultHeroImage = 'https://via.placeholder.com/600x400';
-  protected defaultThumbnail = 'https://via.placeholder.com/150';
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -90,24 +86,23 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.products$
-      ?.pipe(takeUntil(this.destroy$))
+      ?.pipe(takeUntil(this.destroy$), tap(product => this.getProductImages(product)))
       .subscribe(product => {
         this.product = product;
         this.updateForm(product);
-
-        this.productService.getImagesById(product.id).subscribe((productImages) => {
-          this.productImages = productImages;
-          const featured = productImages.find(image => image.featured)
-          if (featured) {
-            this.heroImageUrl = this.createImageUrl(featured.id)
-          }
-          productImages.forEach(image => {
-            this.imageUrls.set(image.imageId, this.createImageUrl(image.imageId))
-          });
-        })
       });
     this.models$ = this.modelService.getAll();
     this.categories$ = this.categoryService.getAll();
+  }
+
+  getProductImages(product: Product) {
+    this.productService.getImagesById(product.id).subscribe((productImages) => {
+      this.productImagesSubject.next(productImages);
+      const featured = productImages.find(image => image.featured)
+      if (featured) {
+        this.heroImageUrl = this.createImageUrl(featured.imageId)
+      }
+    })
   }
 
   generateSlug() {
@@ -153,6 +148,10 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   onUploadImageButtonClick(event: Event) {
+    if (!this.product) {
+      return;
+    }
+
     const input = event.target as HTMLInputElement;
     if (!input.files?.[0]) {
       return;
@@ -184,14 +183,11 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.alertService.showSuccessToast('Updated product image successfully')
+          this.getProductImages(<Product>this.product)
         },
         error: () =>
           this.alertService.showErrorToast('Failed to update product image'),
       });
-  }
-
-  onChooseFromUploadedClick() {
-    this.uploadedImageMenuOpen = !this.uploadedImageMenuOpen;
   }
 
   onImageSetFeatured(imageId: number) {
@@ -247,27 +243,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
 
   private updateForm(product: Product) {
     this.productForm.patchValue({
-      id: product.id,
-      name: product.name,
-      slug: product.slug,
-      description: product.description,
-      stockQuantity: product.stockQuantity,
-      basePrice: product.basePrice,
-      salePrice: product.salePrice,
-      active: product.active,
-      weight: product.weight,
-      color: product.color,
-      processor: product.processor,
-      gpu: product.gpu,
-      ram: product.ram,
-      storageType: product.storageType,
-      storageCapacity: product.storageCapacity,
-      os: product.os,
-      screenSize: product.screenSize,
-      batteryCapacity: product.batteryCapacity,
-      warranty: product.warranty,
-      viewCount: product.viewCount,
-      userId: product.userId,
+      ...product,
       model: product.model.slug,
       category: product.category.slug
     });
@@ -309,7 +285,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     return validTypes.includes(file.type);
   }
 
-  private createImageUrl(imageId: number) {
+  createImageUrl(imageId: number) {
     return `${environment.IMAGE_SERVICE_API}/images/${imageId}`;
   }
 

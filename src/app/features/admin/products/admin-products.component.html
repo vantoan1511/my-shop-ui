@@ -126,7 +126,7 @@
                     <span class="badge"
                           [class.inactive-badge]="!product.active"
                           [class.active-badge]="product.active">
-                        {{ product.active ? 'Active' : 'Inactive' }}
+                        {{ product.active ? ('ON_SALE'|translate) : ('ON_STOCK'|translate) }}
                     </span>
                   </td>
                   <td>{{ product.basePrice | currency:"VND" }}</td>
