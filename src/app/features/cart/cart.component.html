@@ -62,7 +62,10 @@
                          class="img-fluid rounded">
                   </div>
                   <div class="col-6 col-md-5">
-                    <h5 class="fs-5 fw-normal text-dark text-truncate">{{ getProduct(item)?.name }}</h5>
+                    <h5 class="fs-5 fw-normal text-dark text-truncate"
+                        [title]="getProduct(item)?.name">
+                      {{ getProduct(item)?.name }}
+                    </h5>
                     <p class="text-muted small description-truncate">
                       <del>{{ getProduct(item)?.basePrice | currency:"VND" }}</del>
                     </p>
@@ -193,7 +196,8 @@
                   </div>
                   <div class="col-6 col-md-5">
                     <h5 class="fs-5 fw-normal text-dark text-truncate"
-                        [routerLink]="['/may-tinh-xach-tay',getProduct(item)?.slug]">
+                        [routerLink]="['/may-tinh-xach-tay',getProduct(item)?.slug]"
+                        [title]="getProduct(item)?.name">
                       {{ getProduct(item)?.name }}
                     </h5>
                     <p class="text-muted small description-truncate">

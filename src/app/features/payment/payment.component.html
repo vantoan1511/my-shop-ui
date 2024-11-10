@@ -58,7 +58,7 @@
               <div class="col-md-6">
                 <div class="p-2">
                   <span class="text-muted fw-light">{{ "TOTAL_AMOUNT" | translate }}:</span>
-                  <span> {{ queryParams?.vnp_Amount | currency:'VND' }}</span>
+                  <span> {{ formatAmount(queryParams?.vnp_Amount ?? '') | currency:'VND' }}</span>
                 </div>
               </div>
             </div>

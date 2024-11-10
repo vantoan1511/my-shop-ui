@@ -35,6 +35,11 @@ export class PaymentComponent implements OnInit {
     });
   }
 
+  formatAmount(amountString: string) {
+    const amountNumeric = parseInt(amountString);
+    return amountNumeric / 100;
+  }
+
   formatDateString(dateString: string) {
     const year = +dateString.substring(0, 4);
     const month = +dateString.substring(4, 6) - 1;
