@@ -149,7 +149,9 @@
                            role="switch"
                            aria-checked="true"
                            id="enabled"/>
-                    <label for="enabled">True</label>
+                    <label for="enabled">
+                      {{ userForm.get('enabled')?.value ? ("ACTIVE"|translate) : ("INACTIVE"|translate) }}
+                    </label>
                   </div>
                 </div>
               </div>
