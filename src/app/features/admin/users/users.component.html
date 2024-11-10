@@ -20,42 +20,45 @@
                      class="form-check-input custom-checkbox"
                      (change)="onSelectAll($event)"/>
             </th>
-            <th style="width: 5%">ID</th>
-            <th style="width: 20%"
-                appSortable
-                [sortField]="sortableFields.USERNAME"
-                (sortChange)="onSortChange($event)">
+            <th>ID</th>
+            <th
+              appSortable
+              [sortField]="sortableFields.USERNAME"
+              (sortChange)="onSortChange($event)">
               {{ "USER" | translate }}
             </th>
-            <th style="width: 25%"
-                appSortable
-                [sortField]="sortableFields.EMAIL"
-                (sortChange)="onSortChange($event)">
+            <th
+              appSortable
+              [sortField]="sortableFields.EMAIL"
+              (sortChange)="onSortChange($event)">
               {{ "EMAIL"|translate }}
             </th>
-            <th style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.FIRST_NAME"
-                (sortChange)="onSortChange($event)">
+            <th
+              appSortable
+              [sortField]="sortableFields.FIRST_NAME"
+              (sortChange)="onSortChange($event)">
               {{ "FIRST_NAME"|translate }}
             </th>
-            <th style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.LAST_NAME"
-                (sortChange)="onSortChange($event)">
+            <th
+              appSortable
+              [sortField]="sortableFields.LAST_NAME"
+              (sortChange)="onSortChange($event)">
               {{ "LAST_NAME"|translate }}
             </th>
-            <th style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.CREATED_AT"
-                (sortChange)="onSortChange($event)">
+            <th>
+              {{ "STATUS"|translate }}
+            </th>
+            <th
+              appSortable
+              [sortField]="sortableFields.CREATED_AT"
+              (sortChange)="onSortChange($event)">
               {{ "CREATED_AT"|translate }}
             </th>
           </tr>
           </thead>
           <tbody>
             @if (loading) {
-              @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track item) {
+              @for (item of Array(10); track item) {
                 <tr class="skeleton-row">
                   <td>
                     <input type="checkbox"
@@ -103,6 +106,7 @@
                            alt="John Doe"
                            width="40"
                            height="40"
+                           loading="lazy"
                            class="rounded-circle me-3 user-avatar"/>
                       <a [routerLink]="['.', user.id]"
                          class="user-link text-decoration-none fw-bold">
@@ -113,6 +117,11 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.firstName }}</td>
                   <td>{{ user.lastName }}</td>
+                  <td>
+                    <span class="badge" [class.inactive]="!user.enabled">
+                      {{ user.enabled ? ("ACTIVE"|translate) : ("INACTIVE"|translate) }}
+                    </span>
+                  </td>
                   <td>{{ user.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
                 </tr>
               }

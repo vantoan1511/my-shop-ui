@@ -33,7 +33,12 @@
     }
 
     .badge {
+      background: var(--purple-9);
       font-weight: 500;
+    }
+
+    .inactive {
+      background: var(--gray-9);
     }
   }
 

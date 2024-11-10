@@ -190,4 +190,5 @@ export class UsersComponent implements OnInit {
   }
 
   protected readonly constant = constant;
+  protected readonly Array = Array;
 }

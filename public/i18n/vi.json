@@ -1,4 +1,6 @@
 {
+  "ACTIVE": "Hoạt động",
+  "INACTIVE": "Bị khóa",
   "SEARCH": "Tìm kiếm",
   "CART": "Giỏ hàng",
   "ADMIN_CONSOLE": "Hệ thống quản lý",
