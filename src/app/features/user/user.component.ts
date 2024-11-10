@@ -18,11 +18,12 @@ import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../types/ord
 import {OrderService} from "../../services/order.service";
 import {ReviewService} from "../../services/review.service";
 import {CreateReviewRequest} from "../../types/review.type";
+import {NgxMaskDirective} from "ngx-mask";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, ReactiveFormsModule, TranslateModule, DatePipe, CurrencyPipe],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, ReactiveFormsModule, TranslateModule, DatePipe, CurrencyPipe, NgxMaskDirective],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })

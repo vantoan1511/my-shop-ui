@@ -100,7 +100,9 @@
                   </label>
                   <div class="col-sm-8">
                     <input formControlName="phone"
-                           type="tel"
+                           type="text"
+                           mask="000 000 0000"
+                           prefix="(+84) "
                            class="form-control"
                            id="phone"
                            [placeholder]="'PHONE_NUMBER' | translate"/>
