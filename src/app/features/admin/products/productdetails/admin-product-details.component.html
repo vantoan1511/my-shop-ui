@@ -97,7 +97,11 @@
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('basePrice')"
                            formControlName="basePrice"
-                           type="number"
+                           type="text"
+                           mask="separator.2"
+                           thousandSeparator=","
+                           decimalMarker="."
+                           prefix="VND "
                            id="basePrice"
                            class="form-control"
                            placeholder="10,000,000.00"/>
@@ -183,7 +187,11 @@
                   <div class="col-3">
                     <input [class.invalid-input]="isInvalid('salePrice')"
                            formControlName="salePrice"
-                           type="number"
+                           type="text"
+                           mask="separator.2"
+                           thousandSeparator=","
+                           decimalMarker="."
+                           prefix="VND "
                            id="salePrice"
                            class="form-control"
                            placeholder="7,000,000.00"/>

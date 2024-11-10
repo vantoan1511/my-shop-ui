@@ -16,6 +16,7 @@ import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
 import {constant} from "../../../../shared/constant";
 import {environment} from "../../../../../environments/environment";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {NgxMaskDirective} from "ngx-mask";
 
 @Component({
   selector: 'admin-product-details',
@@ -26,7 +27,8 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
     AsyncPipe,
     ContextMenuComponent,
     NgxEditorModule,
-    TranslateModule
+    TranslateModule,
+    NgxMaskDirective
   ],
   templateUrl: './admin-product-details.component.html',
   styleUrl: './admin-product-details.component.scss'
