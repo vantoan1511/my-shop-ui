@@ -8,6 +8,18 @@ export interface PaymentQuery {
   vnp_PayDate: string
 }
 
+export interface GetPaymentUrlResponse {
+  processUrl: string
+}
+
+export interface Transaction {
+  "id": number
+  "status": string
+  "createdAt": string
+  "orderId": number
+  "referenceId": string
+}
+
 export const PaymentStatusDescriptions: { [code: string]: string } = {
   '00': 'Giao dịch thành công',
   '07': 'Trừ tiền thành công. Giao dịch bị nghi ngờ (liên quan tới lừa đảo, giao dịch bất thường).',

@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {PaymentQuery, PaymentStatusDescriptions} from "../../types/payment.type";
 import {PaymentService} from "../../services/payment.service";
 import {ActivatedRoute, RouterLink} from "@angular/router";
-import {tap} from "rxjs";
+import {switchMap, tap} from "rxjs";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CurrencyPipe, DatePipe} from "@angular/common";
+import {CartService} from "../../services/cart.service";
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-payment',
@@ -22,16 +24,28 @@ export class PaymentComponent implements OnInit {
   queryParams: PaymentQuery | null = null;
 
   constructor(
-    private service: PaymentService,
+    private paymentService: PaymentService,
     private route: ActivatedRoute,
     private translate: TranslateService,
+    private cartService: CartService,
+    private alertService: AlertService
   ) {
     this.translate.setDefaultLang("vi")
   }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(tap(() => console.log(this.queryParams))).subscribe((params) => {
-      this.queryParams = params as PaymentQuery;
+    this.route.queryParams.pipe(
+      tap(() => console.log(this.queryParams)),
+      switchMap((params) => {
+        this.queryParams = params as PaymentQuery;
+        return this.paymentService.saveTransaction(this.queryParams)
+      }),
+    ).subscribe((transaction) => {
+      if (transaction.status === 'SUCCESS') {
+        this.cartService.clearCart().subscribe({
+          next: () => this.translate.get("PLACED_ORDER_SUCCESS").subscribe((value) => this.alertService.showSuccessToast(value))
+        });
+      }
     });
   }
 

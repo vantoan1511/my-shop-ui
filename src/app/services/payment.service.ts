@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {GetPaymentUrlResponse, PaymentQuery, Transaction} from "../types/payment.type";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class PaymentService {
   getPaymentUrl(orderId: number) {
     return this.http.post<GetPaymentUrlResponse>(`${this.BASE_URL}/payments/process`, {orderId})
   }
-}
 
-interface GetPaymentUrlResponse {
-  processUrl: string
+  saveTransaction(paymentQuery: PaymentQuery) {
+    return this.http.post<Transaction>(`${this.BASE_URL}/payments/vnpay-return`, paymentQuery)
+  }
 }

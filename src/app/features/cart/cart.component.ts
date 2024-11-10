@@ -205,18 +205,19 @@ export class CartComponent implements OnInit {
           if (orderResponse.paymentMethod === 'BANKING') {
             this.paymentService.getPaymentUrl(orderResponse.id).subscribe({
               next: ({processUrl}) => {
-                window.open(processUrl, "_blank")
+                window.location.href = processUrl
+              }
+            })
+          } else {
+            this.translate.get("PLACED_ORDER_SUCCESS").subscribe((value) => this.alertService.showSuccessToast(value))
+            this.cartService.clearCart().subscribe({
+              next: () => {
+                this.cartResponse = null;
+                this.cartItems = []
+                this.isCheckout = false;
               }
             })
           }
-          this.alertService.showSuccessToast("Placed order successfully");
-          this.cartService.clearCart().subscribe({
-            next: () => {
-              this.cartResponse = null;
-              this.cartItems = []
-              this.isCheckout = false;
-            }
-          })
         }
       })
     } else {

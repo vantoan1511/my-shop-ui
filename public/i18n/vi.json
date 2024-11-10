@@ -180,5 +180,6 @@
   "PAYMENT_DETAILS": "Chi tiết thanh toán",
   "ORDER_ID": "Mã đơn hàng",
   "PAYMENT_DATE": "Ngày thanh toán",
-  "RE_CHECKOUT": "Thanh toán lại"
+  "RE_CHECKOUT": "Thanh toán lại",
+  "PLACED_ORDER_SUCCESS": "Đặt hàng thành công"
 }
