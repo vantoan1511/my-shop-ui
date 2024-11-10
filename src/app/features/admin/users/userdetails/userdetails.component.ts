@@ -143,10 +143,7 @@ export class DetailsComponent implements OnInit {
 
   private updateForm(user: User) {
     this.userForm.patchValue({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      username: user.username,
+      ...user
     });
   }
 }
