@@ -1,0 +1,80 @@
+<div class="container my-5">
+
+  <!-- Title Section -->
+  <div class="row mb-3 p-3 bg-white rounded shadow-sm">
+    <div class="col">
+      <h2 class="fs-2 fw-light text-muted">
+        {{ "PAYMENT_RESULT" | translate }}
+      </h2>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    @if (!queryParams?.vnp_SecureHash) {
+      <div class="col-12">
+        <div class="bg-white p-3 rounded shadow-sm">
+          <div class="d-flex flex-column justify-content-center align-items-center gap-3">
+            <span class="fs-3 fw-light text-muted text-uppercase">{{ "THERE_IS_NO_PAYMENT_RESULT" | translate }}</span>
+            <button routerLink="/" class="btn p-3">
+              <span class="fs-5"><i class="bi bi-cart me-2"></i>{{ "BUY_NOW"|translate }}</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    } @else {
+      <div class="col-12">
+        <div class="bg-white p-3 rounded shadow-sm">
+          <div class="d-flex flex-column gap-3 align-items-center">
+            <!-- Payment Status Message -->
+            <div class="text-center">
+              @if (queryParams?.vnp_ResponseCode === '00') {
+                <h4 class="fw-light text-uppercase">
+                  {{ "PAYMENT_SUCCESSFUL" | translate }}
+                </h4>
+              } @else {
+                <h4 class="fw-light text-uppercase">{{ "PAYMENT_FAILED" | translate }}</h4>
+              }
+              <p class="fs-5 fw-light text-muted">
+                {{ "PAYMENT_DETAILS" | translate }}
+                : {{ PaymentStatusDescriptions[queryParams?.vnp_ResponseCode ?? ''] }}
+              </p>
+            </div>
+
+            <!-- Display additional payment details -->
+            <div class="row w-100">
+              <div class="col-md-6">
+                <div class="p-2">
+                  <span class="text-muted fw-light">{{ "ORDER_ID" | translate }}:</span>
+                  <span> #{{ queryParams?.vnp_TxnRef }}</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-2">
+                  <span class="text-muted fw-light">{{ "PAYMENT_DATE" | translate }}:</span>
+                  <span> {{ formatDateString(queryParams?.vnp_PayDate ?? '')  | date:"HH:mm dd-MM-yyyy" }}</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-2">
+                  <span class="text-muted fw-light">{{ "TOTAL_AMOUNT" | translate }}:</span>
+                  <span> {{ queryParams?.vnp_Amount | currency:'VND' }}</span>
+                </div>
+              </div>
+            </div>
+
+            @if (queryParams?.vnp_ResponseCode === '00') {
+              <button routerLink="/" class="btn mt-3">
+                <span class="fs-6">{{ "BACK_TO_HOME" | translate }}</span>
+              </button>
+            } @else {
+              <button routerLink="/cart" class="btn mt-3">
+                <span class="fs-6">{{ "RE_CHECKOUT" | translate }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

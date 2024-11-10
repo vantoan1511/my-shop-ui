@@ -172,5 +172,13 @@
   "ENTER_NEW_PHONE": "Nhập số điện thoại",
   "NEW_ADDRESS": "Địa chỉ mới",
   "ADDRESS_REQUIRED": "Địa chỉ là bắt buộc",
-  "ENTER_NEW_ADDRESS": "Nhập địa chỉ mới"
+  "ENTER_NEW_ADDRESS": "Nhập địa chỉ mới",
+  "PAYMENT_RESULT": "Kết quả thanh toán",
+  "THERE_IS_NO_PAYMENT_RESULT": "Chưa có thanh toán nào được thưc hiện",
+  "PAYMENT_SUCCESSFUL": "Thanh toán thành công",
+  "PAYMENT_FAILED": "Thanh toán thất bại",
+  "PAYMENT_DETAILS": "Chi tiết thanh toán",
+  "ORDER_ID": "Mã đơn hàng",
+  "PAYMENT_DATE": "Ngày thanh toán",
+  "RE_CHECKOUT": "Thanh toán lại"
 }

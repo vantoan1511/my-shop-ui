@@ -22,6 +22,7 @@ import {HomeComponent} from "./features/home/home.component";
 import {CartComponent} from "./features/cart/cart.component";
 import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
+import {PaymentComponent} from "./features/payment/payment.component";
 
 export const routes: Routes = [
   {
@@ -54,6 +55,10 @@ export const routes: Routes = [
             component: UserComponent,
           },
         ],
+      },
+      {
+        path: 'payment',
+        component: PaymentComponent,
       },
     ],
   },
