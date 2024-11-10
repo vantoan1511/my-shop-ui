@@ -15,7 +15,8 @@
                [alt]="product.name"/>
           <div class="card-body">
             <a [routerLink]="['/may-tinh-xach-tay', product.slug]"
-               class="text-muted fw-light text-decoration-none truncate-multiline">
+               class="text-muted fw-light text-decoration-none truncate-multiline"
+               [title]="product.name">
               {{ product.name }}
             </a>
             <div class="price">
