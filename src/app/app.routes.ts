@@ -20,106 +20,116 @@ import {CategoryDetailsComponent} from "./features/admin/categories/category-det
 import {ModelDetailsComponent} from "./features/admin/models/model-details/model-details.component";
 import {HomeComponent} from "./features/home/home.component";
 import {CartComponent} from "./features/cart/cart.component";
+import {NotfoundComponent} from "./components/notfound/notfound.component";
+import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 
 export const routes: Routes = [
-    {
+  {
+    path: '',
+    component: LandingComponent,
+    children: [
+      {
         path: '',
-        component: LandingComponent,
+        component: HomeComponent,
+      },
+      {
+        path: 'may-tinh-xach-tay/:slug',
+        component: ProductDetailsComponent,
+      },
+      {
+        path: 'cart',
+        component: CartComponent,
+      },
+      {
+        path: 'users',
+        component: UserComponent,
         children: [
-            {
-                path: '',
-                component: HomeComponent,
-            },
-            {
-                path: 'may-tinh-xach-tay/:slug',
-                component: ProductDetailsComponent,
-            },
-            {
-                path: 'cart',
-                component: CartComponent,
-            },
-            {
-                path: 'users',
-                component: UserComponent,
-                children: [
-                    {
-                        path: '',
-                        redirectTo: 'profile',
-                        pathMatch: 'full',
-                    },
-                    {
-                        path: 'profile',
-                        component: UserComponent,
-                    },
-                ],
-            },
+          {
+            path: '',
+            redirectTo: 'profile',
+            pathMatch: 'full',
+          },
+          {
+            path: 'profile',
+            component: UserComponent,
+          },
         ],
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard],
+    data: {
+      expectedRoles: [Role.ADMIN],
     },
-    {
-        path: 'admin',
-        component: AdminComponent,
-        canActivate: [authGuard],
-        data: {
-            expectedRoles: [Role.ADMIN],
-        },
-        children: [
-            {
-                path: '',
-                redirectTo: 'dashboard',
-                pathMatch: 'full',
-            },
-            {
-                path: 'dashboard',
-                component: DashboardComponent,
-            },
-            {
-                path: 'brands',
-                component: BrandsComponent,
-            },
-            {
-                path: 'brands/:slug',
-                component: BrandDetailsComponent,
-            },
-            {
-                path: 'models',
-                component: ModelsComponent,
-            },
-            {
-                path: 'models/:slug',
-                component: ModelDetailsComponent,
-            },
-            {
-                path: 'categories',
-                component: CategoriesComponent,
-            },
-            {
-                path: 'categories/:slug',
-                component: CategoryDetailsComponent,
-            },
-            {
-                path: 'products',
-                component: AdminProductsComponent,
-            },
-            {
-                path: 'products/:slug',
-                component: AdminProductDetailsComponent,
-            },
-            {
-                path: 'orders',
-                component: OrdersComponent,
-            },
-            {
-                path: 'users',
-                component: UsersComponent,
-            },
-            {
-                path: 'users/:id',
-                component: DetailsComponent,
-            },
-            {
-                path: 'profile',
-                component: ProfileAdminComponent,
-            },
-        ],
-    },
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'brands',
+        component: BrandsComponent,
+      },
+      {
+        path: 'brands/:slug',
+        component: BrandDetailsComponent,
+      },
+      {
+        path: 'models',
+        component: ModelsComponent,
+      },
+      {
+        path: 'models/:slug',
+        component: ModelDetailsComponent,
+      },
+      {
+        path: 'categories',
+        component: CategoriesComponent,
+      },
+      {
+        path: 'categories/:slug',
+        component: CategoryDetailsComponent,
+      },
+      {
+        path: 'products',
+        component: AdminProductsComponent,
+      },
+      {
+        path: 'products/:slug',
+        component: AdminProductDetailsComponent,
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
+      {
+        path: 'users/:id',
+        component: DetailsComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileAdminComponent,
+      },
+    ],
+  },
+  {
+    path: 'forbidden',
+    component: ForbiddenComponent,
+  },
+  {
+    path: '**',
+    component: NotfoundComponent,
+  },
 ];

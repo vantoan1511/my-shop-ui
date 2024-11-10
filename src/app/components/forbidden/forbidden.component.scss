@@ -1,0 +1,11 @@
+.btn {
+  background: var(--purple-9);
+  color: var(--purple-contrast);
+  border-radius: 0;
+  padding: 1rem;
+
+  &:hover {
+    background: var(--purple-10);
+    color: var(--purple-contrast);
+  }
+}

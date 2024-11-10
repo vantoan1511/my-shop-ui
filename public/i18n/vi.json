@@ -163,5 +163,8 @@
   "REFUNDED": "Đã hoàn tiền",
   "ORDER_STATUS": "Trạng thái đơn hàng",
   "CUSTOMER": "Khách hàng",
-  "ORDER": "Đơn hàng"
+  "ORDER": "Đơn hàng",
+  "YOU_DO_NOT_HAVE_PERMISSION": "Bạn không có quyền truy cập",
+  "BACK_TO_HOME": "Về trang chủ",
+  "THE_RESOURCE_YOU_ARE_LOOKING_FOR_NOT_FOUND": "Trang bạn đang tìm kiếm không tồn tại hoặc không còn nữa..."
 }
