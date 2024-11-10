@@ -13,4 +13,5 @@ export const environment = {
   ORDER_SERVICE_API: 'http://103.188.83.167:8084/api',
   CART_SERVICE_API: 'http://103.188.83.167:8085/api',
   REVIEW_SERVICE_API: 'http://103.188.83.167:8086/api',
+  PAYMENT_SERVICE_API: 'http://103.188.83.167:8087/api',
 };

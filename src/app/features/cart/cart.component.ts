@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CurrencyPipe, PercentPipe} from "@angular/common";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {Cart} from "../../types/cart.type";
 import {constant} from "../../shared/constant";
@@ -18,6 +18,7 @@ import {UserService} from "../../services/user.service";
 import {User} from "../../types/user.type";
 import {OrderType} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
+import {PaymentService} from "../../services/payment.service";
 
 @Component({
   selector: 'app-cart',
@@ -54,7 +55,9 @@ export class CartComponent implements OnInit {
     private alertService: AlertService,
     private authService: AuthenticationService,
     private userService: UserService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private paymentService: PaymentService,
+    private router: Router
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -184,7 +187,12 @@ export class CartComponent implements OnInit {
     }
 
     this.orderService.createOrder(order).subscribe({
-      next: () => {
+      next: (orderResponse) => {
+        this.paymentService.getPaymentUrl(orderResponse.id).subscribe({
+          next: ({processUrl}) => {
+            window.open(processUrl, "_blank")
+          }
+        })
         this.alertService.showSuccessToast("Placed order successfully");
         this.cartService.clearCart().subscribe({
           next: () => {
