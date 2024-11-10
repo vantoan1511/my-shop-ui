@@ -1,8 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {CurrencyPipe, PercentPipe} from "@angular/common";
-import {Router, RouterLink} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {RouterLink} from "@angular/router";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from "@angular/forms";
 import {Cart} from "../../types/cart.type";
 import {constant} from "../../shared/constant";
 import {CartService} from "../../services/cart.service";
@@ -10,15 +17,16 @@ import {PagedResponse} from "../../types/response.type";
 import {PageRequest} from "../../types/page-request.type";
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../types/product.type";
-import {forkJoin, map, switchMap} from "rxjs";
+import {forkJoin, map, switchMap, tap} from "rxjs";
 import {AlertService} from "../../services/alert.service";
 import {environment} from "../../../environments/environment";
 import {AuthenticationService} from "../../services/authentication.service";
 import {UserService} from "../../services/user.service";
 import {User} from "../../types/user.type";
-import {OrderType} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 import {PaymentService} from "../../services/payment.service";
+import {NgxMaskDirective} from "ngx-mask";
+import {OrderType} from "../../types/order.type";
 
 @Component({
   selector: 'app-cart',
@@ -28,7 +36,9 @@ import {PaymentService} from "../../services/payment.service";
     CurrencyPipe,
     RouterLink,
     FormsModule,
-    PercentPipe
+    PercentPipe,
+    ReactiveFormsModule,
+    NgxMaskDirective
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
@@ -48,6 +58,12 @@ export class CartComponent implements OnInit {
   selectedAddress = '';
   selectedPhoneNumber = '';
 
+  checkoutForm = this.fb.group({
+    phone: [this.user?.phone || '', Validators.required],
+    shippingAddress: [this.user?.address || '', [Validators.required, this.notBlankValidator]],
+    paymentMethod: ['CASH', Validators.required]
+  })
+
   constructor(
     private cartService: CartService,
     private productService: ProductService,
@@ -57,7 +73,7 @@ export class CartComponent implements OnInit {
     private userService: UserService,
     private orderService: OrderService,
     private paymentService: PaymentService,
-    private router: Router
+    private fb: FormBuilder,
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -174,35 +190,38 @@ export class CartComponent implements OnInit {
   }
 
   placeOrder() {
-    if (this.selectedAddress.length <= 0) {
-      this.alertService.showErrorToast("Please enter an address");
-      return;
-    }
-
-    const shippingAddress = [this.selectedPhoneNumber, this.selectedAddress].join(', ');
-    const order: OrderType = {
-      shippingAddress,
-      paymentMethod: this.selectedPaymentMethod,
-      items: this.cartItems
-    }
-
-    this.orderService.createOrder(order).subscribe({
-      next: (orderResponse) => {
-        this.paymentService.getPaymentUrl(orderResponse.id).subscribe({
-          next: ({processUrl}) => {
-            window.open(processUrl, "_blank")
-          }
-        })
-        this.alertService.showSuccessToast("Placed order successfully");
-        this.cartService.clearCart().subscribe({
-          next: () => {
-            this.cartResponse = null;
-            this.cartItems = []
-            this.isCheckout = false;
-          }
-        })
+    if (this.checkoutForm.valid) {
+      console.log('Checkout Form: ', this.checkoutForm.value);
+      const checkoutFormValue = this.checkoutForm.value;
+      const shippingAddress = [checkoutFormValue.phone, checkoutFormValue.shippingAddress].join(', ');
+      const order: OrderType = {
+        shippingAddress,
+        paymentMethod: checkoutFormValue.paymentMethod as "CASH" || "BANKING",
+        items: this.cartItems
       }
-    })
+      console.log("Order request: ", order)
+      this.orderService.createOrder(order).subscribe({
+        next: (orderResponse) => {
+          if (orderResponse.paymentMethod === 'BANKING') {
+            this.paymentService.getPaymentUrl(orderResponse.id).subscribe({
+              next: ({processUrl}) => {
+                window.open(processUrl, "_blank")
+              }
+            })
+          }
+          this.alertService.showSuccessToast("Placed order successfully");
+          this.cartService.clearCart().subscribe({
+            next: () => {
+              this.cartResponse = null;
+              this.cartItems = []
+              this.isCheckout = false;
+            }
+          })
+        }
+      })
+    } else {
+      this.checkoutForm.markAllAsTouched()
+    }
   }
 
   backToCart() {
@@ -259,6 +278,7 @@ export class CartComponent implements OnInit {
   private fetchUser() {
     const username = this.authService.username;
     this.userService.getByUsername(username).pipe(
+      tap(user => this.updateCheckoutForm(user)),
       map(user => {
         this.user = user;
         this.selectedPhoneNumber = user.phone
@@ -271,6 +291,19 @@ export class CartComponent implements OnInit {
 
   private listAddresses(user: User) {
     return Array.of(user.address, user.address1, user.address2, user.address3, user.address4).filter(each => each);
+  }
+
+  private updateCheckoutForm(user: User) {
+    this.checkoutForm.patchValue({
+      ...user,
+      shippingAddress: user.address
+    })
+  }
+
+  notBlankValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    const isBlank = value.trim().length === 0;
+    return isBlank ? {blank: true} : null;
   }
 
   protected readonly constant = constant;

@@ -45,7 +45,7 @@
   "CHOOSE_PHONE": "Chọn số điện thoại",
   "CHOOSE_SHIPPING_ADDRESS": "Chọn địa chỉ nhận hàng",
   "SHIPPING_ADDRESS": "Địa chỉ giao hàng",
-  "CHOOSE_PAYMENT_METHOD": "Chọn phương thức thanh ",
+  "CHOOSE_PAYMENT_METHOD": "Chọn phương thức thanh toán",
   "PAYMENT_METHOD": "Phương thức thanh toán",
   "CASH": "Thanh toán bằng tiền mặt",
   "BANKING": "Chuyển khoản ngân hàng",
@@ -166,5 +166,11 @@
   "ORDER": "Đơn hàng",
   "YOU_DO_NOT_HAVE_PERMISSION": "Bạn không có quyền truy cập",
   "BACK_TO_HOME": "Về trang chủ",
-  "THE_RESOURCE_YOU_ARE_LOOKING_FOR_NOT_FOUND": "Trang bạn đang tìm kiếm không tồn tại hoặc không còn nữa..."
+  "THE_RESOURCE_YOU_ARE_LOOKING_FOR_NOT_FOUND": "Trang bạn đang tìm kiếm không tồn tại hoặc không còn nữa...",
+  "NEW_PHONE": "Số điện thoại mới",
+  "PHONE_REQUIRED": "Số điện thoại là bắt buộc",
+  "ENTER_NEW_PHONE": "Nhập số điện thoại",
+  "NEW_ADDRESS": "Địa chỉ mới",
+  "ADDRESS_REQUIRED": "Địa chỉ là bắt buộc",
+  "ENTER_NEW_ADDRESS": "Nhập địa chỉ mới"
 }

@@ -78,61 +78,106 @@
               }
             </div>
 
-            <!-- Phone number Section -->
-            <div class="bg-white p-3 mt-3 rounded shadow-sm">
-              <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PHONE" | translate }}</h5>
+            <form [formGroup]="checkoutForm">
+              <!-- Phone number Section -->
+              <div class="bg-white p-3 mt-3 rounded shadow-sm">
+                <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PHONE" | translate }}</h5>
 
-              <div class="form-check mt-3">
-                <input [id]="user?.phone"
-                       class="form-check-input"
-                       type="radio"
-                       name="phoneNumber"
-                       [value]="user?.phone"
-                       [(ngModel)]="selectedPhoneNumber">
-                <label [for]="user?.phone"
-                       class="form-check-label text-muted">
-                  {{ user?.phone }}
-                </label>
+                <!-- Existing phone number selection -->
+                @if (user?.phone) {
+                  <div class="form-check mt-3">
+                    <input [id]="user?.phone"
+                           class="form-check-input"
+                           type="radio"
+                           name="phone"
+                           formControlName="phone"
+                           [value]="user?.phone">
+                    <label [for]="user?.phone"
+                           class="form-check-label text-muted">
+                      {{ user?.phone }}
+                    </label>
+                  </div>
+                } @else {
+                  <div class="mt-3">
+                    <label for="newPhone" class="form-label text-muted">{{ "NEW_PHONE" | translate }}</label>
+                    <input id="newPhone"
+                           type="text"
+                           class="form-control"
+                           formControlName="phone"
+                           mask="000-000-0000"
+                           prefix="(+84) "
+                           [placeholder]="('ENTER_NEW_PHONE'|translate)">
+                    @if (checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched) {
+                      <div class="text-danger">
+                        {{ "PHONE_REQUIRED" | translate }}
+                      </div>
+                    }
+                  </div>
+                }
+
               </div>
-            </div>
 
-            <!-- Shipping Address Section -->
-            <div class="bg-white p-3 mt-3 rounded shadow-sm">
-              <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_SHIPPING_ADDRESS" | translate }}</h5>
-              @for (address of userAddresses; track $index) {
+              <!-- Shipping Address Section -->
+              <div class="bg-white p-3 mt-3 rounded shadow-sm">
+                <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_SHIPPING_ADDRESS" | translate }}</h5>
+                <!-- List of existing individual addresses -->
+                @if (userAddresses && userAddresses.length > 0) {
+                  @for (address of userAddresses; track $index) {
+                    <div class="form-check mt-3">
+                      <input [id]="$index"
+                             class="form-check-input"
+                             type="radio"
+                             formControlName="shippingAddress"
+                             [value]="address">
+                      <label [for]="$index"
+                             class="form-check-label text-muted">
+                        {{ address }}
+                      </label>
+                    </div>
+                  }
+                } @else {
+                  <!-- Input for new address if none exists -->
+                  <div class="mt-3">
+                    <label for="newAddress" class="form-label text-muted">{{ "NEW_ADDRESS" | translate }}</label>
+                    <input id="newAddress"
+                           type="text"
+                           class="form-control"
+                           formControlName="shippingAddress"
+                           [placeholder]="'ENTER_NEW_ADDRESS'|translate">
+                    @if (checkoutForm.get('shippingAddress')?.invalid && checkoutForm.get('shippingAddress')?.touched) {
+                      <div class="text-danger">
+                        {{ "ADDRESS_REQUIRED" | translate }}
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+
+              <!-- Payment Method Section -->
+              <div class="bg-white p-3 mt-3 rounded shadow-sm">
+                <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PAYMENT_METHOD" | translate }}</h5>
                 <div class="form-check mt-3">
-                  <input [id]="$index"
-                         class="form-check-input"
+                  <input class="form-check-input"
                          type="radio"
-                         name="shippingAddress"
-                         [value]="address"
-                         [(ngModel)]="selectedAddress">
-                  <label [for]="$index"
-                         class="form-check-label text-muted">
-                    {{ address }}
+                         formControlName="paymentMethod"
+                         id="cash"
+                         value="CASH">
+                  <label class="form-check-label text-muted" for="cash">
+                    {{ "CASH" | translate }}
                   </label>
                 </div>
-              }
-            </div>
-
-            <!-- Payment Method Section -->
-            <div class="bg-white p-3 mt-3 rounded shadow-sm">
-              <h5 class="fs-5 fw-light text-muted">{{ "CHOOSE_PAYMENT_METHOD" | translate }}</h5>
-              <div class="form-check mt-3">
-                <input class="form-check-input" type="radio" name="paymentMethod" id="cash" value="CASH"
-                       [(ngModel)]="selectedPaymentMethod">
-                <label class="form-check-label text-muted" for="cash">
-                  {{ "CASH" | translate }}
-                </label>
+                <div class="form-check mt-2">
+                  <input class="form-check-input"
+                         type="radio"
+                         formControlName="paymentMethod"
+                         id="banking"
+                         value="BANKING">
+                  <label class="form-check-label text-muted" for="banking">
+                    {{ "BANKING" | translate }}
+                  </label>
+                </div>
               </div>
-              <div class="form-check mt-2">
-                <input class="form-check-input" type="radio" name="paymentMethod" id="banking" value="BANKING"
-                       [(ngModel)]="selectedPaymentMethod">
-                <label class="form-check-label text-muted" for="banking">
-                  {{ "BANKING" | translate }}
-                </label>
-              </div>
-            </div>
+            </form>
           </div>
         } @else {
           <!-- Cart Items Section -->
