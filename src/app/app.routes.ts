@@ -24,6 +24,7 @@ import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 import {PaymentComponent} from "./features/payment/payment.component";
 import {LoginComponent} from "./features/login/login.component";
+import {RegisterComponent} from "./features/register/register.component";
 
 export const routes: Routes = [
   {
@@ -135,6 +136,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: 'forbidden',

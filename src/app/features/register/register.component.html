@@ -1,0 +1,126 @@
+<div class="container mh-100 d-flex flex-column justify-content-center">
+  <div class="my-3 py-3">
+    <a routerLink="/" class="fs-1 fw-bold">Shopbee</a>
+    <div class="card shadow-sm mt-3">
+      <div class="card-header text-center py-3">
+        <span class="fs-2 fw-bold">{{ "REGISTER"|translate }}</span>
+      </div>
+      <div class="card-body">
+        @if (loginFailed) {
+          <div class="text-center text-danger small">
+            <span>{{ "INVALID_USERNAME_OR_PASSWORD"|translate }}</span>
+          </div>
+        }
+        <form (ngSubmit)="onLoginFormSubmit()" [formGroup]="loginForm">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">{{ "FIRST_NAME"|translate }}</label>
+            <input type="text"
+                   class="form-control"
+                   id="firstName"
+                   formControlName="firstName"
+                   autofocus
+                   [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
+            <div class="text-danger small">
+              @if (loginForm.get('firstName')?.invalid && loginForm.get('firstName')?.touched) {
+                <span>{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">{{ "LAST_NAME"|translate }}</label>
+            <input type="text"
+                   class="form-control"
+                   id="lastName"
+                   formControlName="lastName"
+                   [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
+            <div class="text-danger small">
+              @if (loginForm.get('lastName')?.invalid && loginForm.get('lastName')?.touched) {
+                <span>{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">{{ "USERNAME"|translate }}</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   formControlName="username"
+                   [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
+            <div class="text-danger small">
+              @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+                <span>{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">{{ "EMAIL"|translate }}</label>
+            <input type="email"
+                   class="form-control"
+                   id="email"
+                   formControlName="username"
+                   [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
+            <div class="text-danger small">
+              @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+                <span>{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">{{ "PASSWORD"|translate }}</label>
+            <div class="position-relative">
+              <input [type]="passwordVisible ? 'text':'password'"
+                     class="form-control"
+                     id="password"
+                     formControlName="password"
+                     [placeholder]="'ENTER_YOUR_PASSWORD'|translate"/>
+              <button type="button"
+                      class="btn btn-sm me-2 position-absolute top-50 end-0 translate-middle-y "
+                      (click)="togglePasswordVisibility()"
+                      aria-label="Toggle password visibility">
+                <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+              </button>
+            </div>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <div class="text-danger small">
+                {{ "PASSWORD_IS_REQUIRED"|translate }}
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="rePassword" class="form-label">{{ "PASSWORD"|translate }}</label>
+            <div class="position-relative">
+              <input [type]="passwordVisible ? 'text':'password'"
+                     class="form-control"
+                     id="rePassword"
+                     formControlName="rePassword"
+                     [placeholder]="'ENTER_YOUR_PASSWORD'|translate"/>
+              <button type="button"
+                      class="btn btn-sm me-2 position-absolute top-50 end-0 translate-middle-y "
+                      (click)="togglePasswordVisibility()"
+                      aria-label="Toggle password visibility">
+                <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+              </button>
+            </div>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <div class="text-danger small">
+                {{ "PASSWORD_IS_REQUIRED"|translate }}
+              </div>
+            }
+          </div>
+          <div class="d-grid">
+            <button type="submit"
+                    class="btn btn-primary" [disabled]="loginForm.invalid || loading">
+              <i class="bi bi-box-arrow-right me-2"></i> {{ (loading ? "LOGGING" : "LOGIN")|translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <small class="text-muted">
+          {{ "HAVE_ACCOUNT"|translate }}?
+          <a routerLink="/login">{{ "LOGIN" | translate }}</a>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+.container {
+  max-width: 35rem;
+
+  .card {
+    border: none;
+    border-radius: 0;
+
+    .card-header,
+    .card-footer {
+      border: none;
+      border-radius: 0;
+    }
+
+    .card-header {
+      border-top: 5px solid var(--purple-9);
+    }
+  }
+
+  .form-control {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid var(--gray-3);
+    padding-right: 2.5rem;
+
+    &:hover {
+      background-color: var(--gray-1);
+      border-bottom: 1px solid var(--gray-6);
+    }
+
+    &:active {
+      border-bottom: 1px solid var(--purple-9);
+    }
+  }
+
+  .btn-primary {
+    border: none;
+    border-radius: 0;
+    padding: 1rem;
+    background-color: var(--purple-9);
+
+    &:hover {
+      background-color: var(--purple-10);
+    }
+  }
+
+  a {
+    color: var(--purple-9);
+    text-decoration: none;
+  }
+}
