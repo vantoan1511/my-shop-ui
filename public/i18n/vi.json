@@ -186,5 +186,7 @@
   "ORDER_ID": "Mã đơn hàng",
   "PAYMENT_DATE": "Ngày thanh toán",
   "RE_CHECKOUT": "Thanh toán lại",
-  "PLACED_ORDER_SUCCESS": "Đặt hàng thành công"
+  "PLACED_ORDER_SUCCESS": "Đặt hàng thành công",
+  "INVALID_USERNAME_OR_PASSWORD": "Tên đăng nhập/mật khẩu không hợp lệ",
+  "LOGGING": "Đang đăng nhập"
 }

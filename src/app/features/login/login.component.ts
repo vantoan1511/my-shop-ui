@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   });
   passwordVisible = false;
   loading = false;
+  loginFailed = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,7 +34,6 @@ export class LoginComponent implements OnInit {
   ) {
     this.translate.setDefaultLang('vi');
 
-    // Capture the previous URL if present
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.authService.setRedirectUrl(returnUrl);
   }
@@ -57,9 +57,10 @@ export class LoginComponent implements OnInit {
         console.log('Login successful', response);
 
         const redirectUrl = this.authService.getRedirectUrl() || '/';
-        this.router.navigateByUrl(redirectUrl);
+        await this.router.navigateByUrl(redirectUrl);
       } catch (error) {
         console.error('Login failed', error);
+        this.loginFailed = true;
       } finally {
         this.loading = false;
       }
