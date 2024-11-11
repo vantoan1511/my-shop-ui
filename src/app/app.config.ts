@@ -1,13 +1,13 @@
-import {APP_INITIALIZER, ApplicationConfig, importProvidersFrom, provideZoneChangeDetection,} from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
-
-import {HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi,} from '@angular/common/http';
-import {KeycloakBearerInterceptor, KeycloakService} from 'keycloak-angular';
+import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {KeycloakService} from 'keycloak-angular';
 import {routes} from './app.routes';
 import {initializeKeycloak} from './keycloak.config';
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {provideNgxMask} from "ngx-mask";
+import {authInterceptor} from './auth.interceptor';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
@@ -22,11 +22,6 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [KeycloakService],
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: KeycloakBearerInterceptor,
-      multi: true,
-    },
     importProvidersFrom([TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -35,7 +30,8 @@ export const appConfig: ApplicationConfig = {
       },
     })]),
     KeycloakService,
-    provideHttpClient(withInterceptorsFromDi()),
+    // provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideNgxMask()
   ],
 };
