@@ -28,16 +28,16 @@
               <thead>
               <tr>
                 <th class="col-auto">#ID</th>
-                <th class="col-md-2">
+                <th class="col-md-1">
                   {{ 'TOTAL_AMOUNT' | translate }}
                 </th>
-                <th class="col-md-1"
+                <th class="col-md-auto"
                     appSortable
                     [sortField]="SortField.STATUS"
                     (sortChange)="onSortChange($event)">
                   {{ 'ORDER_STATUS' | translate }}
                 </th>
-                <th class="col-md-1">{{ 'PAYMENT_METHOD' | translate }}</th>
+                <th class="col-md-auto">{{ 'PAYMENT_METHOD' | translate }}</th>
                 <th class="col-md-2"
                     appSortable
                     [sortField]="SortField.CREATED_AT"
@@ -74,7 +74,7 @@
                           {{ order.orderStatus | translate }}
                         </span>
                       </td>
-                      <td>{{ order.paymentMethod }}</td>
+                      <td>{{ order.paymentMethod | translate }}</td>
                       <td>{{ order.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
                       <td>{{ order.username }}</td>
                       <td><span class="shipping-address">{{ order.shippingAddress }}</span></td>

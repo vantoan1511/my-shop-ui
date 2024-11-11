@@ -1,0 +1,60 @@
+<div class="container vh-100 d-flex flex-column justify-content-center">
+  <div>
+    <a routerLink="/" class="fs-1 fw-bold">Shopbee</a>
+    <div class="card shadow-sm mt-3">
+      <div class="card-header text-center py-3">
+        <span class="fs-2 fw-bold">{{ "LOGIN"|translate }}</span>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="onLoginFormSubmit()" [formGroup]="loginForm">
+          <div class="mb-3">
+            <label for="username" class="form-label">{{ "USERNAME"|translate }}</label>
+            <input type="text"
+                   class="form-control"
+                   id="username"
+                   formControlName="username"
+                   [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
+            <div class="text-danger small">
+              @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+                <span>{{ "USERNAME_IS_REQUIRED"|translate }}</span>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">{{ "PASSWORD"|translate }}</label>
+            <div class="position-relative">
+              <input [type]="passwordVisible ? 'text':'password'"
+                     class="form-control"
+                     id="password"
+                     formControlName="password"
+                     [placeholder]="'ENTER_YOUR_PASSWORD'|translate"/>
+              <button type="button"
+                      class="btn btn-sm me-2 position-absolute top-50 end-0 translate-middle-y "
+                      (click)="togglePasswordVisibility()"
+                      aria-label="Toggle password visibility">
+                <i [class]="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+              </button>
+            </div>
+            @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+              <div class="text-danger small">
+                {{ "PASSWORD_IS_REQUIRED"|translate }}
+              </div>
+            }
+          </div>
+          <div class="d-grid">
+            <button type="submit"
+                    class="btn btn-primary" [disabled]="loginForm.invalid">
+              <i class="bi bi-box-arrow-right me-2"></i> {{ "LOGIN"|translate }}
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <small class="text-muted">
+          {{ "DONT_HAVE_ACCOUNT"|translate }}?
+          <a routerLink="/register">{{ "REGISTER"|translate }}</a>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

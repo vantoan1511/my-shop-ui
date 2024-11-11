@@ -53,8 +53,8 @@
         </ul>
       </div>
     } @else {
-      <button class="btn text-white fs-5 fw-bold border-0"
-              (click)="authService.login()">
+      <button routerLink="/login"
+              class="btn text-white fs-5 fw-bold border-0">
         <i class="bi bi-box-arrow-in-right me-2"></i>{{ "LOGIN" | translate }}
       </button>
     }

@@ -23,6 +23,7 @@ import {CartComponent} from "./features/cart/cart.component";
 import {NotfoundComponent} from "./components/notfound/notfound.component";
 import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 import {PaymentComponent} from "./features/payment/payment.component";
+import {LoginComponent} from "./features/login/login.component";
 
 export const routes: Routes = [
   {
@@ -128,6 +129,10 @@ export const routes: Routes = [
         component: ProfileAdminComponent,
       },
     ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'forbidden',
