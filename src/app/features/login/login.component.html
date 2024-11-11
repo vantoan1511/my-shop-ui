@@ -13,6 +13,7 @@
                    class="form-control"
                    id="username"
                    formControlName="username"
+                   autofocus
                    [placeholder]="'ENTER_YOUR_USERNAME'|translate"/>
             <div class="text-danger small">
               @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {

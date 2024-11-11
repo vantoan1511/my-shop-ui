@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {RouterLink, RouterModule} from '@angular/router';
 import {KeycloakService} from 'keycloak-angular';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {AuthenticationService} from "../../../services/authentication.service";
 
 @Component({
   selector: 'app-admin-header',
@@ -13,12 +14,12 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 export class HeaderComponent {
 
   constructor(
-    private keycloakService: KeycloakService,
+    private authService: AuthenticationService,
     private translate: TranslateService,) {
     this.translate.setDefaultLang("vi")
   }
 
   logout() {
-    this.keycloakService.logout();
+    this.authService.logout();
   }
 }

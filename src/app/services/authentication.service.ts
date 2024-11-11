@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {KeycloakService} from 'keycloak-angular';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {jwtDecode} from "jwt-decode";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +10,11 @@ import {jwtDecode} from "jwt-decode";
 export class AuthenticationService {
   private keycloakUrl = `${environment.keycloak.authority}/realms/${environment.keycloak.realm}/protocol/openid-connect/token`;
 
+  private authenticatedSubject = new BehaviorSubject<boolean>(false);
+  authenticated$ = this.authenticatedSubject.asObservable();
+
   constructor(
     private http: HttpClient,
-    private keycloak: KeycloakService
   ) {
   }
 
@@ -28,7 +30,9 @@ export class AuthenticationService {
     try {
       const response = await this.http.post<GetTokenResponse>(this.keycloakUrl, body, {headers}).toPromise() as GetTokenResponse;
       this.storeTokens(response.access_token, response.refresh_token)
+      this.authenticatedSubject.next(true);
     } catch (error) {
+      this.authenticatedSubject.next(false);
       console.error('Login failed', error);
       throw error;
     }
@@ -50,8 +54,10 @@ export class AuthenticationService {
     try {
       const response = await this.http.post<GetTokenResponse>(this.keycloakUrl, body, {headers}).toPromise() as GetTokenResponse;
       this.storeTokens(response.access_token, response.refresh_token);
+      this.authenticatedSubject.next(true);
     } catch (error) {
       console.error('Token refresh failed', error);
+      this.authenticatedSubject.next(false);
       throw error;
     }
   }
@@ -60,6 +66,8 @@ export class AuthenticationService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_at');
+    this.authenticatedSubject.next(false);
+    window.location.href = "/login";
   }
 
   getUserRoles(): string[] {
@@ -74,6 +82,20 @@ export class AuthenticationService {
   hasAccess(expectedRoles: string[]) {
     const currentRoles = this.getUserRoles();
     return currentRoles.some((role) => expectedRoles.includes(role.toLowerCase()))
+  }
+
+  setRedirectUrl(url: string): void {
+    localStorage.setItem('redirect_url', url);
+  }
+
+  getRedirectUrl(): string | null {
+    const url = localStorage.getItem('redirect_url');
+    localStorage.removeItem('redirect_url');
+    return url;
+  }
+
+  checkAuthenticated() {
+    this.authenticatedSubject.next(this.isAuthenticated);
   }
 
   get isAdmin(): boolean {

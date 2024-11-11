@@ -16,8 +16,6 @@ import {PagedResponse} from "../../types/response.type";
 import {CurrencyPipe, DatePipe} from "@angular/common";
 import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
-import {ReviewService} from "../../services/review.service";
-import {CreateReviewRequest} from "../../types/review.type";
 import {NgxMaskDirective} from "ngx-mask";
 
 @Component({
@@ -62,7 +60,6 @@ export class UserComponent implements OnInit, OnDestroy {
     private validator: ValidationService,
     private imageService: ImageService,
     private orderService: OrderService,
-    private reviewService: ReviewService
   ) {
     this.translate.setDefaultLang("vi");
   }

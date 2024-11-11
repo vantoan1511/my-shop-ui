@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {AuthenticationService} from "../../services/authentication.service";
 
@@ -28,9 +28,14 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private translate: TranslateService,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.translate.setDefaultLang('vi');
+
+    // Capture the previous URL if present
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.authService.setRedirectUrl(returnUrl);
   }
 
   ngOnInit(): void {
@@ -50,6 +55,9 @@ export class LoginComponent implements OnInit {
         const {username, password} = this.loginForm.value;
         const response = await this.authService.login(username, password);
         console.log('Login successful', response);
+
+        const redirectUrl = this.authService.getRedirectUrl() || '/';
+        this.router.navigateByUrl(redirectUrl);
       } catch (error) {
         console.error('Login failed', error);
       } finally {

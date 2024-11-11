@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log('Current roles: ', currentRoles);
 
   if (!authService.isAuthenticated) {
-    router.navigate(['/login']);
+    router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
   }
 
   if (!expectedRoles || expectedRoles.length === 0) {
