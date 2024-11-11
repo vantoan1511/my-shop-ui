@@ -62,14 +62,23 @@ export class AuthenticationService {
     localStorage.removeItem('expires_at');
   }
 
-  get isAdmin(): boolean {
+  getUserRoles(): string[] {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       const decodedToken: any = jwtDecode(accessToken);
-      const roles = decodedToken.realm_access?.roles || [];
-      return roles.includes('ADMIN');
+      return decodedToken.realm_access?.roles || [];
     }
-    return false;
+    return [];
+  }
+
+  hasAccess(expectedRoles: string[]) {
+    const currentRoles = this.getUserRoles();
+    return currentRoles.some((role) => expectedRoles.includes(role.toLowerCase()))
+  }
+
+  get isAdmin(): boolean {
+    const roles = this.getUserRoles();
+    return roles.includes('ADMIN')
   }
 
   get isAuthenticated(): boolean {

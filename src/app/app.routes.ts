@@ -45,6 +45,7 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UserComponent,
+        canActivate: [authGuard],
         children: [
           {
             path: '',
@@ -60,6 +61,7 @@ export const routes: Routes = [
       {
         path: 'payment',
         component: PaymentComponent,
+        canActivate: [authGuard],
       },
     ],
   },
