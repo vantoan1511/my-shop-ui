@@ -12,6 +12,7 @@ export class AuthenticationService {
 
   private authenticatedSubject = new BehaviorSubject<boolean>(false);
   authenticated$ = this.authenticatedSubject.asObservable();
+  private refreshInProgress = false;
 
   constructor(
     private http: HttpClient,
@@ -39,6 +40,10 @@ export class AuthenticationService {
   }
 
   async refreshToken(): Promise<void> {
+    if (this.refreshInProgress) {
+      return;
+    }
+
     const refreshToken = localStorage.getItem('refresh_token');
     if (!refreshToken) {
       throw new Error('No refresh token available');
@@ -51,6 +56,8 @@ export class AuthenticationService {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
 
+    this.refreshInProgress = true;
+
     try {
       const response = await this.http.post<GetTokenResponse>(this.keycloakUrl, body, {headers}).toPromise() as GetTokenResponse;
       this.storeTokens(response.access_token, response.refresh_token);
@@ -58,7 +65,10 @@ export class AuthenticationService {
     } catch (error) {
       console.error('Token refresh failed', error);
       this.authenticatedSubject.next(false);
+      this.logout();
       throw error;
+    } finally {
+      this.refreshInProgress = false;
     }
   }
 
