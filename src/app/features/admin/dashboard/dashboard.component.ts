@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {Chart, ChartData, ChartOptions, registerables} from "chart.js";
+import {PaymentService} from "../../../services/payment.service";
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +14,12 @@ import {Chart, ChartData, ChartOptions, registerables} from "chart.js";
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+
   // Register all Chart.js components
-  constructor() {
+  constructor(
+    private paymentService: PaymentService,
+  ) {
     Chart.register(...registerables);
   }
 
@@ -21,19 +27,19 @@ export class DashboardComponent implements OnInit {
   comparisonTypes = ['Daily', 'Weekly', 'Monthly', 'Quarterly'];
   selectedComparison: string = 'Monthly';
 
-  // Labels and data for the sales chart
-  salesLabels: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  /// Sales chart configuration
+  salesLabels: string[] = [];
   salesData: ChartData<'bar'> = {
     labels: this.salesLabels,
     datasets: [
       {
-        data: [150, 200, 170, 140, 180, 220, 210, 230, 190, 210, 240, 260],
+        data: [],
         label: 'This Year',
         backgroundColor: '#4285f4',
         borderColor: '#4285f4'
       },
       {
-        data: [130, 180, 160, 130, 170, 210, 200, 220, 180, 200, 230, 250],
+        data: [],
         label: 'Last Year',
         backgroundColor: '#fbbc05',
         borderColor: '#fbbc05'
@@ -45,23 +51,15 @@ export class DashboardComponent implements OnInit {
     responsive: true,
     scales: {
       x: {
-        title: {
-          display: true,
-          text: 'Periods'
-        }
+        title: {display: true, text: 'Products'}
       },
       y: {
         beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Sales'
-        }
+        title: {display: true, text: 'Sales'}
       }
     },
     plugins: {
-      legend: {
-        position: 'top'
-      },
+      legend: {position: 'top'},
       tooltip: {
         callbacks: {
           label: (context) => `${context.dataset.label}: ${context.raw}`
@@ -103,6 +101,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // this.updateChartData(this.selectedComparison);
+    this.getSaleReportData();
   }
 
   // Method to update chart data based on the selected comparison
@@ -129,5 +128,30 @@ export class DashboardComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  getSaleReportData() {
+    const currentYear = 2024;
+    const lastYear = currentYear - 1;
+
+    forkJoin({
+      lastYear: this.paymentService.getSaleReport({period: "monthly", year: lastYear}),
+      currentYear: this.paymentService.getSaleReport({period: "monthly", year: currentYear})
+    }).subscribe({
+      next: ({lastYear, currentYear}) => {
+        // Assuming both responses have `labels` and `data`
+        this.salesLabels = lastYear.labels; // Use the labels from one of the responses
+        this.salesData.labels = this.salesLabels; // Set chart labels
+
+        this.salesData.datasets[0].data = lastYear.data; // Last year's data
+        this.salesData.datasets[1].data = currentYear.data; // Current year's data
+
+        // Re-render the chart
+        this.chart.update();
+      },
+      error: (err) => {
+        console.error('Error fetching sales data', err);
+      }
+    });
   }
 }
