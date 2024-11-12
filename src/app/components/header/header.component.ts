@@ -38,10 +38,15 @@ export class HeaderComponent implements OnInit {
   }
 
   get avatarUrl() {
-    if (this.user && this.user.id) {
-      return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${this.user.id}`;
+    try {
+      return `${environment.IMAGE_SERVICE_API}/images/avatar/users/${this.user?.id}`;
+    } catch (error) {
+      return constant.defaultAvatar;
     }
-    return constant.defaultAvatar
+  }
+
+  get defaultAvatar() {
+    return constant.defaultAvatar;
   }
 
   protected readonly constant = constant;

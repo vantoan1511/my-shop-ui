@@ -1,8 +1,12 @@
 import {Component} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {AuthenticationService} from "../../services/authentication.service";
+import {UserRegister} from "../../types/user.type";
+import {UserService} from "../../services/user.service";
+import {AlertService} from "../../services/alert.service";
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-register',
@@ -11,30 +15,34 @@ import {AuthenticationService} from "../../services/authentication.service";
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
-    TranslateModule
+    TranslateModule,
+    NgClass
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  loginForm: FormGroup = this.fb.group({
-    username: ['', Validators.required],
+  registerForm: FormGroup = this.fb.group({
+    username: ['', [Validators.required, this.usernameValidator]],
     password: ['', Validators.required],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    email: ['', Validators.required],
+    firstName: ['', [Validators.required, this.alphabeticValidator]],
+    lastName: ['', [Validators.required, this.alphabeticValidator]],
+    email: ['', [Validators.required, Validators.email]],
     rePassword: ['', Validators.required],
-  });
+  }, {validators: [this.passwordMatchValidator]});
   passwordVisible = false;
   loading = false;
-  loginFailed = false;
+  registerMessage: string | null = null;
+  registerFailed = false;
 
   constructor(
     private fb: FormBuilder,
     private translate: TranslateService,
     private authService: AuthenticationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private alertService: AlertService,
   ) {
     this.translate.setDefaultLang('vi');
 
@@ -42,36 +50,65 @@ export class RegisterComponent {
     this.authService.setRedirectUrl(returnUrl);
   }
 
-  ngOnInit(): void {
-    if (this.authService.isAuthenticated) {
-      this.router.navigate(['/'])
-    }
-  }
-
   get f() {
-    return this.loginForm.controls
+    return this.registerForm.controls
   }
 
-  async onLoginFormSubmit() {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      try {
-        const {username, password} = this.loginForm.value;
-        const response = await this.authService.login(username, password);
-        console.log('Login successful', response);
+  get formAsUserRegister() {
+    return this.registerForm.value as UserRegister;
+  }
 
-        const redirectUrl = this.authService.getRedirectUrl() || '/';
-        await this.router.navigateByUrl(redirectUrl);
-      } catch (error) {
-        console.error('Login failed', error);
-        this.loginFailed = true;
-      } finally {
-        this.loading = false;
-      }
+  async onRegisterFormSubmit() {
+    if (this.registerForm.valid) {
+      this.loading = true;
+      const userRegister = {...this.formAsUserRegister};
+      console.log(userRegister);
+      this.userService.register(userRegister).subscribe({
+        next: () => {
+          this.registerMessage = this.translate.instant('REGISTER_SUCCESS');
+          this.registerFailed = false;
+          this.registerForm.reset()
+          this.loading = false;
+        },
+        error: ({error}) => {
+          this.registerMessage = error.errorMessage as string
+          this.registerFailed = true
+          this.loading = false;
+        },
+      })
     }
   }
 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
+  }
+
+  passwordMatchValidator(formGroup: AbstractControl): { [key: string]: boolean } | null {
+    const password = formGroup.get('password')?.value;
+    const rePassword = formGroup.get('rePassword')?.value;
+    if (password !== rePassword) {
+      return {passwordMismatch: true};
+    }
+    return null;
+  }
+
+  alphabeticValidator(control: AbstractControl) {
+    const value = control.value;
+    const regex = /^[\p{L}][\p{L}\s]*$/u;
+
+    if (value && !regex.test(value)) {
+      return {invalidAlphabetic: true};
+    }
+    return null;
+  }
+
+  usernameValidator(control: AbstractControl) {
+    const value = control.value;
+    const regex = /^[A-Za-z].*$/;
+
+    if (value && !regex.test(value)) {
+      return {invalidUsername: true};
+    }
+    return null;
   }
 }

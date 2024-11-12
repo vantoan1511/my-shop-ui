@@ -188,5 +188,14 @@
   "RE_CHECKOUT": "Thanh toán lại",
   "PLACED_ORDER_SUCCESS": "Đặt hàng thành công",
   "INVALID_USERNAME_OR_PASSWORD": "Tên đăng nhập/mật khẩu không hợp lệ",
-  "LOGGING": "Đang đăng nhập"
+  "LOGGING": "Đang đăng nhập",
+  "REGISTER_SUCCESS": "Đăng ký thành công",
+  "ENTER_YOUR_FIRSTNAME": "Nhập họ của bạn",
+  "INVALID_NAME": "Tên không hợp lệ",
+  "ENTER_YOUR_LASTNAME": "Nhập tên của bạn",
+  "INVALID_USERNAME": "Tên đăng nhập không hợp lệ",
+  "ENTER_YOUR_EMAIL": "Nhập email của bạn",
+  "ENTER_YOUR_CONFIRM_PASSWORD": "Nhập lại mật khẩu",
+  "PASSWORD_MISMATCH": "Mật khẩu không khớp",
+  "HAVE_ACCOUNT": "Đã có tài khoản"
 }
