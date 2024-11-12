@@ -80,4 +80,10 @@ export class UserService {
   register(register: UserRegister) {
     return this.http.post(`${this.CUSTOMER_SERVICE_API_URL}`, register);
   }
+
+  forgot(email: string) {
+    return this.http.post(`${this.CUSTOMER_SERVICE_API_URL}/forgot`, {
+      email,
+    });
+  }
 }
