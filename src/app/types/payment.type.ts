@@ -35,3 +35,14 @@ export const PaymentStatusDescriptions: { [code: string]: string } = {
   '79': 'Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch',
 };
 
+export interface SaleReportRequest {
+  period: 'monthly';
+  year: number;
+}
+
+export interface SaleReportResponse {
+  period: 'monthly';
+  year: number;
+  labels: string[];
+  data: number[];
+}
