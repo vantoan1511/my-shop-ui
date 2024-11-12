@@ -25,6 +25,7 @@ import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 import {PaymentComponent} from "./features/payment/payment.component";
 import {LoginComponent} from "./features/login/login.component";
 import {RegisterComponent} from "./features/register/register.component";
+import {ForgotComponent} from "./features/forgot/forgot.component";
 
 export const routes: Routes = [
   {
@@ -140,6 +141,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotComponent,
   },
   {
     path: 'forbidden',

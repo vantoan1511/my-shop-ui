@@ -47,6 +47,9 @@
               </div>
             }
           </div>
+          <div class="mb-3">
+            <a routerLink="/forgot-password">{{ "FORGOT_PASSWORD"|translate }}?</a>
+          </div>
           <div class="d-grid">
             <button type="submit"
                     class="btn btn-primary" [disabled]="loginForm.invalid || loading">

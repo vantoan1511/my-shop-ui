@@ -197,5 +197,9 @@
   "ENTER_YOUR_EMAIL": "Nhập email của bạn",
   "ENTER_YOUR_CONFIRM_PASSWORD": "Nhập lại mật khẩu",
   "PASSWORD_MISMATCH": "Mật khẩu không khớp",
-  "HAVE_ACCOUNT": "Đã có tài khoản"
+  "HAVE_ACCOUNT": "Đã có tài khoản",
+  "FORGOT_PASSWORD": "Quên mật khẩu",
+  "RESET": "Reset",
+  "BACK_TO": "Quay về",
+  "SENT_RESET_EMAIL": "Đã gửi email hướng dẫn reset mật khẩu."
 }
