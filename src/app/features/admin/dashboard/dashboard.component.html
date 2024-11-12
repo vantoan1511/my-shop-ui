@@ -1,1 +1,47 @@
-<p>dashboard works!</p>
+<!-- dashboard.component.html -->
+
+<div class="dashboard-container">
+  <h2 class="dashboard-title">Dashboard Overview</h2>
+
+  <!-- Comparison Buttons -->
+  <div class="comparison-buttons">
+    @for (comparison of comparisonTypes; track $index) {
+      <button (click)="updateChartData(comparison)"
+              [class.active]="comparison === selectedComparison">
+        {{ comparison }}
+      </button>
+    }
+  </div>
+
+  <div class="charts-grid">
+    <!-- Product Sales Chart -->
+    <div class="chart-card">
+      <h3 class="chart-title">Product Sales Comparison ({{ selectedComparison }})</h3>
+      <canvas baseChart
+              [data]="salesData"
+              [type]="salesType"
+              [options]="salesOptions">
+      </canvas>
+    </div>
+
+    <!-- Monthly Revenue Chart -->
+    <div class="chart-card">
+      <h3 class="chart-title">Monthly Revenue</h3>
+      <canvas baseChart
+              [data]="revenueData"
+              [type]="revenueType"
+              [options]="revenueOptions">
+      </canvas>
+    </div>
+
+    <!-- User Status Chart -->
+    <div class="chart-card">
+      <h3 class="chart-title">User Status</h3>
+      <canvas baseChart
+              [data]="userStatsData"
+              [type]="userStatsType"
+              [options]="userStatsOptions">
+      </canvas>
+    </div>
+  </div>
+</div>
