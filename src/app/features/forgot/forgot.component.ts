@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {AuthenticationService} from "../../services/authentication.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-forgot',
@@ -27,7 +28,8 @@ export class ForgotComponent {
     private fb: FormBuilder,
     private translate: TranslateService,
     private authService: AuthenticationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) {
     this.translate.setDefaultLang('vi');
 
@@ -38,6 +40,16 @@ export class ForgotComponent {
   async onForgotFormSubmit() {
     if (this.forgotForm.valid) {
       this.forgotSubmit = true;
+      this.loading = true;
+      const {email} = this.forgotForm.value;
+      this.userService.forgot(email).subscribe({
+        next: () => {
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
+      })
     }
   }
 
