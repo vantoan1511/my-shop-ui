@@ -203,7 +203,7 @@
   "BACK_TO": "Quay về",
   "SENT_RESET_EMAIL": "Đã gửi email hướng dẫn reset mật khẩu.",
   "DASHBOARD_OVERVIEW": "Tổng quan",
-  "REVENUE": "Doanh thu",
+  "TRANSACTION_COMPLETED": "Giao dịch được thực hiện",
   "COMPLETED_ORDER": "Đơn hàng hoàn thành",
   "ACTIVE_PRODUCT": "Sản phẩm đang bán",
   "USER_MANAGEMENT": "Quản lý người dùng",
@@ -216,5 +216,6 @@
   "NOT_REGISTERED_INTERNET_BANKING": "Thất bại do KH chưa đăng ký Internet Banking",
   "TRANSACTION": "Giao dịch",
   "TRANSACTION_AMOUNT": "Số lượng giao dịch",
-  "TRANSACTION_DATE": "Thời gian giao dịch"
+  "TRANSACTION_DATE": "Thời gian giao dịch",
+  "COMPUTING": "Đang tính toán"
 }

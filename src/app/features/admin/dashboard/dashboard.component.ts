@@ -102,9 +102,11 @@ export class DashboardComponent implements OnInit {
   totalCompletedOrderLoaded = false;
   totalActiveProductLoaded = false;
   totalActiveUserLoaded = false;
+  totalTransactionLoaded = false;
   totalCompletedOrders = 0;
   totalActiveProducts = 0;
   totalActiveUsers = 0;
+  totalTransactions = 0;
 
   constructor(
     private orderService: OrderService,
@@ -121,6 +123,7 @@ export class DashboardComponent implements OnInit {
     this.getTotalCompletedOrders();
     this.getActiveProducts();
     this.getTotalActiveUsers();
+    this.getTotalTransactions();
   }
 
   getTotalCompletedOrders() {
@@ -139,6 +142,12 @@ export class DashboardComponent implements OnInit {
     this.userService.getBy({page: 1, size: 1}).pipe(
       tap(() => this.totalActiveUserLoaded = true)
     ).subscribe(({totalItems}) => this.totalActiveUsers = totalItems)
+  }
+
+  getTotalTransactions() {
+    this.paymentService.getTransactions({page: 1, size: 1}).pipe(
+      tap(() => this.totalTransactionLoaded = true)
+    ).subscribe(({totalItems}) => this.totalTransactions = totalItems)
   }
 
   getSaleReportData() {
