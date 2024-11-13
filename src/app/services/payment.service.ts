@@ -8,6 +8,8 @@ import {
   SaleReportResponse,
   Transaction
 } from "../types/payment.type";
+import {PageRequest} from "../types/page-request.type";
+import {PagedResponse} from "../types/response.type";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +34,12 @@ export class PaymentService {
   getSaleReport(saleReportRequest: SaleReportRequest) {
     return this.http.get<SaleReportResponse>(`${this.BASE_URL}/payments/report`, {
       params: {...saleReportRequest}
+    })
+  }
+
+  getTransactions(pageRequest: PageRequest) {
+    return this.http.get<PagedResponse<Transaction>>(`${this.BASE_URL}/payments/transactions`, {
+      params: {...pageRequest}
     })
   }
 }

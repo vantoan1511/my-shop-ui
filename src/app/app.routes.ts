@@ -26,6 +26,7 @@ import {PaymentComponent} from "./features/payment/payment.component";
 import {LoginComponent} from "./features/login/login.component";
 import {RegisterComponent} from "./features/register/register.component";
 import {ForgotComponent} from "./features/forgot/forgot.component";
+import {TransactionsComponent} from "./features/admin/transactions/transactions.component";
 
 export const routes: Routes = [
   {
@@ -131,6 +132,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         component: ProfileAdminComponent,
+      },
+      {
+        path: 'transactions',
+        component: TransactionsComponent,
       },
     ],
   },

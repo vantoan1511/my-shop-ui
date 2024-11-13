@@ -1,0 +1,142 @@
+<div class="container-fluid my-5">
+
+  <div class="row">
+    <div class="col">
+      <div class="card shadow-sm">
+        <div class="card-header py-3">
+          <span class="fs-2 fw-medium">{{ "TRANSACTIONS_MANAGEMENT" | translate }}</span>
+        </div>
+
+        <div class="card-header d-flex justify-content-end">
+          <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+              <tr>
+                <th class="col-auto">#ID</th>
+                <th class="col-md-auto">
+                  {{ "TRANSACTION_RESULT_STATUS" | translate }}
+                </th>
+                <th class="col-md-auto">
+                  {{ "ORDER_ID" | translate }}
+                </th>
+                <th class="col-md-auto">
+                  {{ "CREATED_AT" | translate }}
+                </th>
+                <th class="col-md-auto">
+                  {{ "REFERENCE_TRANSACTION_ID" | translate }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+                @if (loading) {
+                  @for (row of Array(10); track $index) {
+                    <tr>
+                      @for (col of Array(5); track $index) {
+                        <td>
+                          <div class="skeleton-loader"></div>
+                        </td>
+                      }
+                    </tr>
+                  }
+                } @else {
+                  @for (transaction of transactions; track transaction.id) {
+                    <tr [class.active]="selectedTransaction?.id===transaction.id"
+                        (click)="onClickOnTransaction(transaction)">
+                      <td>{{ transaction.id }}</td>
+                      <td>
+                        <span class="badge">
+                          {{ transaction.status | translate }}
+                        </span>
+                      </td>
+                      <td>{{ transaction.orderId }}</td>
+                      <td>{{ transaction.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
+                      <td>{{ transaction.referenceId }}</td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+          @if (!loading) {
+            @if (!transactions || transactions.length === 0) {
+              <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
+            }
+          }
+        </div>
+
+        <div class="card-footer d-flex justify-content-end">
+          <ng-container *ngTemplateOutlet="paginationTemplate"></ng-container>
+        </div>
+      </div>
+
+    </div>
+
+    @if (selectedTransaction) {
+      <div id="selected-order" class="col-lg-4 col-md-12">
+        <div class="card shadow-sm">
+          <div class="card-header py-3">
+            <div class="d-flex justify-content-between fs-2 fw-medium">
+              <span>{{ ("TRANSACTION" | translate) + ' - #' + selectedTransaction.id }}</span>
+              <button class="btn" (click)="selectedTransaction=null">
+                <span class="fs-5 fw-medium"><i class="bi bi-x-lg"></i></span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "TRANSACTION_RESULT_STATUS" | translate }}</span>
+              </div>
+              <div class="col-8">
+                <span class="badge">{{ selectedTransaction.status | translate }}</span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "TRANSACTION_DATE" | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedTransaction.createdAt | date:"HH:mm dd-MM-yyyy" }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "ORDER_ID" | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedTransaction.orderId }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "REFERENCE_TRANSACTION_ID" | translate }}</span>
+              </div>
+              <div class="col-8">{{ selectedTransaction.referenceId }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "CUSTOMER" | translate }}</span>
+              </div>
+              <div class="col-8">{{ relatedOrder?.username }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <span class="fw-light text-muted">{{ "TRANSACTION_AMOUNT" | translate }}</span>
+              </div>
+              <div class="col-8">{{ relatedOrder?.totalAmount | currency:"VND" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+
+<ng-template #paginationTemplate>
+  <app-pagination [pageRequest]="{page, size}"
+                  [items]="transactionResponse"
+                  (pageChange)="onPageChange($event)"
+                  (pageSizeChange)="onPageSizeChange($event)">
+  </app-pagination>
+</ng-template>

@@ -208,5 +208,13 @@
   "ACTIVE_PRODUCT": "Sản phẩm đang bán",
   "USER_MANAGEMENT": "Quản lý người dùng",
   "PRODUCT_MANAGEMENT": "Quản lý sản phẩm",
-  "TRANSACTIONS_MANAGEMENT": "Quản lý giao dịch"
+  "TRANSACTIONS_MANAGEMENT": "Quản lý giao dịch",
+  "TRANSACTION_RESULT_STATUS": "Kết quả giao dịch",
+  "REFERENCE_TRANSACTION_ID": "Mã tham chiếu giao dịch",
+  "SUCCESS": "Thành công",
+  "TRANSACTION_CANCELLED": "Đã hủy",
+  "NOT_REGISTERED_INTERNET_BANKING": "Thất bại do KH chưa đăng ký Internet Banking",
+  "TRANSACTION": "Giao dịch",
+  "TRANSACTION_AMOUNT": "Số lượng giao dịch",
+  "TRANSACTION_DATE": "Thời gian giao dịch"
 }

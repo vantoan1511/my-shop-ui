@@ -13,11 +13,11 @@ export interface GetPaymentUrlResponse {
 }
 
 export interface Transaction {
-  "id": number
-  "status": string
-  "createdAt": string
-  "orderId": number
-  "referenceId": string
+  id: number
+  status: string
+  createdAt: string
+  orderId: number
+  referenceId: string
 }
 
 export const PaymentStatusDescriptions: { [code: string]: string } = {
