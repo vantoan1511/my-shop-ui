@@ -1,42 +1,33 @@
-/* dashboard.component.scss */
+.overview {
+  border-radius: .25rem;
+  background: var(--purple-contrast);
 
-.dashboard-container {
-  padding: 20px;
-  background-color: #f9f9f9;
-  min-height: 100vh;
-}
+  .small-box {
+    border-radius: .25rem;
+    background: linear-gradient(to right, var(--purple-9), var(--purple-8));
+    color: var(--purple-contrast);
+    transition: all 0.2s ease-in-out;
 
-.dashboard-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
+    .icon {
+      font-size: 4rem;
+      color: var(--purple-contrast);
+    }
 
-.comparison-buttons {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-
-  button {
-    background-color: #e0e0e0;
-    border: none;
-    padding: 8px 16px;
-    margin: 0 5px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #333;
-
-    &.active {
-      background-color: #4285f4;
-      color: #fff;
+    .small-box-footer {
+      display: block;
+      margin-top: 1rem;
+      padding: 0.5rem 0;
+      color: var(--purple-contrast);
+      background-color: rgba(0, 0, 0, .1);
+      text-decoration: none;
+      text-align: center;
+      z-index: 10;
     }
 
     &:hover {
-      background-color: #ddd;
+      transform: scale(1.01);
     }
+
   }
 }
 

@@ -8,6 +8,7 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {provideNgxMask} from "ngx-mask";
 import {authInterceptor} from './auth.interceptor';
+import {provideCharts, withDefaultRegisterables} from "ng2-charts";
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './i18n/', '.json');
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
     KeycloakService,
     // provideHttpClient(withInterceptorsFromDi()),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideNgxMask()
+    provideNgxMask(),
+    provideCharts(withDefaultRegisterables())
   ],
 };

@@ -3,12 +3,16 @@ import {BaseChartDirective} from "ng2-charts";
 import {Chart, ChartData, ChartOptions, registerables} from "chart.js";
 import {PaymentService} from "../../../services/payment.service";
 import {forkJoin} from "rxjs";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    BaseChartDirective
+    BaseChartDirective,
+    TranslateModule,
+    RouterLink
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -19,8 +23,9 @@ export class DashboardComponent implements OnInit {
   // Register all Chart.js components
   constructor(
     private paymentService: PaymentService,
+    private translate: TranslateService,
   ) {
-    Chart.register(...registerables);
+    this.translate.setDefaultLang("vi")
   }
 
   // Available comparison types
@@ -34,13 +39,13 @@ export class DashboardComponent implements OnInit {
     datasets: [
       {
         data: [],
-        label: 'This Year',
+        label: 'Last year',
         backgroundColor: '#4285f4',
         borderColor: '#4285f4'
       },
       {
         data: [],
-        label: 'Last Year',
+        label: 'This year',
         backgroundColor: '#fbbc05',
         borderColor: '#fbbc05'
       }
@@ -51,7 +56,7 @@ export class DashboardComponent implements OnInit {
     responsive: true,
     scales: {
       x: {
-        title: {display: true, text: 'Products'}
+        title: {display: true, text: 'Periods'}
       },
       y: {
         beginAtZero: true,
@@ -100,34 +105,10 @@ export class DashboardComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    // this.updateChartData(this.selectedComparison);
     this.getSaleReportData();
   }
 
-  // Method to update chart data based on the selected comparison
   updateChartData(comparisonType: string): void {
-    this.selectedComparison = comparisonType;
-
-    switch (comparisonType) {
-      case 'Daily':
-        this.salesData.datasets[0].data = [5, 10, 8, 12];
-        this.salesData.datasets[1].data = [4, 9, 7, 11];
-        break;
-      case 'Weekly':
-        this.salesData.datasets[0].data = [35, 50, 45, 55];
-        this.salesData.datasets[1].data = [30, 40, 43, 50];
-        break;
-      case 'Monthly':
-        this.salesData.datasets[0].data = [150, 200, 170, 140];
-        this.salesData.datasets[1].data = [120, 180, 160, 130];
-        break;
-      case 'Quarterly':
-        this.salesData.datasets[0].data = [450, 600, 510, 420];
-        this.salesData.datasets[1].data = [400, 550, 480, 410];
-        break;
-      default:
-        break;
-    }
   }
 
   getSaleReportData() {
