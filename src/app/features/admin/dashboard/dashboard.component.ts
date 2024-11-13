@@ -1,10 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
-import {Chart, ChartData, ChartOptions, registerables} from "chart.js";
+import {ChartData, ChartOptions} from "chart.js";
 import {PaymentService} from "../../../services/payment.service";
-import {forkJoin} from "rxjs";
+import {forkJoin, tap} from "rxjs";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
+import {OrderService} from "../../../services/order.service";
+import {ProductService} from "../../../services/product.service";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -19,14 +22,6 @@ import {RouterLink} from "@angular/router";
 })
 export class DashboardComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
-
-  // Register all Chart.js components
-  constructor(
-    private paymentService: PaymentService,
-    private translate: TranslateService,
-  ) {
-    this.translate.setDefaultLang("vi")
-  }
 
   // Available comparison types
   comparisonTypes = ['Daily', 'Weekly', 'Monthly', 'Quarterly'];
@@ -104,11 +99,46 @@ export class DashboardComponent implements OnInit {
     responsive: true
   };
 
-  ngOnInit(): void {
-    this.getSaleReportData();
+  totalCompletedOrderLoaded = false;
+  totalActiveProductLoaded = false;
+  totalActiveUserLoaded = false;
+  totalCompletedOrders = 0;
+  totalActiveProducts = 0;
+  totalActiveUsers = 0;
+
+  constructor(
+    private orderService: OrderService,
+    private productService: ProductService,
+    private paymentService: PaymentService,
+    private translate: TranslateService,
+    private userService: UserService
+  ) {
+    this.translate.setDefaultLang("vi")
   }
 
-  updateChartData(comparisonType: string): void {
+  ngOnInit(): void {
+    this.getSaleReportData();
+    this.getTotalCompletedOrders();
+    this.getActiveProducts();
+    this.getTotalActiveUsers();
+  }
+
+  getTotalCompletedOrders() {
+    this.orderService.getOrders({}, {page: 1, size: 1}, {}).pipe(
+      tap(() => this.totalCompletedOrderLoaded = true)
+    ).subscribe(({totalItems}) => this.totalCompletedOrders = totalItems)
+  }
+
+  getActiveProducts() {
+    this.productService.getBy({page: 1, size: 1}).pipe(
+      tap(() => this.totalActiveProductLoaded = true)
+    ).subscribe(({totalItems}) => this.totalActiveProducts = totalItems)
+  }
+
+  getTotalActiveUsers() {
+    this.userService.getBy({page: 1, size: 1}).pipe(
+      tap(() => this.totalActiveUserLoaded = true)
+    ).subscribe(({totalItems}) => this.totalActiveUsers = totalItems)
   }
 
   getSaleReportData() {
