@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
-import {ChartData, ChartOptions} from "chart.js";
+import {Chart, ChartData, ChartOptions, ChartType} from "chart.js";
 import {PaymentService} from "../../../services/payment.service";
 import {forkJoin, tap} from "rxjs";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
@@ -8,6 +8,11 @@ import {RouterLink} from "@angular/router";
 import {OrderService} from "../../../services/order.service";
 import {ProductService} from "../../../services/product.service";
 import {UserService} from "../../../services/user.service";
+import {NgClass} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import zoomPlugin from 'chartjs-plugin-zoom';
+
+Chart.register(zoomPlugin)
 
 @Component({
   selector: 'app-dashboard',
@@ -15,47 +20,50 @@ import {UserService} from "../../../services/user.service";
   imports: [
     BaseChartDirective,
     TranslateModule,
-    RouterLink
+    RouterLink,
+    NgClass,
+    FormsModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+  @ViewChildren(BaseChartDirective) charts!: QueryList<BaseChartDirective>;
 
   // Available comparison types
-  comparisonTypes = ['Daily', 'Weekly', 'Monthly', 'Quarterly'];
-  selectedComparison: string = 'Monthly';
+  selectedPeriod: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly';
+  thatYear = new Date().getFullYear();
+  thisYear = this.thatYear - 1;
 
-  /// Sales chart configuration
+  xTitle = 'Thời gian';
+  yTitle = 'Doanh số';
   salesLabels: string[] = [];
-  salesData: ChartData<'bar'> = {
+  salesData: ChartData = {
     labels: this.salesLabels,
     datasets: [
       {
         data: [],
-        label: 'Last year',
-        backgroundColor: '#4285f4',
-        borderColor: '#4285f4'
+        label: `${this.thisYear}`,
       },
       {
         data: [],
-        label: 'This year',
-        backgroundColor: '#fbbc05',
-        borderColor: '#fbbc05'
+        label: `${this.thatYear}`,
       }
     ]
   };
-  salesType: 'bar' = 'bar';
-  salesOptions: ChartOptions<'bar'> = {
+  salesType: ChartType = 'bar';
+  salesOptions: ChartOptions = {
     responsive: true,
     scales: {
       x: {
-        title: {display: true, text: 'Periods'}
+        title: {
+          display: true,
+          text: this.xTitle
+        }
       },
       y: {
         beginAtZero: true,
-        title: {display: true, text: 'Sales'}
+        title: {display: true, text: this.yTitle,}
       }
     },
     plugins: {
@@ -64,39 +72,23 @@ export class DashboardComponent implements OnInit {
         callbacks: {
           label: (context) => `${context.dataset.label}: ${context.raw}`
         }
+      },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'x',
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'x',
+        }
       }
     }
-  };
-
-  // Strictly typed chart data and options for revenue
-  revenueLabels: string[] = ['January', 'February', 'March', 'April'];
-  revenueData: ChartData<'line'> = {
-    labels: this.revenueLabels,
-    datasets: [
-      {data: [1000, 1200, 900, 1500], label: 'Monthly Revenue'}
-    ]
-  };
-  revenueType: 'line' = 'line';
-  revenueOptions: ChartOptions<'line'> = {
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  };
-
-  // Strictly typed chart data and options for user stats
-  userStatsLabels: string[] = ['Active', 'Inactive'];
-  userStatsData: ChartData<'pie'> = {
-    labels: this.userStatsLabels,
-    datasets: [
-      {data: [300, 120], label: 'User Status'}
-    ]
-  };
-  userStatsType: 'pie' = 'pie';
-  userStatsOptions: ChartOptions<'pie'> = {
-    responsive: true
   };
 
   totalCompletedOrderLoaded = false;
@@ -119,11 +111,20 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSaleReportData();
+    this.getSaleReportData(this.selectedPeriod, this.thisYear, this.thatYear);
     this.getTotalCompletedOrders();
     this.getActiveProducts();
     this.getTotalActiveUsers();
     this.getTotalTransactions();
+  }
+
+  toggleChartType() {
+    this.salesType = this.salesType === 'bar' ? 'line' : 'bar';
+  }
+
+  refreshChart() {
+    console.log("options: ", this.selectedPeriod, this.thisYear, this.thatYear);
+    this.getSaleReportData(this.selectedPeriod, this.thisYear, this.thatYear);
   }
 
   getTotalCompletedOrders() {
@@ -150,28 +151,35 @@ export class DashboardComponent implements OnInit {
     ).subscribe(({totalItems}) => this.totalTransactions = totalItems)
   }
 
-  getSaleReportData() {
-    const currentYear = 2024;
-    const lastYear = currentYear - 1;
-
+  getSaleReportData(period: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly', thisYear: number, thatYear: number) {
     forkJoin({
-      lastYear: this.paymentService.getSaleReport({period: "monthly", year: lastYear}),
-      currentYear: this.paymentService.getSaleReport({period: "monthly", year: currentYear})
+      thisYear: this.paymentService.getSaleReport({period, year: thisYear}),
+      thatYear: this.paymentService.getSaleReport({period, year: thatYear})
     }).subscribe({
-      next: ({lastYear, currentYear}) => {
-        // Assuming both responses have `labels` and `data`
-        this.salesLabels = lastYear.labels; // Use the labels from one of the responses
-        this.salesData.labels = this.salesLabels; // Set chart labels
+      next: ({thisYear, thatYear}) => {
+        this.salesLabels = thisYear.labels;
+        this.salesData.labels = this.salesLabels.map(each => this.translate.instant(each));
 
-        this.salesData.datasets[0].data = lastYear.data; // Last year's data
-        this.salesData.datasets[1].data = currentYear.data; // Current year's data
+        this.salesData.datasets[0].data = thisYear.data;
+        this.salesData.datasets[1].data = thatYear.data;
+        this.salesData.datasets[0].label = `${thisYear.year}`;
+        this.salesData.datasets[1].label = `${thatYear.year}`;
 
-        // Re-render the chart
-        this.chart.update();
+        this.updateCharts()
       },
       error: (err) => {
         console.error('Error fetching sales data', err);
       }
     });
   }
+
+  updateCharts() {
+    this.charts.forEach(chart => chart.update())
+  }
+
+  get currentYear() {
+    return new Date().getFullYear();
+  }
+
+  protected readonly Array = Array;
 }

@@ -70,33 +70,54 @@
   </section>
 
   <div class="charts-grid">
-    <!-- Product Sales Chart -->
-    <div class="chart-card">
-      <h3 class="chart-title">Product Sales Comparison ({{ selectedComparison }})</h3>
+    <!-- Revenue Chart -->
+    <div class="chart-card shadow-sm">
+      <h3 class="fs-3 fw-light mb-3">{{ "REVENUE_CHART" | translate }}</h3>
+      <div class="row">
+        <div class="col">
+          <button class="btn toggle-chart-type-btn px-3"
+                  (click)="toggleChartType()">
+            <i class="bi"
+               [ngClass]="salesType==='bar'?'bi-bar-chart':'bi-graph-up'"></i>
+          </button>
+        </div>
+        <div class="col">
+          <div class="d-flex align-items-center gap-2">
+            <select class="form-select" aria-label="Periods" [(ngModel)]="selectedPeriod">
+              <option selected disabled>{{ "CHOOSE_PERIODS"|translate }}</option>
+              <option value="monthly">{{ "MONTHLY"|translate }}</option>
+              <option value="quarterly">{{ "QUARTERLY"|translate }}</option>
+              <option value="weekly">{{ "WEEKLY"|translate }}</option>
+              <option value="daily">{{ "DAILY"|translate }}</option>
+            </select>
+            <select class="form-select" aria-label="Years" [(ngModel)]="thisYear">
+              <option selected disabled>{{ "CHOOSE_YEAR"|translate }}</option>
+              @for (i of Array(10); track $index) {
+                <option [value]="currentYear-$index">
+                  {{ currentYear - $index }}
+                </option>
+              }
+            </select>
+            <span>&dash;</span>
+            <select class="form-select" aria-label="Years" [(ngModel)]="thatYear">
+              <option selected disabled>{{ "CHOOSE_YEAR"|translate }}</option>
+              @for (i of Array(10); track $index) {
+                <option [value]="currentYear-$index">
+                  {{ currentYear - $index }}
+                </option>
+              }
+            </select>
+            <button class="btn toggle-chart-type-btn px-3"
+                    (click)="refreshChart()">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+          </div>
+        </div>
+      </div>
       <canvas baseChart
               [data]="salesData"
               [type]="salesType"
               [options]="salesOptions">
-      </canvas>
-    </div>
-
-    <!-- Monthly Revenue Chart -->
-    <div class="chart-card">
-      <h3 class="chart-title">Monthly Revenue</h3>
-      <canvas baseChart
-              [data]="revenueData"
-              [type]="revenueType"
-              [options]="revenueOptions">
-      </canvas>
-    </div>
-
-    <!-- User Status Chart -->
-    <div class="chart-card">
-      <h3 class="chart-title">User Status</h3>
-      <canvas baseChart
-              [data]="userStatsData"
-              [type]="userStatsType"
-              [options]="userStatsOptions">
       </canvas>
     </div>
   </div>

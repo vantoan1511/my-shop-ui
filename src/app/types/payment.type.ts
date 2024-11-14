@@ -36,7 +36,7 @@ export const PaymentStatusDescriptions: { [code: string]: string } = {
 };
 
 export interface SaleReportRequest {
-  period: 'monthly';
+  period: 'daily' | 'weekly' | 'monthly' | 'quarterly';
   year: number;
 }
 
