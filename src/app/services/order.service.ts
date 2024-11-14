@@ -5,6 +5,7 @@ import {Order, OrderType} from "../types/order.type";
 import {PageRequest} from "../types/page-request.type";
 import {PagedResponse} from "../types/response.type";
 import {Sort} from "../types/sort.type";
+import {SaleReportRequest, SaleReportResponse} from "../types/payment.type";
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,13 @@ export class OrderService {
       status,
     })
   }
+
+  getSaleReport(saleReportRequest: SaleReportRequest) {
+    return this.http.get<SaleReportResponse>(`${this.BASE_URL}/orders/report`, {
+      params: {...saleReportRequest}
+    })
+  }
+
 
 }
 

@@ -1,7 +1,6 @@
 import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {Chart, ChartData, ChartOptions, ChartType} from "chart.js";
-import {PaymentService} from "../../../services/payment.service";
 import {forkJoin, tap} from "rxjs";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
@@ -11,6 +10,7 @@ import {UserService} from "../../../services/user.service";
 import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import zoomPlugin from 'chartjs-plugin-zoom';
+import {PaymentService} from "../../../services/payment.service";
 
 Chart.register(zoomPlugin)
 
@@ -153,8 +153,8 @@ export class DashboardComponent implements OnInit {
 
   getSaleReportData(period: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly', thisYear: number, thatYear: number) {
     forkJoin({
-      thisYear: this.paymentService.getSaleReport({period, year: thisYear}),
-      thatYear: this.paymentService.getSaleReport({period, year: thatYear})
+      thisYear: this.orderService.getSaleReport({period, year: thisYear}),
+      thatYear: this.orderService.getSaleReport({period, year: thatYear})
     }).subscribe({
       next: ({thisYear, thatYear}) => {
         this.salesLabels = thisYear.labels;
