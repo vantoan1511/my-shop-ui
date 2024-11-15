@@ -27,6 +27,7 @@ import {LoginComponent} from "./features/login/login.component";
 import {RegisterComponent} from "./features/register/register.component";
 import {ForgotComponent} from "./features/forgot/forgot.component";
 import {TransactionsComponent} from "./features/admin/transactions/transactions.component";
+import {SearchComponent} from "./features/search/search.component";
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'may-tinh-xach-tay/:slug',
         component: ProductDetailsComponent,
+      },
+      {
+        path: 'may-tinh-xach-tay',
+        component: SearchComponent,
       },
       {
         path: 'cart',

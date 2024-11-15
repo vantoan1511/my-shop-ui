@@ -240,5 +240,21 @@
   "DAILY": "Theo ngày",
   "WEEKLY": "Theo tuần",
   "CHOOSE_PERIODS": "Chọn thời gian",
-  "CHOOSE_YEAR": "Chọn năm"
+  "CHOOSE_YEAR": "Chọn năm",
+  "FILTERS": "Bộ lọc tìm kiếm",
+  "KEYWORD": "Từ khóa",
+  "ENTER_KEYWORD": "Nhập từ khóa",
+  "MANUFACTURER": "Nhà sản xuất",
+  "PRICE": "Mức giá",
+  "BELOW_10_MIL": "Dưới 10 triệu",
+  "FROM_10_TO_15_MIL": "Từ 10 đến 15 triệu",
+  "FROM_15_TO_20_MIL": "TỪ 15 đến 20 triệu",
+  "FROM_25_TO_30_MIL": "Từ 25 đến 30 triệu",
+  "ABOVE_30_MIL": "Trên 30 triêu",
+  "FOUND":"Tìm thấy",
+  "RESULT": "Kết quả",
+  "SORT_BY": "Sắp xếp theo",
+  "LOW_PRICE": "Giá thấp",
+  "HIGH_PRICE": "Giá cao"
 }
+
