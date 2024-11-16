@@ -1,34 +1,43 @@
-<div class="container bg-white">
-    <div class="w-100 p-3 mt-3">
-        <div class="title p-3">
-            <h2 class="fs-2 fw-light text-muted">{{ "FOR_YOU" | translate }}</h2>
+<div class="container my-3">
+  <app-banner></app-banner>
+  <div class="p-3">
+    <div class="rounded-3 bg-white min-vh-100">
+      <!-- Recommended for you-->
+      <section class="p-3">
+        <div class="p-3 bg-body-tertiary">
+          <span class="fs-2 fw-light text-uppercase">{{ "FOR_YOU" | translate }}</span>
         </div>
-    </div>
-    <div class="row">
-        <app-product-list></app-product-list>
-    </div>
-    <div class="w-100 p-3 mt-3">
-        <div class="title p-3">
-            <h2 class="fs-2 fw-light text-muted">{{ "NEWEST" | translate }}</h2>
+        <ng-container *ngTemplateOutlet="productList"></ng-container>
+      </section>
+
+      <!-- Newest -->
+      <section class="p-3">
+        <div class="p-3 bg-body-tertiary">
+          <span class="fs-2 fw-light text-uppercase">{{ "NEWEST" | translate }}</span>
         </div>
-    </div>
-    <div class="row">
-        <app-product-list></app-product-list>
-    </div>
-    <div class="w-100 p-3 mt-3">
-        <div class="title p-3">
-            <h2 class="fs-2 fw-light text-muted">{{ "BEST_SELLER" | translate }}</h2>
+        <ng-container *ngTemplateOutlet="productList"></ng-container>
+      </section>
+
+      <!-- Best seller -->
+      <section class="p-3">
+        <div class="p-3 bg-body-tertiary">
+          <span class="fs-2 fw-light text-uppercase">{{ "BEST_SELLER" | translate }}</span>
         </div>
-    </div>
-    <div class="row">
-        <app-product-list></app-product-list>
-    </div>
-    <div class="w-100 p-3 mt-3">
-        <div class="title p-3">
-            <h2 class="fs-2 fw-light text-muted">{{ "POPULAR" | translate }}</h2>
+        <ng-container *ngTemplateOutlet="productList"></ng-container>
+      </section>
+
+      <!-- Popular -->
+      <section class="p-3">
+        <div class="p-3 bg-body-tertiary">
+          <span class="fs-2 fw-light text-uppercase">{{ "POPULAR" | translate }}</span>
         </div>
+        <ng-container *ngTemplateOutlet="productList"></ng-container>
+      </section>
     </div>
-    <div class="row">
-        <app-product-list></app-product-list>
-    </div>
+  </div>
+
 </div>
+
+<ng-template #productList>
+  <app-product-list></app-product-list>
+</ng-template>
