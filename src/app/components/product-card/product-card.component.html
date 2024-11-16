@@ -1,0 +1,37 @@
+@if (!loading) {
+  <div class="product-card bg-white rounded-3 shadow-sm overflow-hidden">
+    <div class="product-thumbnail mw-100 overflow-hidden"
+         style="max-height: 15rem"
+         [routerLink]="['/may-tinh-xach-tay', product?.slug]">
+      <img [src]="thumbnail"
+           class="img-fluid"
+           alt="product hero image">
+    </div>
+    <div class="p-2">
+      <div class="product-name fw-light text-truncate"
+           [title]="product?.name ?? ''"
+           [routerLink]="['/may-tinh-xach-tay', product?.slug]">
+        {{ product?.name ?? "PRODUCT_NAME"|translate }}
+      </div>
+      <div class="fs-6 fw-light text-muted">
+        <del>{{ product?.basePrice ?? 0 | currency:"VND" }}</del>
+      </div>
+      <div class="fs-5 fw-bold">{{ product?.salePrice ?? 0|currency:"VND" }}</div>
+      @if (discount > 0) {
+        <div class="discount-price fs-6 fw-light">{{ "DISCOUNT"|translate }} {{ discount|currency:"VND" }}</div>
+      }
+      <div class="fs-6">
+        @for (i of [1, 2, 3, 4, 5]; track $index) {
+          <i class="bi"
+             [class.bi-star-fill]="i <= rating"
+             [class.bi-star-half]="i > rating && i - 1 < rating"
+             [class.bi-star]="i-1 >= rating">
+          </i>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-card-loader></app-card-loader>
+}
+

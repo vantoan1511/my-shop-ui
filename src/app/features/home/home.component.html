@@ -39,5 +39,13 @@
 </div>
 
 <ng-template #productList>
-  <app-product-list></app-product-list>
+  <div class="row row-cols-5 mt-3">
+    @for (product of productResponse?.items; track $index) {
+      <div class="col mb-3">
+        <app-product-card [loading]="loading"
+                          [product]="product"
+                          [thumbnail]="heroImages.get(product.id)??constant.defaultThumbnail"/>
+      </div>
+    }
+  </div>
 </ng-template>

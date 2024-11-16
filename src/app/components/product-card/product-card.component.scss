@@ -1,0 +1,22 @@
+.product-card {
+  height: 25rem;
+  border: 1px solid var(--gray-3);
+  transition: all .3s ease-in-out;
+
+  &:hover {
+    border: 1px solid var(--purple-9);
+    transform: scale(1.05);
+  }
+
+  .bi {
+    color: var(--purple-9);
+  }
+
+  .discount-price {
+    color: var(--purple-9);
+  }
+
+  .product-thumbnail, .product-name {
+    cursor: pointer;
+  }
+}
