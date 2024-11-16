@@ -9,11 +9,29 @@ import {Component} from '@angular/core';
 })
 export class BannerComponent {
   slides = [
-    {src: '/images/banner/banner1.png', title: 'First Slide', description: 'Description for the first slide.'},
+    {
+      src: '/images/banner/banner1.png',
+      title: 'Banner 1',
+    },
     {
       src: '/images/banner/banner2.jpg',
-      title: 'Second Slide',
-      description: 'Description for the second slide.'
+      title: 'Banner 2',
+    },
+    {
+      src: '/images/banner/banner3.png',
+      title: 'Banner 3',
+    },
+    {
+      src: '/images/banner/banner4.jpg',
+      title: 'Banner 4',
+    },
+    {
+      src: '/images/banner/banner5.png',
+      title: 'Banner 5',
+    },
+    {
+      src: '/images/banner/banner6.png',
+      title: 'Banner 6',
     },
   ];
 }
