@@ -2,7 +2,7 @@
   <div class="row">
     <!-- Filter -->
     <div class="col-md-3">
-      <div class="rounded-4 bg-white">
+      <div class="rounded-4 bg-white sticky-top">
         <div class="border-bottom p-3">
           <span class="fs-4 fw-bold"><i class="bi bi-filter me-2"></i>{{ "FILTERS" | translate }}</span>
         </div>
@@ -18,7 +18,7 @@
                    [placeholder]="'ENTER_KEYWORD'|translate"
                    aria-label="Keyword"
                    aria-describedby="Keyword">
-            <button class="btn btn-outline-secondary px-3" type="button" id="Keyword">
+            <button class="btn btn-outline-primary px-3" type="button" id="Keyword">
               <i class="bi bi-search"></i>
             </button>
           </div>
@@ -91,7 +91,7 @@
                    class="form-check-input"
                    type="checkbox"
                    id="price-5">
-            <label class="form-check-label" for="price-5">{{ "ABOVE_30_MIL" }}</label>
+            <label class="form-check-label" for="price-5">{{ "ABOVE_30_MIL" | translate }}</label>
           </div>
         </div>
 
@@ -129,24 +129,7 @@
         <div class="row g-3 mt-2">
           @for (i of Array(10); track $index) {
             <div class="col-md-3">
-              <div class="bg-white rounded" style="min-height: 25rem">
-                <div class="mw-100 overflow-hidden" style="max-height: 15rem">
-                  <img [src]="constant.defaultHeroImageUrl" alt="product hero image">
-                </div>
-                <div class="p-2">
-                  <div class="fw-light text-truncate">San pham laptop Asus zenobook</div>
-                  <div class="fs-6 fw-light">
-                    <del>29000000</del>
-                  </div>
-                  <div class="fs-5 fw-bold">24900000</div>
-                  <div class="fs-6 fw-light">Giam 410000</div>
-                  <div class="fs-6">
-                    @for (i of Array(5); track $index) {
-                      <i class="bi bi-star-fill"></i>
-                    }
-                  </div>
-                </div>
-              </div>
+                <app-product-card/>
             </div>
           }
         </div>

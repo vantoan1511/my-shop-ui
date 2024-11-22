@@ -19,3 +19,30 @@
     color: var(--purple-10) !important;
   }
 }
+
+.input-group {
+  .btn-outline-primary {
+    border-color: var(--purple-8) !important;
+    color: var(--purple-9) !important;
+    transition: all .2s ease;
+
+    &:hover {
+      background-color: var(--purple-8) !important;
+      color: var(--purple-contrast) !important;
+    }
+
+    &:active {
+      background-color: var(--purple-9) !important;
+      color: var(--purple-contrast) !important;
+    }
+  }
+}
+
+.form-check {
+  .form-check-input {
+    &:checked {
+      border-color: var(--purple-9) !important;
+      background-color: var(--purple-9)!important;
+    }
+  }
+}
