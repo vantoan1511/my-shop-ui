@@ -25,6 +25,9 @@ import {ForbiddenComponent} from "./components/forbidden/forbidden.component";
 import {PaymentComponent} from "./features/payment/payment.component";
 import {LoginComponent} from "./features/login/login.component";
 import {RegisterComponent} from "./features/register/register.component";
+import {ForgotComponent} from "./features/forgot/forgot.component";
+import {TransactionsComponent} from "./features/admin/transactions/transactions.component";
+import {SearchComponent} from "./features/search/search.component";
 
 export const routes: Routes = [
   {
@@ -38,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'may-tinh-xach-tay/:slug',
         component: ProductDetailsComponent,
+      },
+      {
+        path: 'may-tinh-xach-tay',
+        component: SearchComponent,
       },
       {
         path: 'cart',
@@ -131,6 +138,10 @@ export const routes: Routes = [
         path: 'profile',
         component: ProfileAdminComponent,
       },
+      {
+        path: 'transactions',
+        component: TransactionsComponent,
+      },
     ],
   },
   {
@@ -140,6 +151,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotComponent,
   },
   {
     path: 'forbidden',

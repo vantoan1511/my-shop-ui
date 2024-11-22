@@ -1,0 +1,64 @@
+.overview {
+  border-radius: .25rem;
+  background: var(--purple-contrast);
+
+  .small-box {
+    border-radius: .25rem;
+    background: linear-gradient(to right, var(--purple-9), var(--purple-8));
+    color: var(--purple-contrast);
+    transition: all 0.2s ease-in-out;
+
+    .icon {
+      font-size: 4rem;
+      color: var(--purple-contrast);
+    }
+
+    .small-box-footer {
+      display: block;
+      margin-top: 1rem;
+      padding: 0.5rem 0;
+      color: var(--purple-contrast);
+      background-color: rgba(0, 0, 0, .1);
+      text-decoration: none;
+      text-align: center;
+      z-index: 10;
+    }
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+  }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 20px;
+
+  .toggle-chart-type-btn {
+    color: var(--purple-9);
+    background-color: var(--purple-3);
+
+    &:hover {
+      background-color: var(--purple-contrast);
+      border: 1px solid var(--purple-9);
+    }
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chart-card {
+  border-radius: .5rem;
+  padding: 1rem;
+  background: var(--purple-contrast);
+
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}

@@ -58,7 +58,7 @@
           </thead>
           <tbody>
             @if (loading) {
-              @for (item of Array(10); track item) {
+              @for (item of Array(5); track item) {
                 <tr class="skeleton-row">
                   <td>
                     <input type="checkbox"
@@ -77,6 +77,9 @@
                   </td>
                   <td>
                     <div class="skeleton-loader" style="width: 150px"></div>
+                  </td>
+                  <td>
+                    <div class="skeleton-loader" style="width: 60px"></div>
                   </td>
                   <td>
                     <div class="skeleton-loader" style="width: 60px"></div>

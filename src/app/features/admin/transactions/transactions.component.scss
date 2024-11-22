@@ -1,0 +1,105 @@
+.card {
+  border: none;
+  border-radius: 0;
+
+  .badge {
+    background: var(--purple-9);
+  }
+
+  .card-header {
+    border-bottom: none;
+    border-radius: 0;
+
+    .nav-link {
+      color: var(--gray-9);
+      cursor: pointer;
+
+      &.active {
+        color: var(--purple-9);
+      }
+    }
+
+    .btn {
+      color: var(--purple-contrast);
+    }
+
+    &:first-child {
+      background: var(--purple-9);
+      color: var(--purple-contrast);
+    }
+  }
+
+  .card-body {
+    .table {
+
+      th {
+        font-weight: bold;
+        font-size: .85rem;
+        color: var(--gray-10);
+        text-transform: uppercase;
+      }
+
+      tbody {
+        td {
+          line-height: 1.75rem;
+          cursor: pointer;
+
+          .shipping-address {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 2;
+            max-height: calc(2em * 1);
+          }
+        }
+      }
+
+      .active {
+        border-bottom: 2px solid var(--purple-9);
+
+        td {
+          background: var(--purple-3);
+          color: var(--purple-10) !important;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .save-status-btn {
+      border-radius: 0;
+      background: var(--purple-9);
+      color: var(--purple-contrast);
+
+      &:hover {
+        background: var(--purple-10);
+      }
+    }
+  }
+
+  .card-footer {
+    border-top: none;
+  }
+}
+
+.skeleton-loader {
+  background: linear-gradient(
+      90deg,
+      var(--gray-2) 25%,
+      var(--gray-3) 50%,
+      var(--gray-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  height: 2rem;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

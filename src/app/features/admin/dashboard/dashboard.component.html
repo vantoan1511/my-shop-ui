@@ -1,1 +1,124 @@
-<p>dashboard works!</p>
+<div class="container-fluid p-3">
+
+  <section class="overview shadow-sm p-3">
+    <h3 class="fw-light mb-3">{{ "DASHBOARD_OVERVIEW" | translate }}</h3>
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box d-block shadow-sm mb-3 position-relative">
+          <div class="p-2">
+            <h3>{{ totalCompletedOrderLoaded ? totalCompletedOrders : ("COMPUTING"|translate) }}</h3>
+            <p>{{ "COMPLETED_ORDER" | translate }}</p>
+          </div>
+          <div class="icon position-absolute end-0 top-0 me-3">
+            <i class="bi bi-bag"></i>
+          </div>
+          <a routerLink="/admin/orders" class="small-box-footer">
+            <span class="me-2">{{ "ORDER_MANAGEMENT" | translate }}</span>
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box d-block shadow-sm mb-3 position-relative">
+          <div class="p-2">
+            <h3>{{ totalActiveProductLoaded ? totalActiveProducts : ("COMPUTING"|translate) }}</h3>
+            <p>{{ "ACTIVE_PRODUCT" | translate }}</p>
+          </div>
+          <div class="icon position-absolute end-0 top-0 me-3">
+            <i class="bi bi-box2"></i>
+          </div>
+          <a routerLink="/admin/products" class="small-box-footer">
+            <span class="me-2">{{ "PRODUCT_MANAGEMENT" | translate }}</span>
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box d-block shadow-sm mb-3 position-relative">
+          <div class="p-2">
+            <h3>{{ totalActiveUserLoaded ? totalActiveUsers : ("COMPUTING"|translate) }}</h3>
+            <p>{{ "USERS" | translate }}</p>
+          </div>
+          <div class="icon position-absolute end-0 top-0 me-3">
+            <i class="bi bi-people"></i>
+          </div>
+          <a routerLink="/admin/users" class="small-box-footer">
+            <span class="me-2">{{ "USER_MANAGEMENT" | translate }}</span>
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-6">
+        <div class="small-box d-block shadow-sm mb-3 position-relative">
+          <div class="p-2">
+            <h3>{{ totalTransactionLoaded ? totalTransactions : ("COMPUTING"|translate) }}</h3>
+            <p>{{ "TRANSACTION_COMPLETED" | translate }}</p>
+          </div>
+          <div class="icon position-absolute end-0 top-0 me-3">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <a routerLink="/admin/transactions" class="small-box-footer">
+            <span class="me-2">{{ "TRANSACTIONS_MANAGEMENT" | translate }}</span>
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="charts-grid">
+    <!-- Revenue Chart -->
+    <div class="chart-card shadow-sm">
+      <h3 class="fs-3 fw-light mb-3">{{ "REVENUE_CHART" | translate }}</h3>
+      <div class="row">
+        <div class="col">
+          <button class="btn toggle-chart-type-btn px-3"
+                  (click)="toggleChartType()">
+            <i class="bi"
+               [ngClass]="salesType==='bar'?'bi-bar-chart':'bi-graph-up'"></i>
+          </button>
+        </div>
+        <div class="col">
+          <div class="d-flex align-items-center gap-2">
+            <select class="form-select" aria-label="Periods" [(ngModel)]="selectedPeriod">
+              <option selected disabled>{{ "CHOOSE_PERIODS"|translate }}</option>
+              <option value="monthly">{{ "MONTHLY"|translate }}</option>
+              <option value="quarterly">{{ "QUARTERLY"|translate }}</option>
+              <option value="weekly">{{ "WEEKLY"|translate }}</option>
+              <option value="daily">{{ "DAILY"|translate }}</option>
+            </select>
+            <select class="form-select" aria-label="Years" [(ngModel)]="thisYear">
+              <option selected disabled>{{ "CHOOSE_YEAR"|translate }}</option>
+              @for (i of Array(10); track $index) {
+                <option [value]="currentYear-$index">
+                  {{ currentYear - $index }}
+                </option>
+              }
+            </select>
+            <span>&dash;</span>
+            <select class="form-select" aria-label="Years" [(ngModel)]="thatYear">
+              <option selected disabled>{{ "CHOOSE_YEAR"|translate }}</option>
+              @for (i of Array(10); track $index) {
+                <option [value]="currentYear-$index">
+                  {{ currentYear - $index }}
+                </option>
+              }
+            </select>
+            <button class="btn toggle-chart-type-btn px-3"
+                    (click)="refreshChart()">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <canvas baseChart
+              [data]="salesData"
+              [type]="salesType"
+              [options]="salesOptions">
+      </canvas>
+    </div>
+  </div>
+</div>

@@ -25,12 +25,6 @@ export class ImageService {
         });
     }
 
-    getById(id: number): Observable<Blob> {
-        return this.http.get(`${this.IMAGE_SERVICE_API_URL}/${id}`, {
-            responseType: "blob",
-        });
-    }
-
     uploadImage(file: File) {
         const formData = new FormData();
         formData.append('image', file);

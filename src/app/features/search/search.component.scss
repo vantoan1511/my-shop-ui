@@ -1,0 +1,21 @@
+.tag {
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--purple-6) !important;
+  }
+
+  &.active {
+    border-color: var(--purple-9) !important;
+  }
+}
+
+.more-btn {
+  background: var(--purple-contrast);
+
+  &:hover {
+    border-color: var(--purple-2) !important;
+    background: var(--purple-2) !important;
+    color: var(--purple-10) !important;
+  }
+}

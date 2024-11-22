@@ -48,7 +48,7 @@
     border-bottom: 1px solid var(--purple-9);
   }
 
-  &.ng-invalid.ng-dirty {
+  &.ng-invalid {
     border-color: var(--red-7);
     color: var(--red-7);
   }
