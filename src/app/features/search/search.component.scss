@@ -42,7 +42,22 @@
   .form-check-input {
     &:checked {
       border-color: var(--purple-9) !important;
-      background-color: var(--purple-9)!important;
+      background-color: var(--purple-9) !important;
     }
+  }
+}
+
+.btn-outline-secondary {
+  border: none !important;
+  background-color: var(--gray-contrast) !important;
+  color: var(--gray-9) !important;
+  transition: all .2s ease;
+
+  &:hover {
+    background-color: var(--gray-3) !important;
+  }
+
+  &:active {
+    background-color: var(--gray-6) !important;
   }
 }
