@@ -4,9 +4,15 @@ import {constant} from "../../shared/constant";
 import {TranslateModule} from "@ngx-translate/core";
 import {ProductCardComponent} from "../../components/product-card/product-card.component";
 import {PagedResponse} from "../../types/response.type";
-import {Brand, Category} from "../../types/product.type";
+import {Brand, Category, Product} from "../../types/product.type";
 import {BrandService} from "../../services/brand.service";
 import {CategoryService} from "../../services/category.service";
+import {ProductService} from "../../services/product.service";
+import {BehaviorSubject, debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {Sort, SortField} from "../../types/sort.type";
+import {PageRequest} from "../../types/page-request.type";
+import {FormsModule} from "@angular/forms";
+import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
 
 @Component({
   selector: 'app-search',
@@ -14,7 +20,9 @@ import {CategoryService} from "../../services/category.service";
   imports: [
     CurrencyPipe,
     TranslateModule,
-    ProductCardComponent
+    ProductCardComponent,
+    FormsModule,
+    CardLoaderComponent
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
@@ -24,18 +32,32 @@ export class SearchComponent implements OnInit {
   selectedTags: { name: string, slug: string }[] = [];
   pagedBrand: PagedResponse<Brand> | null = null;
   pagedCategory: PagedResponse<Category> | null = null;
+  pagedProduct: PagedResponse<Product> | null = null;
   brands: Brand[] = []
   categories: Category[] = []
+  products: Product[] = []
+
+  page = 1;
+  size = 20;
+  sortBy = SortField.CREATED_AT;
+  ascending = false;
+  productLoading = false
+
+  keyword = ''
+  keywordSubject = new BehaviorSubject<string>('');
+
 
   constructor(
     private brandService: BrandService,
     private categoryService: CategoryService,
+    private productService: ProductService
   ) {
   }
 
   ngOnInit(): void {
     this.fetchBrands()
     this.fetchCategories()
+    this.fetchProducts()
   }
 
   fetchBrands() {
@@ -49,6 +71,24 @@ export class SearchComponent implements OnInit {
     this.categoryService.getBy({page: 1, size: 20}).subscribe((response) => {
       this.pagedCategory = response;
       this.categories = response.items;
+    })
+  }
+
+  fetchProducts() {
+    const pageRequest = {page: this.page, size: this.size} as PageRequest
+    const sort = {sortBy: this.sortBy, ascending: this.ascending} as Sort
+    this.productLoading = true
+    this.keywordSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((keyword) => this.productService.searchProducts(pageRequest, sort, {keyword}))
+    ).subscribe({
+      next: (response) => {
+        this.pagedProduct = response
+        this.products = response.items;
+        this.productLoading = false;
+      },
+      error: () => this.productLoading = false
     })
   }
 
@@ -68,6 +108,10 @@ export class SearchComponent implements OnInit {
 
   isSelectedTag(tag: { name: string, slug: string }) {
     return this.selectedTags.some(selectedTag => selectedTag.slug === tag.slug)
+  }
+
+  onKeywordChange(keyword: string) {
+    this.keywordSubject.next(keyword);
   }
 
   protected readonly Array = Array;

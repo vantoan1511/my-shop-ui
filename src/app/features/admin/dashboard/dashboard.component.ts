@@ -134,7 +134,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getActiveProducts() {
-    this.productService.getProductByCriteria({page: 1, size: 1}).pipe(
+    this.productService.getProducts({page: 1, size: 1}).pipe(
       tap(() => this.totalActiveProductLoaded = true)
     ).subscribe(({totalItems}) => this.totalActiveProducts = totalItems)
   }

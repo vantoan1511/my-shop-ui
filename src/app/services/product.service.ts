@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
 import {PagedResponse} from "../types/response.type";
-import {Product} from "../types/product.type";
+import {Product, SearchCriteria} from "../types/product.type";
 import {ProductImage} from "../types/image.type";
 
 @Injectable({
@@ -14,18 +14,22 @@ export class ProductService {
 
   protected BASE_URL = environment.PRODUCT_SERVICE_API;
   protected PRODUCTS_URL = `${this.BASE_URL}/products`
-  protected BRANDS_URL = `${this.BASE_URL}/brands`
 
   constructor(private http: HttpClient) {
   }
 
-  getProductByCriteria(pageRequest?: PageRequest, sort?: Sort) {
+  searchProducts(pageRequest?: PageRequest, sort?: Sort, searchCriteria?: SearchCriteria) {
     return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, {
       params: {
         ...pageRequest,
         ...sort,
+        ...searchCriteria
       },
     });
+  }
+
+  getProducts(pageRequest?: PageRequest, sort?: Sort) {
+    return this.searchProducts(pageRequest, sort);
   }
 
   getBySlug(slug: string) {

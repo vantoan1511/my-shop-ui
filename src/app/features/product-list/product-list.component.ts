@@ -46,7 +46,7 @@ export class ProductListComponent implements OnInit {
 
     private fetchProducts(): void {
         this.loading = true;
-        this.productService.getProductByCriteria(this.pageRequest, this.sort).subscribe({
+        this.productService.getProducts(this.pageRequest, this.sort).subscribe({
             next: response => {
                 this.productResponse = response;
                 this.fetchProductHeroImages(response);
