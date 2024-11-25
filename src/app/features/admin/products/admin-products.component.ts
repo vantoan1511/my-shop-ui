@@ -116,7 +116,7 @@ export class AdminProductsComponent implements OnInit {
 
   fetchProducts() {
     this.loading = true
-    this.productService.getBy(this.pageRequest, this.sort).pipe(
+    this.productService.getProductByCriteria(this.pageRequest, this.sort).pipe(
       map((productResponse) => {
         this.productResponse = productResponse
         this.products = productResponse.items

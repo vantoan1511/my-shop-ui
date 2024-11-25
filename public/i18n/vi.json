@@ -251,10 +251,11 @@
   "FROM_15_TO_20_MIL": "TỪ 15 đến 20 triệu",
   "FROM_25_TO_30_MIL": "Từ 25 đến 30 triệu",
   "ABOVE_30_MIL": "Trên 30 triệu",
-  "FOUND":"Tìm thấy",
+  "FOUND": "Tìm thấy",
   "RESULT": "Kết quả",
   "SORT_BY": "Sắp xếp theo",
   "LOW_PRICE": "Giá thấp",
-  "HIGH_PRICE": "Giá cao"
+  "HIGH_PRICE": "Giá cao",
+  "REMOVE_ALL_TAGS": "Xóa hết"
 }
 

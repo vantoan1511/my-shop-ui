@@ -30,10 +30,12 @@
             <span class="fs-6 fw-bold ">{{ "MANUFACTURER" | translate }}</span>
           </div>
           <div class="row g-3">
-            @for (i of Array(6); track $index) {
+            @for (brand of brands; track $index) {
               <div class="col-6">
-                <div class="tag border rounded text-center p-2">
-                  <span>Brand {{ $index }}</span>
+                <div class="tag border rounded text-center p-2"
+                     [class.active]="isSelectedTag(brand)"
+                     (click)="addTag(brand)">
+                  <span class="text-nowrap text-truncate">{{ brand.name }}</span>
                 </div>
               </div>
             }
@@ -95,15 +97,18 @@
           </div>
         </div>
 
+        <!-- Category filter-->
         <div class="border-bottom p-3">
           <div class="mb-3">
             <span class="fs-6 fw-bold ">{{ "CATEGORY" | translate }}</span>
           </div>
           <div class="row g-3">
-            @for (i of Array(6); track $index) {
+            @for (category of categories; track $index) {
               <div class="col-6">
-                <div class="tag border rounded text-center p-2">
-                  <span>Category {{ $index }}</span>
+                <div class="tag border rounded text-center p-2"
+                     [class.active]="isSelectedTag(category)"
+                     (click)="addTag(category)">
+                  <span class="text-nowrap text-truncate">{{ category.name }}</span>
                 </div>
               </div>
             }
@@ -114,9 +119,31 @@
 
     <!-- Search result -->
     <div class="col-md-9">
-      <div class="rounded-4">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        @for (tag of selectedTags; track $index) {
+          <div class="bg-body-tertiary shadow-sm rounded-pill px-3 py-2">
+            <span class="me-2">{{ tag.name }}</span>
+            <button type="button"
+                    class="btn p-0"
+                    (click)="removeTag(tag.slug)">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        }
+        @if (selectedTags.length > 0) {
+          <button type="button"
+                  class="btn p-0"
+                  (click)="removeAllTags()">
+            <div class="bg-body-tertiary shadow-sm rounded-pill px-3 py-2">
+              <span>{{ "REMOVE_ALL_TAGS" | translate }}</span>
+            </div>
+          </button>
+        }
+      </div>
+      <div class="rounded-4 mt-3">
         <div class="d-flex justify-content-between align-items-center">
-          <span class="">{{ "FOUND" | translate }} <strong>{{ 123 }}</strong> {{ "RESULT" | translate }}</span>
+                    <span class="">{{ "FOUND" | translate }}
+                      <strong>{{ 123 }}</strong> {{ "RESULT" | translate }}</span>
           <div class="d-flex align-items-center gap-3">
             <div class="text-nowrap">{{ "SORT_BY" | translate }}</div>
             <select class="form-select">
@@ -129,7 +156,7 @@
         <div class="row g-3 mt-2">
           @for (i of Array(10); track $index) {
             <div class="col-md-3">
-                <app-product-card/>
+              <app-product-card/>
             </div>
           }
         </div>

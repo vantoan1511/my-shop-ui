@@ -8,58 +8,59 @@ import {Product} from "../types/product.type";
 import {ProductImage} from "../types/image.type";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class ProductService {
 
-    protected BASE_URL = environment.PRODUCT_SERVICE_API;
-    protected PRODUCT_SERVICE_API_URL = `${this.BASE_URL}/products`
+  protected BASE_URL = environment.PRODUCT_SERVICE_API;
+  protected PRODUCTS_URL = `${this.BASE_URL}/products`
+  protected BRANDS_URL = `${this.BASE_URL}/brands`
 
-    constructor(private http: HttpClient) {
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    getBy(pageRequest?: PageRequest, sort?: Sort) {
-        return this.http.get<PagedResponse<Product>>(this.PRODUCT_SERVICE_API_URL, {
-            params: {
-                ...pageRequest,
-                ...sort,
-            },
-        });
-    }
+  getProductByCriteria(pageRequest?: PageRequest, sort?: Sort) {
+    return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, {
+      params: {
+        ...pageRequest,
+        ...sort,
+      },
+    });
+  }
 
-    getBySlug(slug: string) {
-        return this.http.get<Product>(`${this.PRODUCT_SERVICE_API_URL}/${slug}`);
-    }
+  getBySlug(slug: string) {
+    return this.http.get<Product>(`${this.PRODUCTS_URL}/${slug}`);
+  }
 
-    getImagesById(productId: number) {
-        return this.http.get<ProductImage[]>(`${this.PRODUCT_SERVICE_API_URL}/${productId}/images`);
-    }
+  getImagesById(productId: number) {
+    return this.http.get<ProductImage[]>(`${this.PRODUCTS_URL}/${productId}/images`);
+  }
 
-    create(productCreation: Product) {
-        return this.http.post<Product>(this.PRODUCT_SERVICE_API_URL, productCreation);
-    }
+  create(productCreation: Product) {
+    return this.http.post<Product>(this.PRODUCTS_URL, productCreation);
+  }
 
-    update(productUpdate: Product) {
-        return this.http.put(`${this.PRODUCT_SERVICE_API_URL}/${productUpdate.id}`, productUpdate);
-    }
+  update(productUpdate: Product) {
+    return this.http.put(`${this.PRODUCTS_URL}/${productUpdate.id}`, productUpdate);
+  }
 
-    updateImages(productId: number, imageIds: number[]) {
-        return this.http.put(`${this.PRODUCT_SERVICE_API_URL}/${productId}/images`, imageIds);
-    }
+  updateImages(productId: number, imageIds: number[]) {
+    return this.http.put(`${this.PRODUCTS_URL}/${productId}/images`, imageIds);
+  }
 
-    setFeaturedImage(productId: number, imageId: number) {
-        return this.http.patch(`${this.PRODUCT_SERVICE_API_URL}/${productId}/images/${imageId}`, {});
-    }
+  setFeaturedImage(productId: number, imageId: number) {
+    return this.http.patch(`${this.PRODUCTS_URL}/${productId}/images/${imageId}`, {});
+  }
 
-    delete(ids: number[]) {
-        return this.http.delete(this.PRODUCT_SERVICE_API_URL, {
-            body: ids
-        });
-    }
+  delete(ids: number[]) {
+    return this.http.delete(this.PRODUCTS_URL, {
+      body: ids
+    });
+  }
 
-    removeImage(productId: number, imageIds: number[]) {
-        return this.http.delete(`${this.PRODUCT_SERVICE_API_URL}/${productId}/images`, {
-            body: imageIds
-        });
-    }
+  removeImage(productId: number, imageIds: number[]) {
+    return this.http.delete(`${this.PRODUCTS_URL}/${productId}/images`, {
+      body: imageIds
+    });
+  }
 }
