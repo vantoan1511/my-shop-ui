@@ -13,6 +13,7 @@ import {Sort, SortField} from "../../types/sort.type";
 import {PageRequest} from "../../types/page-request.type";
 import {FormsModule} from "@angular/forms";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-search',
@@ -50,14 +51,25 @@ export class SearchComponent implements OnInit {
   constructor(
     private brandService: BrandService,
     private categoryService: CategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    this.extractKeywordFromQuery()
     this.fetchBrands()
     this.fetchCategories()
     this.fetchProducts()
+  }
+
+  extractKeywordFromQuery() {
+    this.route.queryParams.subscribe(params => {
+      const keyword = params["keyword"] || '';
+      this.keyword = keyword
+      this.onKeywordChange(keyword);
+    })
   }
 
   fetchBrands() {
@@ -111,6 +123,10 @@ export class SearchComponent implements OnInit {
   }
 
   onKeywordChange(keyword: string) {
+    this.router.navigate([], {
+      queryParams: {keyword},
+      queryParamsHandling: 'merge'
+    });
     this.keywordSubject.next(keyword);
   }
 

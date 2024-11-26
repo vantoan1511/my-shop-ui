@@ -15,11 +15,11 @@
           <div class="input-group mb-3">
             <input type="text"
                    class="form-control"
+                   aria-label="Keyword"
+                   aria-describedby="Keyword"
                    [placeholder]="'ENTER_KEYWORD'|translate"
                    [(ngModel)]="keyword"
-                   (input)="onKeywordChange(keyword)"
-                   aria-label="Keyword"
-                   aria-describedby="Keyword">
+                   (ngModelChange)="onKeywordChange(keyword)">
             <button class="btn btn-outline-primary px-3"
                     type="button"
                     id="Keyword"

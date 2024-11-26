@@ -3,13 +3,15 @@
     <a class="navbar-brand fs-4 fw-bold" routerLink="/">
       <i class="fs-1 bi bi-bag"></i> Shopbee
     </a>
-    <form class="position-relative" role="search">
+    <form class="position-relative" role="search" (ngSubmit)="onSearch()">
       <input class="bg-white py-3 rounded-0 form-control search-form"
+             name="keyword"
              type="search"
-             aria-label="Search"/>
+             aria-label="Search"
+             [(ngModel)]="keyword"/>
       <button routerLink="/may-tinh-xach-tay"
               class="position-absolute top-50 end-0 translate-middle-y btn p-3 border-0 rounded-start-pill search-btn"
-              type="button">
+              type="submit">
         <i class="bi bi-search me-2"></i>{{ "SEARCH" | translate }}
       </button>
     </form>
