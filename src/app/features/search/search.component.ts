@@ -61,6 +61,7 @@ export class SearchComponent implements OnInit {
   selectedCategories: { name: string, slug: string }[] = [];
   keywordSubject = new BehaviorSubject<string>('');
   brandSubject = new BehaviorSubject<string | undefined>(undefined);
+  categorySubject = new BehaviorSubject<string | undefined>(undefined);
 
   constructor(
     private brandService: BrandService,
@@ -109,9 +110,12 @@ export class SearchComponent implements OnInit {
     this.keywordSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      combineLatestWith(this.brandSubject.pipe(distinctUntilChanged())),
-      switchMap(([keyword]) =>
-        this.productService.searchProducts(pageRequest, sort, {keyword}).pipe(
+      combineLatestWith(
+        this.brandSubject.pipe(distinctUntilChanged()),
+        this.categorySubject.pipe(distinctUntilChanged())
+      ),
+      switchMap(([keyword, brands, categories]) =>
+        this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories}).pipe(
           catchError((error) => {
             console.error('Error fetching products:', error);
             return of({} as PagedResponse<Product>);
@@ -177,30 +181,43 @@ export class SearchComponent implements OnInit {
 
   removeBrandTag(slug: string) {
     this.selectedBrands = this.selectedBrands.filter(tag => tag.slug !== slug);
+    this.buildAndEmitBrandSelectedChange()
   }
 
   removeCategoryTag(slug: string) {
     this.selectedCategories = this.selectedCategories.filter(tag => tag.slug !== slug);
+    this.buildAndEmitCategorySelectedChange()
   }
 
   removeAllTags() {
     this.selectedBrands = []
     this.selectedCategories = []
+    this.buildAndEmitBrandSelectedChange()
+    this.buildAndEmitCategorySelectedChange()
   }
 
   addBrandTag(newTag: { name: string, slug: string }): void {
     if (!this.isSelectedBrandTag(newTag)) {
       this.selectedBrands.push(newTag);
-      const brandQuery = this.selectedBrands.map(brand => brand.slug).join(',');
-      console.log(brandQuery)
-      this.brandSubject.next(brandQuery);
+      this.buildAndEmitBrandSelectedChange();
     }
   }
 
   addCategoryTag(newTag: { name: string, slug: string }): void {
     if (!this.isSelectedCategoryTag(newTag)) {
       this.selectedCategories.push(newTag);
+      this.buildAndEmitCategorySelectedChange()
     }
+  }
+
+  buildAndEmitBrandSelectedChange() {
+    const brandQuery = this.selectedBrands.map(brand => brand.slug).join(',');
+    this.brandSubject.next(brandQuery);
+  }
+
+  buildAndEmitCategorySelectedChange() {
+    const categoryQuery = this.selectedCategories.map(category => category.slug).join(',');
+    this.categorySubject.next(categoryQuery);
   }
 
   isSelectedBrandTag(tag: { name: string, slug: string }) {

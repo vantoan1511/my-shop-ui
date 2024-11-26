@@ -19,14 +19,19 @@ export class ProductService {
   }
 
   searchProducts(pageRequest?: PageRequest, sort?: Sort, searchCriteria?: SearchCriteria) {
-    return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, {
-      params: {
-        ...pageRequest,
-        ...sort,
-        ...searchCriteria
-      },
-    });
+    const filteredCriteria = Object.entries(searchCriteria || {})
+      .filter(([_, value]) => value !== undefined && value !== '') // Remove undefined and empty strings
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+    const params = {
+      ...pageRequest,
+      ...sort,
+      ...filteredCriteria,
+    };
+
+    return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, { params });
   }
+
 
   getProducts(pageRequest?: PageRequest, sort?: Sort) {
     return this.searchProducts(pageRequest, sort);
