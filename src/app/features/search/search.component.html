@@ -58,53 +58,15 @@
           <div class="mb-3">
             <span class="fs-6 fw-bold ">{{ "PRICE" | translate }}</span>
           </div>
-          <div class="form-check">
-            <input checked
-                   class="form-check-input"
-                   type="checkbox"
-                   [value]="null"
-                   id="price-all">
-            <label class="form-check-label" for="price-all">{{ "ALL" | translate }}</label>
-          </div>
-          <div class="form-check">
-            <input checked
-                   value="price-1"
-                   class="form-check-input"
-                   type="checkbox"
-                   id="price-1">
-            <label class="form-check-label" for="price-1">{{ "BELOW_10_MIL" | translate }}</label>
-          </div>
-          <div class="form-check">
-            <input checked
-                   value="price-2"
-                   class="form-check-input"
-                   type="checkbox"
-                   id="price-2">
-            <label class="form-check-label" for="price-2">{{ "FROM_10_TO_15_MIL" | translate }}</label>
-          </div>
-          <div class="form-check">
-            <input checked
-                   value="price-2"
-                   class="form-check-input"
-                   type="checkbox"
-                   id="price-3">
-            <label class="form-check-label" for="price-3">{{ "FROM_15_TO_20_MIL" | translate }}</label>
-          </div>
-          <div class="form-check">
-            <input checked
-                   value="price-4"
-                   class="form-check-input"
-                   type="checkbox"
-                   id="price-4">
-            <label class="form-check-label" for="price-4">{{ "FROM_25_TO_30_MIL" | translate }}</label>
-          </div>
-          <div class="form-check">
-            <input checked
-                   value="price-5"
-                   class="form-check-input"
-                   type="checkbox"
-                   id="price-5">
-            <label class="form-check-label" for="price-5">{{ "ABOVE_30_MIL" | translate }}</label>
+          <ngx-slider
+            [(value)]="priceRange.minPrice"
+            [(highValue)]="priceRange.maxPrice"
+            [options]="options"
+            (userChangeEnd)="onPriceRangeChange()">
+          </ngx-slider>
+          <div class="mt-2">
+            <span>{{ priceRange.minPrice | currency:"VND" }}</span> -
+            <span>{{ priceRange.maxPrice | currency:"VND" }}</span>
           </div>
         </div>
 

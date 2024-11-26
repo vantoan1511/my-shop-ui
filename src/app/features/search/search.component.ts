@@ -25,6 +25,7 @@ import {FormsModule} from "@angular/forms";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
+import {NgxSliderModule, Options} from "@angular-slider/ngx-slider";
 
 @Component({
   selector: 'app-search',
@@ -34,7 +35,8 @@ import {environment} from "../../../environments/environment";
     TranslateModule,
     ProductCardComponent,
     FormsModule,
-    CardLoaderComponent
+    CardLoaderComponent,
+    NgxSliderModule
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
@@ -62,6 +64,20 @@ export class SearchComponent implements OnInit {
   keywordSubject = new BehaviorSubject<string>('');
   brandSubject = new BehaviorSubject<string | undefined>(undefined);
   categorySubject = new BehaviorSubject<string | undefined>(undefined);
+
+  priceRange = {
+    minPrice: 0,
+    maxPrice: 150_000_000,
+  };
+
+  options: Options = {
+    floor: 0,
+    ceil: 150_000_000,
+    step: 1_000_000,
+    showTicks: true,
+    pushRange: true,
+    noSwitching: true
+  };
 
   constructor(
     private brandService: BrandService,
@@ -200,6 +216,8 @@ export class SearchComponent implements OnInit {
     if (!this.isSelectedBrandTag(newTag)) {
       this.selectedBrands.push(newTag);
       this.buildAndEmitBrandSelectedChange();
+    } else {
+      this.removeBrandTag(newTag.slug)
     }
   }
 
@@ -207,6 +225,8 @@ export class SearchComponent implements OnInit {
     if (!this.isSelectedCategoryTag(newTag)) {
       this.selectedCategories.push(newTag);
       this.buildAndEmitCategorySelectedChange()
+    } else {
+      this.removeCategoryTag(newTag.slug)
     }
   }
 
@@ -235,6 +255,10 @@ export class SearchComponent implements OnInit {
     });
     this.keywordSubject.next(keyword);
   }
+
+  onPriceRangeChange() {
+  }
+
 
   retrieveProductThumbnail(productId: number) {
     return this.featuredImageMap.get(productId) || constant.defaultHeroImageUrl;
