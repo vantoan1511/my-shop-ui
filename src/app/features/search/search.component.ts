@@ -8,7 +8,17 @@ import {Brand, Category, Product} from "../../types/product.type";
 import {BrandService} from "../../services/brand.service";
 import {CategoryService} from "../../services/category.service";
 import {ProductService} from "../../services/product.service";
-import {BehaviorSubject, catchError, debounceTime, distinctUntilChanged, forkJoin, map, of, switchMap} from "rxjs";
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatestWith,
+  debounceTime,
+  distinctUntilChanged,
+  forkJoin,
+  map,
+  of,
+  switchMap
+} from "rxjs";
 import {Sort, SortField} from "../../types/sort.type";
 import {PageRequest} from "../../types/page-request.type";
 import {FormsModule} from "@angular/forms";
@@ -99,13 +109,18 @@ export class SearchComponent implements OnInit {
     this.keywordSubject.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((keyword) =>
+      combineLatestWith(this.brandSubject.pipe(distinctUntilChanged())),
+      switchMap(([keyword]) =>
         this.productService.searchProducts(pageRequest, sort, {keyword}).pipe(
+          catchError((error) => {
+            console.error('Error fetching products:', error);
+            return of({} as PagedResponse<Product>);
+          }),
           switchMap((response) => {
             const products = response.items ?? [];
 
             if (products.length === 0) {
-              return of({ pagedProduct: response, products: [], imageMap: new Map() });
+              return of({pagedProduct: response, products: [], imageMap: new Map()});
             }
 
             const imageRequests = products.map((product) =>
@@ -114,6 +129,10 @@ export class SearchComponent implements OnInit {
                   const featuredImage = images.find((img) => img.featured) || images[0];
                   const imageUrl = this.createImageUrl(featuredImage?.imageId)
                   return {productId: product.id, imageUrl};
+                }),
+                catchError((error) => {
+                  console.error(`Error fetching images for product ${product.id}:`, error);
+                  return of({productId: product.id, imageUrl: ''});
                 })
               )
             );
@@ -134,19 +153,26 @@ export class SearchComponent implements OnInit {
             );
           })
         )
-      )
+      ),
+      catchError((error) => {
+        console.error('Unexpected error in fetch pipeline:', error);
+        this.productLoading = false;
+        return of(null);
+      })
     ).subscribe({
-      next: ({pagedProduct, products, imageMap}) => {
-        this.pagedProduct = pagedProduct;
-        this.products = products;
-
-        this.featuredImageMap = imageMap;
+      next: (result) => {
+        if (result) {
+          const {pagedProduct, products, imageMap} = result;
+          this.pagedProduct = pagedProduct;
+          this.products = products;
+          this.featuredImageMap = imageMap;
+        }
         this.productLoading = false;
       },
       error: () => {
         this.productLoading = false;
       },
-    })
+    });
   }
 
   removeBrandTag(slug: string) {
