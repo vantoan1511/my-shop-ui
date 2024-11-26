@@ -44,8 +44,8 @@
             @for (brand of brands; track $index) {
               <div class="col-6">
                 <div class="tag border rounded text-center p-2"
-                     [class.active]="isSelectedTag(brand)"
-                     (click)="addTag(brand)">
+                     [class.active]="isSelectedBrandTag(brand)"
+                     (click)="addBrandTag(brand)">
                   <span class="text-nowrap text-truncate">{{ brand.name }}</span>
                 </div>
               </div>
@@ -117,8 +117,8 @@
             @for (category of categories; track $index) {
               <div class="col-6">
                 <div class="tag border rounded text-center p-2"
-                     [class.active]="isSelectedTag(category)"
-                     (click)="addTag(category)">
+                     [class.active]="isSelectedCategoryTag(category)"
+                     (click)="addCategoryTag(category)">
                   <span class="text-nowrap text-truncate">{{ category.name }}</span>
                 </div>
               </div>
@@ -131,17 +131,27 @@
     <!-- Search result -->
     <div class="col-md-9">
       <div class="d-flex flex-wrap align-items-center gap-3">
-        @for (tag of selectedTags; track $index) {
+        @for (tag of selectedBrands; track $index) {
           <div class="bg-body-tertiary shadow-sm rounded-pill px-3 py-2">
             <span class="me-2">{{ tag.name }}</span>
             <button type="button"
                     class="btn p-0"
-                    (click)="removeTag(tag.slug)">
+                    (click)="removeBrandTag(tag.slug)">
               <i class="bi bi-x-lg"></i>
             </button>
           </div>
         }
-        @if (selectedTags.length > 0) {
+        @for (tag of selectedCategories; track $index) {
+          <div class="bg-body-tertiary shadow-sm rounded-pill px-3 py-2">
+            <span class="me-2">{{ tag.name }}</span>
+            <button type="button"
+                    class="btn p-0"
+                    (click)="removeCategoryTag(tag.slug)">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        }
+        @if (selectedBrands.length > 0 || selectedCategories.length > 0) {
           <button type="button"
                   class="btn p-0"
                   (click)="removeAllTags()">

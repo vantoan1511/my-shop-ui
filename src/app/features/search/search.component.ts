@@ -8,7 +8,7 @@ import {Brand, Category, Product} from "../../types/product.type";
 import {BrandService} from "../../services/brand.service";
 import {CategoryService} from "../../services/category.service";
 import {ProductService} from "../../services/product.service";
-import {BehaviorSubject, debounceTime, distinctUntilChanged, forkJoin, map, switchMap} from "rxjs";
+import {BehaviorSubject, catchError, debounceTime, distinctUntilChanged, forkJoin, map, of, switchMap} from "rxjs";
 import {Sort, SortField} from "../../types/sort.type";
 import {PageRequest} from "../../types/page-request.type";
 import {FormsModule} from "@angular/forms";
@@ -31,7 +31,6 @@ import {environment} from "../../../environments/environment";
 })
 export class SearchComponent implements OnInit {
 
-  selectedTags: { name: string, slug: string }[] = [];
   pagedBrand: PagedResponse<Brand> | null = null;
   pagedCategory: PagedResponse<Category> | null = null;
   pagedProduct: PagedResponse<Product> | null = null;
@@ -48,7 +47,10 @@ export class SearchComponent implements OnInit {
   productLoading = false
 
   keyword = ''
+  selectedBrands: { name: string, slug: string }[] = [];
+  selectedCategories: { name: string, slug: string }[] = [];
   keywordSubject = new BehaviorSubject<string>('');
+  brandSubject = new BehaviorSubject<string | undefined>(undefined);
 
   constructor(
     private brandService: BrandService,
@@ -100,7 +102,11 @@ export class SearchComponent implements OnInit {
       switchMap((keyword) =>
         this.productService.searchProducts(pageRequest, sort, {keyword}).pipe(
           switchMap((response) => {
-            const products = response.items;
+            const products = response.items ?? [];
+
+            if (products.length === 0) {
+              return of({ pagedProduct: response, products: [], imageMap: new Map() });
+            }
 
             const imageRequests = products.map((product) =>
               this.productService.getImagesById(product.id).pipe(
@@ -143,22 +149,40 @@ export class SearchComponent implements OnInit {
     })
   }
 
-  removeTag(slug: string) {
-    this.selectedTags = this.selectedTags.filter(tag => tag.slug !== slug);
+  removeBrandTag(slug: string) {
+    this.selectedBrands = this.selectedBrands.filter(tag => tag.slug !== slug);
+  }
+
+  removeCategoryTag(slug: string) {
+    this.selectedCategories = this.selectedCategories.filter(tag => tag.slug !== slug);
   }
 
   removeAllTags() {
-    this.selectedTags = []
+    this.selectedBrands = []
+    this.selectedCategories = []
   }
 
-  addTag(newTag: { name: string, slug: string }): void {
-    if (!this.isSelectedTag(newTag)) {
-      this.selectedTags.push(newTag);
+  addBrandTag(newTag: { name: string, slug: string }): void {
+    if (!this.isSelectedBrandTag(newTag)) {
+      this.selectedBrands.push(newTag);
+      const brandQuery = this.selectedBrands.map(brand => brand.slug).join(',');
+      console.log(brandQuery)
+      this.brandSubject.next(brandQuery);
     }
   }
 
-  isSelectedTag(tag: { name: string, slug: string }) {
-    return this.selectedTags.some(selectedTag => selectedTag.slug === tag.slug)
+  addCategoryTag(newTag: { name: string, slug: string }): void {
+    if (!this.isSelectedCategoryTag(newTag)) {
+      this.selectedCategories.push(newTag);
+    }
+  }
+
+  isSelectedBrandTag(tag: { name: string, slug: string }) {
+    return this.selectedBrands.some(selectedTag => selectedTag.slug === tag.slug)
+  }
+
+  isSelectedCategoryTag(tag: { name: string, slug: string }) {
+    return this.selectedCategories.some(selectedTag => selectedTag.slug === tag.slug)
   }
 
   onKeywordChange(keyword: string) {
