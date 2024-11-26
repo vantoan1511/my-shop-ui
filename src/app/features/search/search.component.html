@@ -158,10 +158,10 @@
                     </span>
           <div class="d-flex align-items-center gap-3">
             <div class="text-nowrap">{{ "SORT_BY" | translate }}</div>
-            <select class="form-select">
-              <option value="">{{ "LATEST" | translate }}</option>
-              <option value="">{{ "LOW_PRICE" | translate }}</option>
-              <option value="">{{ "HIGH_PRICE" | translate }}</option>
+            <select [(ngModel)]="sort" class="form-select" (change)="onSortChange()">
+              <option value="LATEST">{{ "LATEST" | translate }}</option>
+              <option value="LOW_PRICE">{{ "LOW_PRICE" | translate }}</option>
+              <option value="HIGH_PRICE">{{ "HIGH_PRICE" | translate }}</option>
             </select>
           </div>
         </div>

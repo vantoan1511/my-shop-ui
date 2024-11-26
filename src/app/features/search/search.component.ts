@@ -19,7 +19,7 @@ import {
   of,
   switchMap
 } from "rxjs";
-import {Sort, SortField} from "../../types/sort.type";
+import {SortField} from "../../types/sort.type";
 import {PageRequest} from "../../types/page-request.type";
 import {FormsModule} from "@angular/forms";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
@@ -75,10 +75,15 @@ export class SearchComponent implements OnInit {
   keyword = ''
   selectedBrands: { name: string, slug: string }[] = [];
   selectedCategories: { name: string, slug: string }[] = [];
+  sort: 'LATEST' | 'LOW_PRICE' | 'HIGH_PRICE' = 'LATEST'
   keywordSubject = new BehaviorSubject<string>('');
   brandSubject = new BehaviorSubject<string | undefined>(undefined);
   categorySubject = new BehaviorSubject<string | undefined>(undefined);
   priceSubject = new BehaviorSubject<{ minPrice: number, maxPrice: number }>(this.priceRange);
+  sortSubject = new BehaviorSubject<{ sortBy: SortField, ascending: boolean }>({
+    sortBy: this.sortBy,
+    ascending: this.ascending
+  });
 
   constructor(
     private brandService: BrandService,
@@ -120,7 +125,7 @@ export class SearchComponent implements OnInit {
 
   fetchProducts() {
     const pageRequest = {page: this.page, size: this.size} as PageRequest
-    const sort = {sortBy: this.sortBy, ascending: this.ascending} as Sort
+    // const sort = {sortBy: this.sortBy, ascending: this.ascending} as Sort
 
     this.productLoading = true
 
@@ -131,8 +136,9 @@ export class SearchComponent implements OnInit {
         this.brandSubject.pipe(distinctUntilChanged()),
         this.categorySubject.pipe(distinctUntilChanged()),
         this.priceSubject.pipe(distinctUntilChanged()),
+        this.sortSubject
       ),
-      switchMap(([keyword, brands, categories, {minPrice, maxPrice}]) =>
+      switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort]) =>
         this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories, minPrice, maxPrice}).pipe(
           catchError((error) => {
             console.error('Error fetching products:', error);
@@ -260,6 +266,19 @@ export class SearchComponent implements OnInit {
 
   onPriceRangeChange() {
     this.priceSubject.next({minPrice: this.priceRange.minPrice, maxPrice: this.priceRange.maxPrice});
+  }
+
+  onSortChange() {
+    switch (this.sort) {
+      case 'LATEST':
+        this.sortSubject.next({sortBy: SortField.CREATED_AT, ascending: false});
+        break;
+      case "HIGH_PRICE":
+        this.sortSubject.next({sortBy: SortField.SALE_PRICE, ascending: false});
+        break;
+      default:
+        this.sortSubject.next({sortBy: SortField.SALE_PRICE, ascending: true});
+    }
   }
 
 

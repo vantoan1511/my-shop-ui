@@ -256,6 +256,8 @@
   "SORT_BY": "Sắp xếp theo",
   "LOW_PRICE": "Giá thấp",
   "HIGH_PRICE": "Giá cao",
-  "REMOVE_ALL_TAGS": "Xóa hết"
+  "REMOVE_ALL_TAGS": "Xóa hết",
+  "MIN_PRICE": "Giá thấp nhất",
+  "MAX_PRICE": "Giá cao nhất"
 }
 
