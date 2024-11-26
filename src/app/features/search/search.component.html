@@ -176,7 +176,9 @@
           } @else {
             @for (product of products; track $index) {
               <div class="col-md-3">
-                <app-product-card [product]="product" [loading]="productLoading"/>
+                <app-product-card [product]="product"
+                                  [loading]="productLoading"
+                                  [thumbnail]="retrieveProductThumbnail(product.id)"/>
               </div>
             }
           }
