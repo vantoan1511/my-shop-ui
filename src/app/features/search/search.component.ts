@@ -36,7 +36,7 @@ import {NgxSliderModule, Options} from "@angular-slider/ngx-slider";
     ProductCardComponent,
     FormsModule,
     CardLoaderComponent,
-    NgxSliderModule
+    NgxSliderModule,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
@@ -58,13 +58,6 @@ export class SearchComponent implements OnInit {
   ascending = false;
   productLoading = false
 
-  keyword = ''
-  selectedBrands: { name: string, slug: string }[] = [];
-  selectedCategories: { name: string, slug: string }[] = [];
-  keywordSubject = new BehaviorSubject<string>('');
-  brandSubject = new BehaviorSubject<string | undefined>(undefined);
-  categorySubject = new BehaviorSubject<string | undefined>(undefined);
-
   priceRange = {
     minPrice: 0,
     maxPrice: 150_000_000,
@@ -73,11 +66,19 @@ export class SearchComponent implements OnInit {
   options: Options = {
     floor: 0,
     ceil: 150_000_000,
-    step: 1_000_000,
+    step: 500_000,
     showTicks: true,
     pushRange: true,
     noSwitching: true
   };
+
+  keyword = ''
+  selectedBrands: { name: string, slug: string }[] = [];
+  selectedCategories: { name: string, slug: string }[] = [];
+  keywordSubject = new BehaviorSubject<string>('');
+  brandSubject = new BehaviorSubject<string | undefined>(undefined);
+  categorySubject = new BehaviorSubject<string | undefined>(undefined);
+  priceSubject = new BehaviorSubject<{ minPrice: number, maxPrice: number }>(this.priceRange);
 
   constructor(
     private brandService: BrandService,
@@ -128,10 +129,11 @@ export class SearchComponent implements OnInit {
       distinctUntilChanged(),
       combineLatestWith(
         this.brandSubject.pipe(distinctUntilChanged()),
-        this.categorySubject.pipe(distinctUntilChanged())
+        this.categorySubject.pipe(distinctUntilChanged()),
+        this.priceSubject.pipe(distinctUntilChanged()),
       ),
-      switchMap(([keyword, brands, categories]) =>
-        this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories}).pipe(
+      switchMap(([keyword, brands, categories, {minPrice, maxPrice}]) =>
+        this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories, minPrice, maxPrice}).pipe(
           catchError((error) => {
             console.error('Error fetching products:', error);
             return of({} as PagedResponse<Product>);
@@ -257,6 +259,7 @@ export class SearchComponent implements OnInit {
   }
 
   onPriceRangeChange() {
+    this.priceSubject.next({minPrice: this.priceRange.minPrice, maxPrice: this.priceRange.maxPrice});
   }
 
 

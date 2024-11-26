@@ -64,6 +64,33 @@
             [options]="options"
             (userChangeEnd)="onPriceRangeChange()">
           </ngx-slider>
+          <!-- Inputs -->
+          <div class="row mt-3">
+            <div class="col">
+              <label for="minPrice" class="form-label">{{ "MIN_PRICE" | translate }}</label>
+              <input
+                type="number"
+                class="form-control"
+                id="minPrice"
+                [(ngModel)]="priceRange.minPrice"
+                (change)="onPriceRangeChange()"
+                [min]="0"
+                [max]="priceRange.maxPrice"
+              />
+            </div>
+            <div class="col">
+              <label for="maxPrice" class="form-label">{{ "MAX_PRICE" | translate }}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="maxPrice"
+                [(ngModel)]="priceRange.maxPrice"
+                (change)="onPriceRangeChange()"
+                [min]="priceRange.minPrice"
+                [max]="100000000"
+              />
+            </div>
+          </div>
           <div class="mt-2">
             <span>{{ priceRange.minPrice | currency:"VND" }}</span> -
             <span>{{ priceRange.maxPrice | currency:"VND" }}</span>
