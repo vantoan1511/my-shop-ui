@@ -86,6 +86,7 @@ export class SearchComponent implements OnInit {
     sortBy: this.sortBy,
     ascending: this.ascending
   });
+  pageSubject = new BehaviorSubject({page: this.page, size: this.size});
 
   constructor(
     private brandService: BrandService,
@@ -164,11 +165,13 @@ export class SearchComponent implements OnInit {
   buildAndEmitBrandSelectedChange() {
     const brandQuery = this.selectedBrands.map(brand => brand.slug).join(',');
     this.brandSubject.next(brandQuery);
+    this.refreshFetchedProducts()
   }
 
   buildAndEmitCategorySelectedChange() {
     const categoryQuery = this.selectedCategories.map(category => category.slug).join(',');
     this.categorySubject.next(categoryQuery);
+    this.refreshFetchedProducts()
   }
 
   isSelectedBrandTag(tag: { name: string, slug: string }) {
@@ -185,6 +188,7 @@ export class SearchComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.keywordSubject.next(keyword);
+    this.refreshFetchedProducts()
   }
 
   onPriceRangeChange() {
@@ -208,22 +212,39 @@ export class SearchComponent implements OnInit {
     return this.featuredImageMap.get(productId) || constant.defaultHeroImageUrl;
   }
 
-  fetchProducts() {
-    const pageRequest = {page: this.page, size: this.size} as PageRequest;
+  refreshFetchedProducts() {
+    const latest = this.pageSubject.value;
+    if (latest.size !== this.size) {
+      this.pageSubject.next({page: 1, size: this.size})
+    }
+  }
 
+  onLoadMoreProducts() {
+    const {size} = this.pageSubject.value;
+    const nextIndex = size / this.size + 1
+    this.pageSubject.next({page: this.page, size: this.size * nextIndex});
+  }
+
+  numberOfNextResults() {
+    const remaining = (this.pagedProduct?.totalItems || 0) - (this.pagedProduct?.numberOfItems || 0)
+    return Math.min(this.size, remaining)
+  }
+
+  private fetchProducts() {
     this.productLoading = true;
 
     this.keywordSubject
       .pipe(
-        debounceTime(300),
+        debounceTime(500),
         distinctUntilChanged(),
         combineLatestWith(
           this.brandSubject.pipe(distinctUntilChanged()),
           this.categorySubject.pipe(distinctUntilChanged()),
           this.priceSubject.pipe(distinctUntilChanged()),
-          this.sortSubject
+          this.sortSubject.pipe(distinctUntilChanged()),
+          this.pageSubject.pipe(distinctUntilChanged())
         ),
-        switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort]) =>
+        switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort, pageRequest]) =>
           this.fetchProductsWithDetails(pageRequest, {keyword, brands, categories, minPrice, maxPrice}, sort)
         ),
         catchError((error) => this.handleFetchError(error))
@@ -325,8 +346,8 @@ export class SearchComponent implements OnInit {
       const {pagedProduct, products, imageMap, ratingMap} = result;
       this.pagedProduct = pagedProduct;
       this.products = products;
-      this.featuredImageMap = imageMap;
-      this.ratingMap = ratingMap;
+      this.featuredImageMap = imageMap
+      this.ratingMap = ratingMap
     }
     this.productLoading = false;
   }
