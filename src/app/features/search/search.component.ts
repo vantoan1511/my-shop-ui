@@ -26,6 +26,7 @@ import {CardLoaderComponent} from "../../shared/components/card-loader/card-load
 import {ActivatedRoute, Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
 import {NgxSliderModule, Options} from "@angular-slider/ngx-slider";
+import {ReviewService} from "../../services/review.service";
 
 @Component({
   selector: 'app-search',
@@ -51,6 +52,7 @@ export class SearchComponent implements OnInit {
   products: Product[] = []
 
   featuredImageMap = new Map<number, string>();
+  ratingMap = new Map<number, number>();
 
   page = 1;
   size = 20;
@@ -89,6 +91,7 @@ export class SearchComponent implements OnInit {
     private brandService: BrandService,
     private categoryService: CategoryService,
     private productService: ProductService,
+    private reviewService: ReviewService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -121,86 +124,6 @@ export class SearchComponent implements OnInit {
       this.pagedCategory = response;
       this.categories = response.items;
     })
-  }
-
-  fetchProducts() {
-    const pageRequest = {page: this.page, size: this.size} as PageRequest
-    // const sort = {sortBy: this.sortBy, ascending: this.ascending} as Sort
-
-    this.productLoading = true
-
-    this.keywordSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      combineLatestWith(
-        this.brandSubject.pipe(distinctUntilChanged()),
-        this.categorySubject.pipe(distinctUntilChanged()),
-        this.priceSubject.pipe(distinctUntilChanged()),
-        this.sortSubject
-      ),
-      switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort]) =>
-        this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories, minPrice, maxPrice}).pipe(
-          catchError((error) => {
-            console.error('Error fetching products:', error);
-            return of({} as PagedResponse<Product>);
-          }),
-          switchMap((response) => {
-            const products = response.items ?? [];
-
-            if (products.length === 0) {
-              return of({pagedProduct: response, products: [], imageMap: new Map()});
-            }
-
-            const imageRequests = products.map((product) =>
-              this.productService.getImagesById(product.id).pipe(
-                map((images) => {
-                  const featuredImage = images.find((img) => img.featured) || images[0];
-                  const imageUrl = this.createImageUrl(featuredImage?.imageId)
-                  return {productId: product.id, imageUrl};
-                }),
-                catchError((error) => {
-                  console.error(`Error fetching images for product ${product.id}:`, error);
-                  return of({productId: product.id, imageUrl: ''});
-                })
-              )
-            );
-
-            return forkJoin(imageRequests).pipe(
-              map((imageData) => {
-                const imageMap = new Map<number, string>();
-                imageData.forEach(({productId, imageUrl}) => {
-                  imageMap.set(productId, imageUrl);
-                });
-
-                return {
-                  pagedProduct: response,
-                  products,
-                  imageMap,
-                };
-              })
-            );
-          })
-        )
-      ),
-      catchError((error) => {
-        console.error('Unexpected error in fetch pipeline:', error);
-        this.productLoading = false;
-        return of(null);
-      })
-    ).subscribe({
-      next: (result) => {
-        if (result) {
-          const {pagedProduct, products, imageMap} = result;
-          this.pagedProduct = pagedProduct;
-          this.products = products;
-          this.featuredImageMap = imageMap;
-        }
-        this.productLoading = false;
-      },
-      error: () => {
-        this.productLoading = false;
-      },
-    });
   }
 
   removeBrandTag(slug: string) {
@@ -281,12 +204,134 @@ export class SearchComponent implements OnInit {
     }
   }
 
-
   retrieveProductThumbnail(productId: number) {
     return this.featuredImageMap.get(productId) || constant.defaultHeroImageUrl;
   }
 
-  createImageUrl(imageId?: number) {
+  fetchProducts() {
+    const pageRequest = {page: this.page, size: this.size} as PageRequest;
+
+    this.productLoading = true;
+
+    this.keywordSubject
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        combineLatestWith(
+          this.brandSubject.pipe(distinctUntilChanged()),
+          this.categorySubject.pipe(distinctUntilChanged()),
+          this.priceSubject.pipe(distinctUntilChanged()),
+          this.sortSubject
+        ),
+        switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort]) =>
+          this.fetchProductsWithDetails(pageRequest, {keyword, brands, categories, minPrice, maxPrice}, sort)
+        ),
+        catchError((error) => this.handleFetchError(error))
+      )
+      .subscribe({
+        next: (result) => this.handleFetchSuccess(result),
+        error: () => this.productLoading = false,
+      });
+  }
+
+  private fetchProductsWithDetails(pageRequest: PageRequest, filters: any, sort: any) {
+    return this.productService.searchProducts(pageRequest, sort, filters).pipe(
+      switchMap((response) => this.processProductResponseWithRating(response)),
+      catchError((error) => {
+        console.error('Error during product and image fetch:', error);
+        return of(null);
+      })
+    );
+  }
+
+  private processProductResponseWithRating(pagedProduct: PagedResponse<Product>) {
+    const products = pagedProduct.items ?? [];
+
+    if (products.length === 0) {
+      return of({
+        pagedProduct,
+        products: [],
+        imageMap: new Map<number, string>(),
+        ratingMap: new Map<number, number>()
+      });
+    }
+
+    return forkJoin({
+      imageMap: this.fetchProductImages(products),
+      ratingMap: this.fetchProductRating(products),
+    }).pipe(
+      map(({imageMap, ratingMap}) => ({
+        pagedProduct,
+        products,
+        imageMap,
+        ratingMap
+      }))
+    );
+
+  }
+
+  private fetchProductImages(products: Product[]) {
+    const imageRequests = products.map((product) =>
+      this.productService.getImagesById(product.id).pipe(
+        map((images) => {
+          const featuredImage = images.find((img) => img.featured) || images[0];
+          const imageUrl = this.createImageUrl(featuredImage?.imageId);
+          return {productId: product.id, imageUrl};
+        }),
+        catchError((error) => {
+          console.error(`Error fetching images for product ${product.id}:`, error);
+          return of({productId: product.id, imageUrl: constant.defaultHeroImageUrl});
+        })
+      )
+    );
+
+    return forkJoin(imageRequests).pipe(
+      map((imageData) => {
+        const imageMap = new Map<number, string>();
+        imageData.forEach(({productId, imageUrl}) => imageMap.set(productId, imageUrl));
+        return imageMap;
+      })
+    );
+  }
+
+  private fetchProductRating(products: Product[]) {
+    const reviewRequests = products.map((product) =>
+      this.reviewService.getReviewStatistic(product.slug).pipe(
+        map((reviewStat) => ({productId: product.id, rating: reviewStat.averageRating})),
+        catchError((error) => {
+          console.error(`Error fetching reviews for product ${product.id}:`, error);
+          return of({productId: product.id, rating: 0});
+        })
+      )
+    );
+
+    return forkJoin(reviewRequests).pipe(
+      map((reviewData) => {
+        const reviewsMap = new Map<number, number>();
+        reviewData.forEach(({productId, rating}) => reviewsMap.set(productId, rating));
+        return reviewsMap;
+      })
+    );
+  }
+
+  private handleFetchError(error: any) {
+    console.error('Unexpected error in fetch pipeline:', error);
+    this.productLoading = false;
+    return of(null);
+  }
+
+  private handleFetchSuccess(result: any) {
+    if (result) {
+      const {pagedProduct, products, imageMap, ratingMap} = result;
+      this.pagedProduct = pagedProduct;
+      this.products = products;
+      this.featuredImageMap = imageMap;
+      this.ratingMap = ratingMap;
+    }
+    this.productLoading = false;
+  }
+
+  private createImageUrl(imageId?: number) {
     if (!imageId) {
       return constant.defaultHeroImageUrl;
     }
