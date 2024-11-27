@@ -44,9 +44,9 @@ export class UserComponent implements OnInit, OnDestroy {
   size = 20;
 
   isReviewDialogOpened = false;
-  rating = 0;
+  rating = 5;
   reviewForm = this.fb.group({
-    rating: [5, Validators.required],
+    rating: [this.rating, Validators.required],
     text: ['', Validators.required]
   })
 
@@ -144,6 +144,10 @@ export class UserComponent implements OnInit, OnDestroy {
   isAllowedToComplete(selectedOrder: Order) {
     const allowedTransition = StatusTransition.get(OrderStatus.COMPLETED)
     return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
+  }
+
+  onReviewFormSubmit() {
+    console.log(this.reviewForm.value)
   }
 
   private updateCanceledOrderStatus(selectedOrder: Order) {
