@@ -49,49 +49,55 @@
           <span class="fs-5">1k+ {{ 'SOLD' | translate }}</span>
         </div>
       </div>
-      <div class="price d-flex align-items-center gap-3 p-3 mt-2">
-        <span class="sale-price fs-4"><del>{{ product?.basePrice | currency:'VND' }}</del></span>
-        <span class="fs-2 fw-bold">{{ product?.salePrice | currency:'VND' }}</span>
-        <span class="discount-percentage badge">{{ discount }}% {{ "DISCOUNT" | translate }}</span>
-      </div>
-      <div class="row mt-3 p-3">
-        <div class="col-md-3">
-          <label for="quantity" class="text-muted">{{ "QUANTITY" | translate }}</label>
+      @if (product && !product.active) {
+        <div class="inactive-product p-3 mt-3">
+          <span class="fs-4 fw-bolder text-uppercase">{{ "INACTIVE_PRODUCT" | translate }}</span>
         </div>
-        <div class="col-md-9 d-flex gap-1 align-items-center">
-          <button class="btn quantity-input-btn"
-                  [disabled]="quantity <= 0"
-                  (click)="decreaseQuantity()">
-            <i class="bi bi-dash-lg"></i>
-          </button>
-          <div>
-            <input id="quantity"
-                   type="number"
-                   [min]="0"
-                   [max]="product?.stockQuantity || 0"
-                   [(ngModel)]="quantity"
-                   (change)="validateQuantity()"
-                   class="form-control text-center" value="1"/>
+      } @else {
+        <div class="price d-flex align-items-center gap-3 p-3 mt-2">
+          <span class="sale-price fs-4"><del>{{ product?.basePrice | currency:'VND' }}</del></span>
+          <span class="fs-2 fw-bold">{{ product?.salePrice | currency:'VND' }}</span>
+          <span class="discount-percentage badge">{{ discount }}% {{ "DISCOUNT" | translate }}</span>
+        </div>
+        <div class="row mt-3 p-3">
+          <div class="col-md-3">
+            <label for="quantity" class="text-muted">{{ "QUANTITY" | translate }}</label>
           </div>
-          <button class="btn quantity-input-btn"
-                  (click)="increaseQuantity()"
-                  [disabled]="quantity >= product!.stockQuantity">
-            <i class="bi bi-plus-lg"></i>
-          </button>
-          <span class="text-muted">{{ product?.stockQuantity }} {{ "AVAILABLE" | translate }}</span>
+          <div class="col-md-9 d-flex gap-1 align-items-center">
+            <button class="btn quantity-input-btn"
+                    [disabled]="quantity <= 0"
+                    (click)="decreaseQuantity()">
+              <i class="bi bi-dash-lg"></i>
+            </button>
+            <div>
+              <input id="quantity"
+                     type="number"
+                     [min]="0"
+                     [max]="product?.stockQuantity || 0"
+                     [(ngModel)]="quantity"
+                     (change)="validateQuantity()"
+                     class="form-control text-center" value="1"/>
+            </div>
+            <button class="btn quantity-input-btn"
+                    (click)="increaseQuantity()"
+                    [disabled]="quantity >= product!.stockQuantity">
+              <i class="bi bi-plus-lg"></i>
+            </button>
+            <span class="text-muted">{{ product?.stockQuantity }} {{ "AVAILABLE" | translate }}</span>
+          </div>
         </div>
-      </div>
-      <div class="d-flex align-items-center mt-auto">
-        <button class="add-to-cart-btn btn btn-lg me-3 rounded-0"
-                (click)="addToCart(quantity, productSlug)">
-          <i class="bi bi-cart-plus me-2"></i>
-          <span class="fs-6">{{ "ADD_TO_CART" | translate }}</span>
-        </button>
-        <button class="buy-now-btn btn btn-lg rounded-0"
-                (click)="onClickBuyNow()">
-          <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
-        </button>
-      </div>
+        <div class="d-flex align-items-center mt-auto">
+          <button class="add-to-cart-btn btn btn-lg me-3 rounded-0"
+                  (click)="addToCart(quantity, productSlug)">
+            <i class="bi bi-cart-plus me-2"></i>
+            <span class="fs-6">{{ "ADD_TO_CART" | translate }}</span>
+          </button>
+          <button class="buy-now-btn btn btn-lg rounded-0"
+                  (click)="onClickBuyNow()">
+            <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
+          </button>
+        </div>
+      }
     </div>
   </div>
 

@@ -173,6 +173,11 @@ a, .rating, .breadcrumb {
   }
 }
 
+.inactive-product {
+  background-color: var(--red-3);
+  color: var(--red-9);
+}
+
 .review-item-skeleton {
   display: flex;
   gap: 1rem;
