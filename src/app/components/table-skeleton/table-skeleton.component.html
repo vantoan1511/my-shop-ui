@@ -1,0 +1,9 @@
+@for (row of Array(rowCount); track $index) {
+  <div class="row mt-3">
+    @for (col of Array(colCount); track $index) {
+      <div class="col">
+        <app-skeleton [fluid]="true"/>
+      </div>
+    }
+  </div>
+}
