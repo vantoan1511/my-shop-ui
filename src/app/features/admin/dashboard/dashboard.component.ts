@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit {
 
   productStatLoaded = false;
   productStat: ProductStat | null = null;
-  productStatType: 'by-brand' | 'by-model' | 'by-category' = 'by-brand'
+  productStatType: 'by-brand' | 'by-model' | 'by-category'|'by-status' = 'by-brand'
 
   constructor(
     private orderService: OrderService,

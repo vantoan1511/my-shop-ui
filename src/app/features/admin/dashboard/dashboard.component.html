@@ -130,6 +130,7 @@
             <option value="by-brand">{{ "BRANDS" | translate }}</option>
             <option value="by-model">{{ "MODELS" | translate }}</option>
             <option value="by-category">{{ "CATEGORIES" | translate }}</option>
+            <option value="by-status">{{ "STATUS" | translate }}</option>
           </select>
         </div>
         <button class="btn toggle-chart-type-btn px-3" (click)="getProductStat()">
@@ -146,8 +147,10 @@
                 <th>{{ "BRANDS" | translate }}</th>
               } @else if (productStatType === 'by-model') {
                 <th>{{ "MODELS" | translate }}</th>
-              } @else {
+              } @else if (productStatType === 'by-category') {
                 <th>{{ "CATEGORIES" | translate }}</th>
+              } @else {
+                <th>{{ "STATUS" | translate }}</th>
               }
             <th>{{ "TOTAL_QUANTITY" | translate }}</th>
             </thead>
@@ -166,13 +169,22 @@
                     <td>{{ row[1] }}</td>
                   </tr>
                 }
-              } @else {
+              } @else if (productStatType === 'by-category') {
                 @for (row of Object.entries(productStat?.totalProductsByCategory ?? []); track $index) {
                   <tr>
                     <td>{{ row[0] }}</td>
                     <td>{{ row[1] }}</td>
                   </tr>
                 }
+              } @else {
+                <tr>
+                  <td>{{ "ACTIVE_PRODUCT" | translate }}</td>
+                  <td>{{ productStat?.totalActiveProducts ?? 0 }}</td>
+                </tr>
+                <tr>
+                  <td>{{ "INACTIVE_PRODUCT" | translate }}</td>
+                  <td>{{ (productStat?.totalProducts ?? 0) - (productStat?.totalActiveProducts ?? 0) }}</td>
+                </tr>
               }
             </tbody>
           </table>
