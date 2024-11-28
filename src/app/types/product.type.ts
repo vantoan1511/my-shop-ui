@@ -63,7 +63,6 @@ export interface Category {
   modifiedAt?: string
 }
 
-
 export interface SearchCriteria {
   brands?: string
   categories?: string
@@ -71,3 +70,12 @@ export interface SearchCriteria {
   maxPrice?: number
   keyword?: string
 }
+
+export interface ProductStat {
+  "totalProducts": number
+  "totalActiveProducts": number
+  "totalProductsByBrand": Map<string, number>
+  "totalProductsByModel": Map<string, number>
+  "totalProductsByCategory": Map<string, number>
+}
+

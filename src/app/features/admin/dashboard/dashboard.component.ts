@@ -11,6 +11,8 @@ import {NgClass} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import zoomPlugin from 'chartjs-plugin-zoom';
 import {PaymentService} from "../../../services/payment.service";
+import {ProductStat} from "../../../types/product.type";
+import {SkeletonComponent} from "../../../components/skeleton/skeleton.component";
 
 Chart.register(zoomPlugin)
 
@@ -22,7 +24,8 @@ Chart.register(zoomPlugin)
     TranslateModule,
     RouterLink,
     NgClass,
-    FormsModule
+    FormsModule,
+    SkeletonComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -100,6 +103,10 @@ export class DashboardComponent implements OnInit {
   totalActiveUsers = 0;
   totalTransactions = 0;
 
+  productStatLoaded = false;
+  productStat: ProductStat | null = null;
+  productStatType: 'by-brand' | 'by-model' | 'by-category' = 'by-brand'
+
   constructor(
     private orderService: OrderService,
     private productService: ProductService,
@@ -116,6 +123,7 @@ export class DashboardComponent implements OnInit {
     this.getActiveProducts();
     this.getTotalActiveUsers();
     this.getTotalTransactions();
+    this.getProductStat();
   }
 
   toggleChartType() {
@@ -177,9 +185,17 @@ export class DashboardComponent implements OnInit {
     this.charts.forEach(chart => chart.update())
   }
 
+  getProductStat() {
+    this.productStatLoaded = false
+    this.productService.getStats()
+      .pipe(tap(() => this.productStatLoaded = true))
+      .subscribe((stat) => this.productStat = stat)
+  }
+
   get currentYear() {
     return new Date().getFullYear();
   }
 
   protected readonly Array = Array;
+  protected readonly Object = Object;
 }

@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
 import {PagedResponse} from "../types/response.type";
-import {Product, SearchCriteria} from "../types/product.type";
+import {Product, ProductStat, SearchCriteria} from "../types/product.type";
 import {ProductImage} from "../types/image.type";
 
 @Injectable({
@@ -18,10 +18,14 @@ export class ProductService {
   constructor(private http: HttpClient) {
   }
 
+  getStats() {
+    return this.http.get<ProductStat>(`${this.PRODUCTS_URL}/statistic`);
+  }
+
   searchProducts(pageRequest?: PageRequest, sort?: Sort, searchCriteria?: SearchCriteria) {
     const filteredCriteria = Object.entries(searchCriteria || {})
       .filter(([_, value]) => value !== undefined && value !== '') // Remove undefined and empty strings
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+      .reduce((acc, [key, value]) => ({...acc, [key]: value}), {});
 
     const params = {
       ...pageRequest,
@@ -29,7 +33,7 @@ export class ProductService {
       ...filteredCriteria,
     };
 
-    return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, { params });
+    return this.http.get<PagedResponse<Product>>(this.PRODUCTS_URL, {params});
   }
 
 
