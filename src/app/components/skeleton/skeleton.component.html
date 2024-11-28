@@ -1,0 +1,12 @@
+<div
+  class="skeleton-loader"
+  [ngStyle]="{ width: width || '', height: height || '' }"
+  [ngClass]="{
+    'skeleton-sm': size === 'sm',
+    'skeleton-md': size === 'md',
+    'skeleton-lg': size === 'lg',
+    'skeleton-rectangle': shape === 'rectangle',
+    'skeleton-circle': shape === 'circle',
+    'fluid': fluid
+  }"
+></div>

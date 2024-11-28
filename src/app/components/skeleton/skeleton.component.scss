@@ -1,0 +1,47 @@
+.skeleton-loader {
+  background: linear-gradient(
+      90deg,
+      var(--gray-2) 25%,
+      var(--gray-3) 50%,
+      var(--gray-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-sm {
+  width: 50px;
+  height: 20px;
+}
+
+.skeleton-md {
+  width: 250px;
+  height: 100px;
+}
+
+.skeleton-lg {
+  width: 400px;
+  height: 150px;
+}
+
+.skeleton-rectangle {
+  border-radius: 4px;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.fluid {
+  width: 100%!important;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
