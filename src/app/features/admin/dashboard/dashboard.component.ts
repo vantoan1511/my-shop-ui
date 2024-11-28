@@ -13,6 +13,7 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import {PaymentService} from "../../../services/payment.service";
 import {ProductStat} from "../../../types/product.type";
 import {SkeletonComponent} from "../../../components/skeleton/skeleton.component";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 Chart.register(zoomPlugin)
 
@@ -25,7 +26,8 @@ Chart.register(zoomPlugin)
     RouterLink,
     NgClass,
     FormsModule,
-    SkeletonComponent
+    SkeletonComponent,
+    TableSkeletonComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
