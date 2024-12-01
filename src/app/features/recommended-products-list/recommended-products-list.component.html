@@ -10,7 +10,8 @@
       <div class="col mb-3">
         <app-product-card [loading]="recommendedProductsLoading"
                           [product]="product"
-                          [thumbnail]="imageUtil.createImageUrl(product.featuredImageId)"/>
+                          [thumbnail]="imageUtil.createImageUrl(product.featuredImageId)"
+                          [rating]="product.rating??0"/>
       </div>
     }
   }

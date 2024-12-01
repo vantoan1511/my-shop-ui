@@ -17,6 +17,8 @@ import {CartService} from "../../services/cart.service";
 import {AlertService} from "../../services/alert.service";
 import {AuthenticationService} from "../../services/authentication.service";
 import {RecommendedProductsListComponent} from "../recommended-products-list/recommended-products-list.component";
+import {ImageUtils} from "../../shared/services/Image.utils";
+import {tap} from "rxjs";
 
 @Component({
   selector: 'app-product-details',
@@ -32,7 +34,6 @@ export class ProductDetailsComponent implements OnInit {
   reviewResponse: PagedResponse<Review> | null = null;
   reviews: Review[] = [];
   reviewStatistic: ReviewStatistic | null = null;
-  imageUrls: string[] = [];
   heroUrl = constant.defaultHeroImageUrl;
   showFullDescription = false;
 
@@ -50,7 +51,8 @@ export class ProductDetailsComponent implements OnInit {
     private reviewService: ReviewService,
     private cartService: CartService,
     private alertService: AlertService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    protected imageUtil: ImageUtils
   ) {
     this.translateService.setDefaultLang("vi");
   }
@@ -70,23 +72,12 @@ export class ProductDetailsComponent implements OnInit {
   private loadProductDetails(slug: string): void {
     this.productService.getBySlug(slug).subscribe(product => {
       this.product = product;
-      this.loadProductImages(product.id);
+      this.heroUrl = this.imageUtil.createImageUrl(product.featuredImageId)
     });
   }
 
-  private loadProductImages(productId: number): void {
-    this.productService.getImagesById(productId).subscribe(images => {
-      const featuredImage = images.find(image => image.featured);
-      this.heroUrl = featuredImage
-        ? this.createImageUrl(featuredImage.imageId)
-        : constant.defaultHeroImageUrl;
-
-      this.imageUrls = images.map(image => this.createImageUrl(image.imageId));
-    });
-  }
-
-  onHoverThumbnail(index: number) {
-    this.heroUrl = this.imageUrls[index];
+  onHoverThumbnail(imageId: number) {
+    this.heroUrl = this.imageUtil.createImageUrl(imageId)
   }
 
   increaseQuantity(): void {
@@ -119,7 +110,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToCart(quantity: number, productSlug: string | null): void {
-    if(!this.authService.isAuthenticated) {
+    if (!this.authService.isAuthenticated) {
       this.alertService.showErrorToast("You must login first");
       return
     }
@@ -139,7 +130,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   onClickBuyNow() {
-    if(!this.authService.isAuthenticated) {
+    if (!this.authService.isAuthenticated) {
       this.alertService.showErrorToast("You must login first");
       return
     }
@@ -173,10 +164,6 @@ export class ProductDetailsComponent implements OnInit {
 
   protected toggleShowFullDescription() {
     this.showFullDescription = !this.showFullDescription;
-  }
-
-  protected createImageUrl(imageId: number) {
-    return `${environment.IMAGE_SERVICE_API}/images/${imageId}`;
   }
 
   protected onRating(rating?: number) {

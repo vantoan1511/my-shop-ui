@@ -18,13 +18,13 @@
              alt="product-hero"
              class="figure-img img-fluid rounded border border-1 p-2"/>
         <div class="d-flex gap-2 overflow-auto">
-          @for (image of imageUrls; track $index) {
-            <img [src]="image"
+          @for (imageId of product?.imageIds; track $index) {
+            <img [src]="imageUtil.createImageUrl(imageId)"
                  width="82"
                  height="82"
                  alt="product-thumbnails"
                  class="product-thumbnail rounded border border-1"
-                 (mouseover)="onHoverThumbnail($index)"/>
+                 (mouseover)="onHoverThumbnail(imageId)"/>
           }
         </div>
       </div>

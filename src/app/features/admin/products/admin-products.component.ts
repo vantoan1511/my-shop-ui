@@ -12,10 +12,9 @@ import {ProductService} from "../../../services/product.service";
 import {AlertService} from "../../../services/alert.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../../../environments/environment";
 import {forkJoin, map, switchMap} from "rxjs";
-import {ProductImage} from "../../../types/image.type";
 import {constant} from "../../../shared/constant";
+import {ImageUtils} from "../../../shared/services/Image.utils";
 
 @Component({
   selector: 'admin-products',
@@ -40,7 +39,6 @@ export class AdminProductsComponent implements OnInit {
   sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
   productResponse: PagedResponse<Product> | null = null
   products: Product[] = [];
-  productImage: Map<number, string> = new Map()
   sortableFields = SortField;
   selectAllChecked = false;
 
@@ -48,6 +46,7 @@ export class AdminProductsComponent implements OnInit {
     private productService: ProductService,
     private alertService: AlertService,
     private translate: TranslateService,
+    protected imageUtil: ImageUtils
   ) {
     this.translate.setDefaultLang("vi")
   }
@@ -127,11 +126,6 @@ export class AdminProductsComponent implements OnInit {
       switchMap((productImages) => forkJoin(productImages))
     ).subscribe({
       next: (response) => {
-        this.productImage = this.products.reduce((map, product, index) => {
-          const productImages = response.at(index) ?? []
-          map.set(product.id, this.pickThumbnailImage(productImages));
-          return map;
-        }, new Map<number, string>());
         this.loading = false
       },
       error: () => this.loading = false
@@ -194,21 +188,6 @@ export class AdminProductsComponent implements OnInit {
     const errorMessage = error.errorMessage || 'Some server issues occurred';
     this.alertService.showErrorToast(errorMessage);
   }
-
-  private pickThumbnailImage(productImages: ProductImage[]) {
-    const featured = productImages.find(image => image.featured);
-    if (featured) {
-      return this.createImageUrl(featured.imageId);
-    }
-
-    const firstImage = productImages.at(0);
-    return firstImage ? this.createImageUrl(firstImage.imageId) : constant.defaultHeroImageUrl;
-  }
-
-  private createImageUrl(imageId: number) {
-    return `${environment.IMAGE_SERVICE_API}/images/${imageId}`
-  }
-
 
   protected readonly Array = Array;
   protected readonly constant = constant;

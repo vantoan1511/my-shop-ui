@@ -34,6 +34,9 @@ export interface Product {
   createdAt?: string
   modifiedAt?: string
   featuredImageId?: number
+  imageIds?: number[]
+  rating?: number
+
 }
 
 export interface Model {
