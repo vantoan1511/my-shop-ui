@@ -1,0 +1,17 @@
+<div class="row row-cols-5 mt-3">
+  @if (recommendedProductsLoading) {
+    @for (i of Array(10); track $index) {
+      <div class="col mb-3">
+        <app-card-loader/>
+      </div>
+    }
+  } @else {
+    @for (product of recommendedProducts; track $index) {
+      <div class="col mb-3">
+        <app-product-card [loading]="recommendedProductsLoading"
+                          [product]="product"
+                          [thumbnail]="imageUtil.createImageUrl(product.featuredImageId)"/>
+      </div>
+    }
+  }
+</div>

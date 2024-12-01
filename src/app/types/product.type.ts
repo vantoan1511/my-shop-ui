@@ -33,6 +33,7 @@ export interface Product {
   category: Category
   createdAt?: string
   modifiedAt?: string
+  featuredImageId?: number
 }
 
 export interface Model {

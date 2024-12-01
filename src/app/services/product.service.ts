@@ -22,6 +22,10 @@ export class ProductService {
     return this.http.get<ProductStat>(`${this.PRODUCTS_URL}/statistic`);
   }
 
+  getRecommendations() {
+    return this.http.get<Product[]>(`${this.PRODUCTS_URL}/recommendations`);
+  }
+
   searchProducts(pageRequest?: PageRequest, sort?: Sort, searchCriteria?: SearchCriteria) {
     const filteredCriteria = Object.entries(searchCriteria || {})
       .filter(([_, value]) => value !== undefined && value !== '') // Remove undefined and empty strings

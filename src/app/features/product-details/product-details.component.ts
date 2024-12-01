@@ -16,11 +16,12 @@ import {PagedResponse} from "../../types/response.type";
 import {CartService} from "../../services/cart.service";
 import {AlertService} from "../../services/alert.service";
 import {AuthenticationService} from "../../services/authentication.service";
+import {RecommendedProductsListComponent} from "../recommended-products-list/recommended-products-list.component";
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink],
+  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink, RecommendedProductsListComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })

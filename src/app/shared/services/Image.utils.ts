@@ -1,19 +1,16 @@
-import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {Injectable} from "@angular/core";
+import {environment} from "../../../environments/environment";
+import {constant} from "../constant";
 
 @Injectable({
-    providedIn: "root",
+  providedIn: "root",
 })
 export class ImageUtils {
 
-    constructor(private sanitizer: DomSanitizer) {
+  createImageUrl(imageId?: number) {
+    if (imageId) {
+      return `${environment.IMAGE_SERVICE_API}/images/${imageId}`;
     }
-
-    public createUrl(blob: Blob): string {
-        return URL.createObjectURL(blob);
-    }
-
-    public createSafeUrl(blob: Blob): SafeUrl {
-        return this.sanitizer.bypassSecurityTrustUrl(this.createUrl(blob));
-    }
+    return constant.defaultHeroImageUrl;
+  }
 }

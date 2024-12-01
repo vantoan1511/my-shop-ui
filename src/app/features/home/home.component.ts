@@ -10,9 +10,13 @@ import {Sort, SortField} from "../../types/sort.type";
 import {ProductService} from "../../services/product.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {constant} from "../../shared/constant";
-import {ProductImage} from "../../types/image.type";
 import {environment} from "../../../environments/environment";
 import {ProductCardComponent} from "../../components/product-card/product-card.component";
+import {tap} from "rxjs";
+import {SkeletonComponent} from "../../components/skeleton/skeleton.component";
+import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
+import {RecommendedProductsListComponent} from "../recommended-products-list/recommended-products-list.component";
+import {ImageUtils} from "../../shared/services/Image.utils";
 
 @Component({
   selector: 'app-home',
@@ -22,7 +26,10 @@ import {ProductCardComponent} from "../../components/product-card/product-card.c
     TranslateModule,
     NgTemplateOutlet,
     BannerComponent,
-    ProductCardComponent
+    ProductCardComponent,
+    SkeletonComponent,
+    CardLoaderComponent,
+    RecommendedProductsListComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -31,21 +38,28 @@ export class HomeComponent implements OnInit {
 
   productResponse: PagedResponse<Product> | null = null;
   products: Product[] = [];
+  latestProducts: Product[] = [];
+  mostPopularProducts: Product[] = [];
   heroImages: Map<number, string> = new Map();
   pageRequest: PageRequest = {page: 1, size: 10};
   sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
   loading = false;
+  latestProductsLoading = false;
+  mostPopularProductsLoading = false;
 
   constructor(
     private translate: TranslateService,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    protected imageUtil: ImageUtils
   ) {
     this.translate.setDefaultLang('vi');
   }
 
   ngOnInit(): void {
     this.fetchProducts();
+    this.fetchLatestProducts();
+    this.fetchMostPopularProducts();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         window.scrollTo(0, 0);
@@ -53,52 +67,37 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  private fetchLatestProducts(): void {
+    this.latestProductsLoading = true;
+    this.productService.searchProducts(this.pageRequest, {
+      sortBy: SortField.CREATED_AT,
+      ascending: false
+    }).pipe(tap(() => this.latestProductsLoading = false))
+      .subscribe({
+        next: (products) => this.latestProducts = products.items
+      })
+  }
+
+  private fetchMostPopularProducts(): void {
+    this.latestProductsLoading = true;
+    this.productService.searchProducts(this.pageRequest, {
+      sortBy: SortField.VIEW_COUNT,
+      ascending: false
+    }).pipe(tap(() => this.mostPopularProductsLoading = false))
+      .subscribe({
+        next: (products) => this.mostPopularProducts = products.items
+      })
+  }
+
   private fetchProducts(): void {
     this.loading = true;
     this.productService.getProducts(this.pageRequest, this.sort).subscribe({
       next: response => {
         this.productResponse = response;
-        this.fetchProductHeroImages(response);
         this.loading = false;
       },
       error: () => this.loading = false
     });
-  }
-
-
-  private fetchProductHeroImages(response: PagedResponse<Product>) {
-    if (response.items) {
-      const products = response.items;
-      products.forEach(product => {
-          this.setDefaultHeroImageUrl(product)
-          this.productService.getImagesById(product.id).subscribe(productImages => {
-            this.heroImages.set(product.id, constant.defaultHeroImageUrl);
-            const hero = productImages.find(image => image.featured);
-            if (hero) {
-              const heroUrl = this.createHeroUrl(hero);
-              this.heroImages.set(product.id, heroUrl);
-            }
-          })
-        }
-      );
-    }
-  }
-
-  private setDefaultHeroImageUrl(product: Product) {
-    this.heroImages.set(product.id, constant.defaultHeroImageUrl);
-  }
-
-  private createHeroUrl(productImage: ProductImage) {
-    return `${environment.IMAGE_SERVICE_API}/images/${productImage.imageId}`;
-  }
-
-  protected savedPrice(product: Product) {
-    const gapPrice = product.basePrice - product.salePrice;
-    if (gapPrice > 0) {
-      return gapPrice;
-    }
-
-    return null;
   }
 
   protected readonly Array = Array;
