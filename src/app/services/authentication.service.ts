@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {jwtDecode} from "jwt-decode";
 import {BehaviorSubject} from "rxjs";
+import {Role} from "../types/role.type";
 
 @Injectable({
   providedIn: 'root',
@@ -91,7 +92,7 @@ export class AuthenticationService {
 
   hasAccess(expectedRoles: string[]) {
     const currentRoles = this.getUserRoles();
-    return currentRoles.some((role) => expectedRoles.includes(role.toLowerCase()))
+    return currentRoles.some((role) => expectedRoles.includes(role))
   }
 
   setRedirectUrl(url: string): void {
@@ -110,7 +111,12 @@ export class AuthenticationService {
 
   get isAdmin(): boolean {
     const roles = this.getUserRoles();
-    return roles.includes('ADMIN')
+    return roles.includes(Role.ADMIN)
+  }
+
+  get isStaff() {
+    const roles = this.getUserRoles();
+    return roles.includes(Role.STAFF)
   }
 
   get isAuthenticated(): boolean {

@@ -33,7 +33,7 @@
         </a>
 
         <ul class="shadow border-0 dropdown-menu dropdown-menu-lg-end">
-          @if (authService.isAdmin) {
+          @if (authService.isAdmin || authService.isStaff) {
             <li>
               <a routerLink="admin" class="dropdown-item">
                 <i class="bi bi-columns-gap"></i> {{ "ADMIN_CONSOLE"|translate }}

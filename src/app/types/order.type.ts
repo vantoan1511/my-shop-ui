@@ -9,8 +9,7 @@ export enum OrderStatus {
   'AWAITING_SHIPPING' = 'AWAITING_SHIPPING',
   'SHIPPED' = 'SHIPPED',
   'COMPLETED' = 'COMPLETED',
-  'CANCELED' = 'CANCELED',
-  'REFUNDED' = 'REFUNDED',
+  'CANCELED' = 'CANCELED'
 }
 
 export const StatusTransition = new Map<OrderStatus, OrderStatus[]>([
@@ -29,8 +28,7 @@ export const StatusTransition = new Map<OrderStatus, OrderStatus[]>([
     OrderStatus.DECLINED,
     OrderStatus.AWAITING_PICKUP,
     OrderStatus.AWAITING_SHIPPING,
-  ]],
-  [OrderStatus.REFUNDED, [OrderStatus.COMPLETED, OrderStatus.CANCELED]],
+  ]]
 ]);
 
 export interface OrderType {

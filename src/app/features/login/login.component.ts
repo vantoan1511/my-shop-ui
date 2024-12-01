@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.translate.setDefaultLang('vi');
 
-    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.authService.setRedirectUrl(returnUrl);
   }
 
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
         const response = await this.authService.login(username, password);
         console.log('Login successful', response);
 
-        const redirectUrl = this.authService.getRedirectUrl() || '/';
+        const redirectUrl = this.determineRedirectUrl();
         await this.router.navigateByUrl(redirectUrl);
       } catch (error) {
         console.error('Login failed', error);
@@ -69,5 +69,22 @@ export class LoginComponent implements OnInit {
 
   togglePasswordVisibility() {
     this.passwordVisible = !this.passwordVisible;
+  }
+
+  private determineRedirectUrl() {
+    const redirectUrl = this.authService.getRedirectUrl()
+    if (redirectUrl && redirectUrl !== 'undefined') {
+      return redirectUrl;
+    }
+
+    if (this.authService.isAdmin) {
+      return '/admin'
+    }
+
+    if (this.authService.isStaff) {
+      return '/admin/orders'
+    }
+
+    return '/'
   }
 }

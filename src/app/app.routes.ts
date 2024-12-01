@@ -77,8 +77,9 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     data: {
-      expectedRoles: [Role.ADMIN],
+      expectedRoles: [Role.ADMIN, Role.STAFF],
     },
     children: [
       {
@@ -89,6 +90,9 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        data: {
+          expectedRoles: [Role.ADMIN],
+        }
       },
       {
         path: 'brands',
@@ -129,6 +133,9 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+        data: {
+          expectedRoles: [Role.ADMIN],
+        }
       },
       {
         path: 'users/:id',
@@ -141,6 +148,9 @@ export const routes: Routes = [
       {
         path: 'transactions',
         component: TransactionsComponent,
+        data: {
+          expectedRoles: [Role.ADMIN],
+        }
       },
     ],
   },

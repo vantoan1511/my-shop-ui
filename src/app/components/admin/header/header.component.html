@@ -14,7 +14,7 @@
       <button class="nav-link dropdown-toggle"
               data-bs-toggle="dropdown"
               aria-expanded="false">
-        <strong>Admin</strong>
+        <strong> {{ "WELCOME" | translate }} {{ authService.username }}</strong>
       </button>
       <ul class="dropdown-menu dropdown-menu-lg-end">
         <li>
@@ -37,22 +37,24 @@
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Shopbee Admin</h5>
       </div>
       <div class="sidebar-items list-group list-group-flush">
-        <a routerLink="dashboard"
-           routerLinkActive="active"
-           class="list-group-item list-group-item-action">
-          <div class="icon">
-            <i class="bi bi-house"></i>
-          </div>
-          {{ "DASHBOARD" | translate }}
-        </a>
-        <a routerLink="users"
-           routerLinkActive="active"
-           class="list-group-item list-group-item-action">
-          <div class="icon">
-            <i class="bi bi-people"></i>
-          </div>
-          {{ "USERS" | translate }}
-        </a>
+        @if (authService.hasAccess([Role.ADMIN])) {
+          <a routerLink="dashboard"
+             routerLinkActive="active"
+             class="list-group-item list-group-item-action">
+            <div class="icon">
+              <i class="bi bi-house"></i>
+            </div>
+            {{ "DASHBOARD" | translate }}
+          </a>
+          <a routerLink="users"
+             routerLinkActive="active"
+             class="list-group-item list-group-item-action">
+            <div class="icon">
+              <i class="bi bi-people"></i>
+            </div>
+            {{ "USERS" | translate }}
+          </a>
+        }
         <a routerLink="brands"
            routerLinkActive="active"
            class="list-group-item list-group-item-action">
@@ -93,16 +95,18 @@
           </div>
           {{ "ORDERS" | translate }}
         </a>
-        <a routerLink="transactions"
-           routerLinkActive="active"
-           class="list-group-item list-group-item-action">
-          <div class="icon">
-            <i class="bi bi-receipt"></i>
-          </div>
-          {{ "TRANSACTION" | translate }}
-        </a>
+        @if (authService.hasAccess([Role.ADMIN])) {
+          <a routerLink="transactions"
+             routerLinkActive="active"
+             class="list-group-item list-group-item-action">
+            <div class="icon">
+              <i class="bi bi-receipt"></i>
+            </div>
+            {{ "TRANSACTION" | translate }}
+          </a>
+        }
       </div>
-      <div class="sidebar-footer">Ver 1.0.0</div>
+      <div class="sidebar-footer text-center">Ver 1.0.0</div>
     </aside>
   </div>
 </nav>
