@@ -177,8 +177,8 @@
               <div class="col-md-3">
                 <app-product-card [product]="product"
                                   [loading]="productLoading"
-                                  [thumbnail]="retrieveProductThumbnail(product.id)"
-                                  [rating]="ratingMap.get(product.id) ?? 0"/>
+                                  [thumbnail]="imageUtil.createImageUrl(product.featuredImageId)"
+                                  [rating]="product.rating ?? 0"/>
               </div>
             }
           }
