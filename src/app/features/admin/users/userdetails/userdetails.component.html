@@ -162,6 +162,18 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row g-3 align-items-center my-1">
+                <div class="col-3">
+                  <label for="disabledReason" class="col-form-label"> {{ "DISABLE_REASON"|translate }} </label>
+                </div>
+                <div class="col">
+                  <input formControlName="disabledReason"
+                         class="form-control"
+                         type="text"
+                         id="disabledReason"/>
+                </div>
+              </div>
             </div>
           </div>
         </form>
@@ -240,33 +252,43 @@
         </form>
       } @else {
         <div class="d-flex gap-2 border-bottom p-3">
-          <button class="btn btn-primary">{{ "ASSIGN_ROLE" | translate }}</button>
-          <button class="btn" (click)="fetchUserRoles()">
+          <button class="btn btn-primary"
+                  (click)="openAssignRoleDialog()">
+            {{ "ASSIGN_ROLE" | translate }}
+          </button>
+          <button class="btn" (click)="getUserRoles()">
             <i class="bi bi-arrow-clockwise me-2"></i>
             <span>{{ "REFRESH" | translate }}</span>
           </button>
         </div>
-        <div class="table-responsive p-3">
-          <table class="table table-hover">
-            <thead>
-            <th>{{ "NO" | translate }}</th>
-            <th>{{ "NAME" | translate }}</th>
-            <th></th>
-            </thead>
-            <tbody>
-              @for (role of user?.roles; track $index) {
-                <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ role }}</td>
-                  <td class="text-end">
-                    <button class="btn btn-outline-secondary"
-                            (click)="onUnAssignRoleButtonClick(role)">{{ "UNASSIGN_ROLE" | translate }}
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
+        <div class="p-3">
+          @if (user && user.roles && user.roles.length > 0) {
+            <table class="table table-hover">
+              <thead>
+              <th>{{ "NO" | translate }}</th>
+              <th>{{ "NAME" | translate }}</th>
+              <th></th>
+              </thead>
+              <tbody>
+                @for (role of user?.roles; track $index) {
+                  <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ role }}</td>
+                    <td class="text-end">
+                      <button class="btn btn-outline-secondary"
+                              [disabled]="userId===1"
+                              (click)="onUnAssignRoleButtonClick(role)">{{ "UNASSIGN_ROLE" | translate }}
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <div class="text-center">
+              <span class="fst-italic">{{ "NOT_ASSIGNED_ANY_ROLES_YET" | translate }}</span>
+            </div>
+          }
         </div>
       }
     </div>
@@ -285,3 +307,52 @@
     </div>
   </div>
 </main>
+
+@if (assignRolesDialogOpen) {
+  <div class="dialog vh-100 vw-100 bg-opacity-75 bg-dark position-fixed top-0">
+    <div class="d-flex align-items-center justify-content-center w-100 h-100">
+      <div class="rounded-3 border-1 shadow-sm p-3 bg-white">
+        <div class="d-flex justify-content-between border-bottom pb-3">
+          <span class="fs-4 fw-bolder me-5">{{ "ASSIGN_ROLES_FOR_USER" | translate }} {{ user?.username }}</span>
+          <button class="btn py-0 px-1" (click)="closeAssignRoleDialog()"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="mt-3">
+          @if (availableRolesLoading) {
+            <app-table-skeleton [rowCount]="3" [colCount]="2"/>
+          } @else if (availableRoles.length > 0) {
+            <table class="table table-hover">
+              <thead>
+              <th class="col-6">{{ "NAME" | translate }}</th>
+              <th class="col-6"></th>
+              </thead>
+              <tbody>
+                @for (role of availableRoles; track $index) {
+                  <tr>
+                    <td>{{ role }}</td>
+                    <td class="text-end">
+                      <button class="btn btn-outline-secondary"
+                              [disabled]="hasAssigned(role)"
+                              (click)="this.onAssignRoleButtonClick(role)">
+                        {{ (hasAssigned(role) ? "ASSIGNED" : "ASSIGN") | translate }}
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <div class="text-center">
+              <span class="fst-italic">{{ "NO_AVAILABLE_ROLES" | translate }}</span>
+            </div>
+          }
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-outline-danger" (click)="closeAssignRoleDialog()">
+            {{ "CLOSE"|translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+

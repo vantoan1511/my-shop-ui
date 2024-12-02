@@ -1,11 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
-import {ContextMenuComponent} from "../../../../shared/components/context-menu/context-menu.component";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {Brand} from "../../../../types/product.type";
 import {Observable, Subject, takeUntil} from "rxjs";
-import {ValidationService} from "../../../../services/validation.service";
 import {AlertService} from "../../../../services/alert.service";
 import {BrandService} from "../../../../services/brand.service";
 import {Editor, NgxEditorModule, Toolbar} from "ngx-editor";
@@ -16,7 +14,6 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
   standalone: true,
   imports: [
     AsyncPipe,
-    ContextMenuComponent,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,

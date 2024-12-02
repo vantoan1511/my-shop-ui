@@ -18,6 +18,7 @@
     .nav-underline {
       .nav-link {
         color: var(--gray-9);
+
         &.active {
           color: var(--purple-9);
         }
@@ -103,5 +104,26 @@ label {
         background: var(--purple-9) !important;
       }
     }
+  }
+}
+
+.dialog {
+  z-index: 1100 !important;
+
+  .btn-outline-secondary {
+    border: none;
+    color: var(--purple-9);
+
+    &:hover {
+      background-color: var(--purple-contrast);
+    }
+  }
+
+  .btn-outline-danger {
+    border-radius: 0;
+    border: none;
+    background-color: var(--gray-7);
+    padding: .5rem 1rem;
+    color: var(--purple-contrast);
   }
 }

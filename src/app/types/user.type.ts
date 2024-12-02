@@ -16,6 +16,7 @@ export interface User {
   createdAt: string
   modifiedAt: string
   roles?: string[]
+  disableReason: string
 }
 
 export interface UserRegister {

@@ -20,6 +20,10 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
+  getAllRoles() {
+    return this.http.get<string[]>(`${this.USER_SERVICE_API_URL}/roles`);
+  }
+
   getUserRoles(userId: number) {
     return this.http.get<string[]>(`${this.USER_SERVICE_API_URL}/${userId}/roles`);
   }

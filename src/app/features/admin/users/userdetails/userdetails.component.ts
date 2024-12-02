@@ -10,11 +10,12 @@ import {User} from '../../../../types/user.type';
 import {PasswordReset} from '../../../../types/password-reset.type';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ListControlsComponent} from "../../../../shared/components/list-controls/list-controls.component";
+import {TableSkeletonComponent} from "../../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, TranslateModule, ListControlsComponent],
+  imports: [RouterLink, ReactiveFormsModule, TranslateModule, ListControlsComponent, TableSkeletonComponent],
   templateUrl: './userdetails.component.html',
   styleUrl: './userdetails.component.scss',
 })
@@ -25,6 +26,9 @@ export class DetailsComponent implements OnInit {
   user: User | null = null;
   user$: Observable<User> | null = null;
   currentTabView: 'general' | 'credentials' | 'roles' = 'general';
+  availableRoles: string[] = [];
+  availableRolesLoading = false;
+  assignRolesDialogOpen = false;
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +50,36 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  openAssignRoleDialog() {
+    this.assignRolesDialogOpen = true;
+    this.getAvailableRoles();
+  }
+
+  closeAssignRoleDialog() {
+    this.assignRolesDialogOpen = false;
+  }
+
+  hasAssigned(roleGroup: string): boolean {
+    if (!this.user) {
+      return false;
+    }
+
+    if (!this.user.roles) {
+      return false;
+    }
+
+    return this.user.roles.includes(roleGroup);
+  }
+
+  getAvailableRoles() {
+    this.availableRolesLoading = true;
+    this.userService.getAllRoles()
+      .pipe(tap(() => this.availableRolesLoading = false))
+      .subscribe((roles) => {
+        this.availableRoles = roles;
+      })
+  }
+
   onUnAssignRoleButtonClick(roleGroup: string) {
     this.alertService.showConfirmationAlert(
       "Xác nhận",
@@ -54,10 +88,20 @@ export class DetailsComponent implements OnInit {
       () => this.unAssignRoleGroup(roleGroup))
   }
 
+  onAssignRoleButtonClick(roleGroup: string) {
+    if (this.userId)
+      this.userService.assignRoleGroup(this.userId, roleGroup)
+        .pipe(tap(() => this.getUserRoles()))
+        .subscribe({
+          next: () => this.alertService.showSuccessToast("Phân quyền thành công!"),
+          error: () => this.alertService.showErrorToast("Phân quyền thất bại!")
+        })
+  }
+
   unAssignRoleGroup(roleGroup: string) {
     if (roleGroup && this.userId) {
       this.userService.removeRoleGroup(this.userId, roleGroup)
-        .pipe(tap(() => this.fetchUserRoles()))
+        .pipe(tap(() => this.getUserRoles()))
         .subscribe({
           next: () => this.alertService.showSuccessToast("Phân quyền thành công!"),
           error: () => this.alertService.showErrorToast("Phân quyền thất bại!")
@@ -65,7 +109,7 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  fetchUserRoles() {
+  getUserRoles() {
     if (!this.user) {
       return
     }
@@ -154,6 +198,7 @@ export class DetailsComponent implements OnInit {
       emailVerified: [false],
       enabled: [false],
       username: ['', Validators.required],
+      disabledReason: ['']
     });
   }
 
@@ -169,7 +214,8 @@ export class DetailsComponent implements OnInit {
 
   private updateForm(user: User) {
     this.userForm.patchValue({
-      ...user
+      ...user,
+      disabledReason: user.disableReason
     });
   }
 
