@@ -12,6 +12,7 @@ import {RouterLink} from "@angular/router";
 import {Brand} from "../../../types/product.type";
 import {BrandService} from "../../../services/brand.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-brands',
@@ -23,7 +24,8 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
     SortableDirective,
     RouterLink,
     NgTemplateOutlet,
-    TranslateModule
+    TranslateModule,
+    TableSkeletonComponent
   ],
   templateUrl: './brands.component.html',
   styleUrl: './brands.component.scss'

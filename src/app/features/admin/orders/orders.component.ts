@@ -11,6 +11,7 @@ import {TruncatePipe} from "../../../shared/pipes/truncate.pipe";
 import {FormsModule} from "@angular/forms";
 import {AlertService} from "../../../services/alert.service";
 import {RouterLink} from "@angular/router";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-orders',
@@ -25,7 +26,8 @@ import {RouterLink} from "@angular/router";
     SortableDirective,
     TruncatePipe,
     FormsModule,
-    RouterLink
+    RouterLink,
+    TableSkeletonComponent
   ],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'

@@ -15,6 +15,7 @@ import {DetailsComponent} from './userdetails/userdetails.component';
 import {environment} from "../../../../environments/environment";
 import {constant} from "../../../shared/constant";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-users',
@@ -29,6 +30,7 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
     ListControlsComponent,
     TranslateModule,
     NgTemplateOutlet,
+    TableSkeletonComponent,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',

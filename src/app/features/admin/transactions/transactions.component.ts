@@ -11,6 +11,7 @@ import {PaymentService} from "../../../services/payment.service";
 import {tap} from "rxjs";
 import {OrderService} from "../../../services/order.service";
 import {Order} from "../../../types/order.type";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-transactions',
@@ -22,7 +23,8 @@ import {Order} from "../../../types/order.type";
     FormsModule,
     NgTemplateOutlet,
     SortableDirective,
-    TranslateModule
+    TranslateModule,
+    TableSkeletonComponent
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'

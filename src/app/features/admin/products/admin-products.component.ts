@@ -15,6 +15,7 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {forkJoin, map, switchMap} from "rxjs";
 import {constant} from "../../../shared/constant";
 import {ImageUtils} from "../../../shared/services/Image.utils";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'admin-products',
@@ -28,7 +29,8 @@ import {ImageUtils} from "../../../shared/services/Image.utils";
     CurrencyPipe,
     NgClass,
     TranslateModule,
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    TableSkeletonComponent
   ],
   templateUrl: './admin-products.component.html',
   styleUrl: './admin-products.component.scss'

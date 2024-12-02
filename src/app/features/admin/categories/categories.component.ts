@@ -12,6 +12,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {RouterLink} from "@angular/router";
 import {CategoryService} from "../../../services/category.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-categories',
@@ -23,7 +24,8 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
     SortableDirective,
     RouterLink,
     NgTemplateOutlet,
-    TranslateModule
+    TranslateModule,
+    TableSkeletonComponent
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss'

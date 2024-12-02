@@ -23,48 +23,40 @@
         </div>
 
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-              <tr>
-                <th class="col-auto">#ID</th>
-                <th class="col-md-1">
-                  {{ 'TOTAL_AMOUNT' | translate }}
-                </th>
-                <th class="col-md-auto"
-                    appSortable
-                    [sortField]="SortField.STATUS"
-                    (sortChange)="onSortChange($event)">
-                  {{ 'ORDER_STATUS' | translate }}
-                </th>
-                <th class="col-md-auto">{{ 'PAYMENT_METHOD' | translate }}</th>
-                <th class="col-md-2"
-                    appSortable
-                    [sortField]="SortField.CREATED_AT"
-                    (sortChange)="onSortChange($event)">
-                  {{ 'ORDER_DATE' | translate }}
-                </th>
-                <th class="col-md-2"
-                    appSortable
-                    [sortField]="sortableFields.USERNAME"
-                    (sortChange)="onSortChange($event)">
-                  {{ 'CUSTOMER' | translate }}
-                </th>
-                <th class="col-md-4">{{ 'SHIPPING_ADDRESS' | translate }}</th>
-              </tr>
-              </thead>
-              <tbody>
-                @if (loading) {
-                  @for (row of Array(10); track $index) {
-                    <tr>
-                      @for (col of Array(8); track $index) {
-                        <td>
-                          <div class="skeleton-loader"></div>
-                        </td>
-                      }
-                    </tr>
-                  }
-                } @else {
+          @if (loading) {
+            <app-table-skeleton [colCount]="7" [rowCount]="10"/>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                  <th class="col-auto">#ID</th>
+                  <th class="col-md-1">
+                    {{ 'TOTAL_AMOUNT' | translate }}
+                  </th>
+                  <th class="col-md-auto"
+                      appSortable
+                      [sortField]="SortField.STATUS"
+                      (sortChange)="onSortChange($event)">
+                    {{ 'ORDER_STATUS' | translate }}
+                  </th>
+                  <th class="col-md-auto">{{ 'PAYMENT_METHOD' | translate }}</th>
+                  <th class="col-md-2"
+                      appSortable
+                      [sortField]="SortField.CREATED_AT"
+                      (sortChange)="onSortChange($event)">
+                    {{ 'ORDER_DATE' | translate }}
+                  </th>
+                  <th class="col-md-2"
+                      appSortable
+                      [sortField]="sortableFields.USERNAME"
+                      (sortChange)="onSortChange($event)">
+                    {{ 'CUSTOMER' | translate }}
+                  </th>
+                  <th class="col-md-4">{{ 'SHIPPING_ADDRESS' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
                   @for (order of orders; track order.id) {
                     <tr [class.active]="selectedOrder?.id===order.id" (click)="onClickOnOrder(order)">
                       <td>{{ order.id }}</td>
@@ -80,13 +72,13 @@
                       <td><span class="shipping-address">{{ order.shippingAddress }}</span></td>
                     </tr>
                   }
-                }
-              </tbody>
-            </table>
-            @if (!orders || orders.length === 0) {
-              <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
-            }
-          </div>
+                </tbody>
+              </table>
+              @if (!orders || orders.length === 0) {
+                <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
+              }
+            </div>
+          }
         </div>
 
         <div class="card-footer d-flex justify-content-end">

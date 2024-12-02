@@ -12,59 +12,50 @@
         </div>
 
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-              <tr>
-                <th class="col-auto">#ID</th>
-                <th class="col-md-auto">
-                  {{ "TRANSACTION_RESULT_STATUS" | translate }}
-                </th>
-                <th class="col-md-auto">
-                  {{ "ORDER_ID" | translate }}
-                </th>
-                <th class="col-md-auto">
-                  {{ "CREATED_AT" | translate }}
-                </th>
-                <th class="col-md-auto">
-                  {{ "REFERENCE_TRANSACTION_ID" | translate }}
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-                @if (loading) {
-                  @for (row of Array(10); track $index) {
-                    <tr>
-                      @for (col of Array(5); track $index) {
+          @if (loading) {
+            <app-table-skeleton [colCount]="5" [rowCount]="10"/>
+          } @else {
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                <tr>
+                  <th class="col-auto">#ID</th>
+                  <th class="col-md-auto">
+                    {{ "TRANSACTION_RESULT_STATUS" | translate }}
+                  </th>
+                  <th class="col-md-auto">
+                    {{ "ORDER_ID" | translate }}
+                  </th>
+                  <th class="col-md-auto">
+                    {{ "CREATED_AT" | translate }}
+                  </th>
+                  <th class="col-md-auto">
+                    {{ "REFERENCE_TRANSACTION_ID" | translate }}
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                  @if (!transactions || transactions.length === 0) {
+                    <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
+                  } @else {
+                    @for (transaction of transactions; track transaction.id) {
+                      <tr [class.active]="selectedTransaction?.id===transaction.id"
+                          (click)="onClickOnTransaction(transaction)">
+                        <td>{{ transaction.id }}</td>
                         <td>
-                          <div class="skeleton-loader"></div>
-                        </td>
-                      }
-                    </tr>
-                  }
-                } @else {
-                  @for (transaction of transactions; track transaction.id) {
-                    <tr [class.active]="selectedTransaction?.id===transaction.id"
-                        (click)="onClickOnTransaction(transaction)">
-                      <td>{{ transaction.id }}</td>
-                      <td>
                         <span class="badge">
                           {{ transaction.status | translate }}
                         </span>
-                      </td>
-                      <td>{{ transaction.orderId }}</td>
-                      <td>{{ transaction.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
-                      <td>{{ transaction.referenceId }}</td>
-                    </tr>
+                        </td>
+                        <td>{{ transaction.orderId }}</td>
+                        <td>{{ transaction.createdAt | date: "HH:mm dd-MM-yyyy" }}</td>
+                        <td>{{ transaction.referenceId }}</td>
+                      </tr>
+                    }
                   }
-                }
-              </tbody>
-            </table>
-          </div>
-          @if (!loading) {
-            @if (!transactions || transactions.length === 0) {
-              <div class="text-center"><i>{{ "NO_RECORD" | translate }}</i></div>
-            }
+                </tbody>
+              </table>
+            </div>
           }
         </div>
 

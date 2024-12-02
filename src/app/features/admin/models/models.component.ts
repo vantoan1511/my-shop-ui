@@ -12,19 +12,21 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {RouterLink} from "@angular/router";
 import {ModelService} from "../../../services/model.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {TableSkeletonComponent} from "../../../components/table-skeleton/table-skeleton.component";
 
 @Component({
   selector: 'app-models',
   standalone: true,
-  imports: [
-    DataTableFooterComponent,
-    DatePipe,
-    ListControlsComponent,
-    SortableDirective,
-    RouterLink,
-    TranslateModule,
-    NgTemplateOutlet
-  ],
+    imports: [
+        DataTableFooterComponent,
+        DatePipe,
+        ListControlsComponent,
+        SortableDirective,
+        RouterLink,
+        TranslateModule,
+        NgTemplateOutlet,
+        TableSkeletonComponent
+    ],
   templateUrl: './models.component.html',
   styleUrl: './models.component.scss'
 })

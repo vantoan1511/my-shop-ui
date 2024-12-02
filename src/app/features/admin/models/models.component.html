@@ -10,60 +10,41 @@
     </div>
 
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-          <tr>
-            <th>
-              <input id="selectAll"
-                     type="checkbox"
-                     class="form-check-input custom-checkbox"
-                     (change)="onSelectAll($event)"/>
-            </th>
-            <th style="width: 5%">ID</th>
-            <th style="width: 40%"
-                appSortable
-                [sortField]="sortableFields.NAME"
-                (sortChange)="onSortChange($event)">
-              {{ "NAME"|translate }}
-            </th>
-            <th style="width: 40%"
-                appSortable
-                [sortField]="sortableFields.SLUG"
-                (sortChange)="onSortChange($event)">
-              {{ "SLUG"|translate }}
-            </th>
-            <th style="width: 15%"
-                appSortable
-                [sortField]="sortableFields.CREATED_AT"
-                (sortChange)="onSortChange($event)">
-              {{ "CREATED_AT"|translate }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-            @if (loading) {
-              @for (item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track item) {
-                <tr class="skeleton-row">
-                  <td>
-                    <input type="checkbox"
-                           class="form-check-input custom-checkbox"/>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 30px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 100px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 150px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 60px"></div>
-                  </td>
-                </tr>
-              }
-            } @else {
+      @if (loading) {
+        <app-table-skeleton [colCount]="5" [rowCount]="10"/>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+              <th>
+                <input id="selectAll"
+                       type="checkbox"
+                       class="form-check-input custom-checkbox"
+                       (change)="onSelectAll($event)"/>
+              </th>
+              <th style="width: 5%">ID</th>
+              <th style="width: 40%"
+                  appSortable
+                  [sortField]="sortableFields.NAME"
+                  (sortChange)="onSortChange($event)">
+                {{ "NAME"|translate }}
+              </th>
+              <th style="width: 40%"
+                  appSortable
+                  [sortField]="sortableFields.SLUG"
+                  (sortChange)="onSortChange($event)">
+                {{ "SLUG"|translate }}
+              </th>
+              <th style="width: 15%"
+                  appSortable
+                  [sortField]="sortableFields.CREATED_AT"
+                  (sortChange)="onSortChange($event)">
+                {{ "CREATED_AT"|translate }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
               @for (model of models?.items; track $index) {
                 <tr>
                   <td>
@@ -83,10 +64,10 @@
                   <td>{{ model.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
                 </tr>
               }
-            }
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
+      }
     </div>
 
     <div class="card-footer border-0 d-flex justify-content-end">

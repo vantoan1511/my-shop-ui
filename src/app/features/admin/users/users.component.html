@@ -10,89 +10,56 @@
     </div>
 
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-          <tr>
-            <th>
-              <input id="selectAll"
-                     type="checkbox"
-                     class="form-check-input custom-checkbox"
-                     (change)="onSelectAll($event)"/>
-            </th>
-            <th>ID</th>
-            <th
-              appSortable
-              [sortField]="sortableFields.USERNAME"
-              (sortChange)="onSortChange($event)">
-              {{ "USER" | translate }}
-            </th>
-            <th
-              appSortable
-              [sortField]="sortableFields.EMAIL"
-              (sortChange)="onSortChange($event)">
-              {{ "EMAIL"|translate }}
-            </th>
-            <th
-              appSortable
-              [sortField]="sortableFields.FIRST_NAME"
-              (sortChange)="onSortChange($event)">
-              {{ "FIRST_NAME"|translate }}
-            </th>
-            <th
-              appSortable
-              [sortField]="sortableFields.LAST_NAME"
-              (sortChange)="onSortChange($event)">
-              {{ "LAST_NAME"|translate }}
-            </th>
-            <th>
-              {{ "STATUS"|translate }}
-            </th>
-            <th
-              appSortable
-              [sortField]="sortableFields.CREATED_AT"
-              (sortChange)="onSortChange($event)">
-              {{ "CREATED_AT"|translate }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-            @if (loading) {
-              @for (item of Array(5); track item) {
-                <tr class="skeleton-row">
-                  <td>
-                    <input type="checkbox"
-                           class="form-check-input custom-checkbox"/>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 30px"></div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="skeleton-loader rounded-circle me-3"
-                           style="width: 40px; height: 40px">
-                      </div>
-                      <div class="skeleton-loader" style="width: 100px"></div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 150px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 60px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 60px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 60px"></div>
-                  </td>
-                  <td>
-                    <div class="skeleton-loader" style="width: 60px"></div>
-                  </td>
-                </tr>
-              }
-            } @else {
+      @if (loading) {
+        <app-table-skeleton [colCount]="8" [rowCount]="10"/>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+            <tr>
+              <th>
+                <input id="selectAll"
+                       type="checkbox"
+                       class="form-check-input custom-checkbox"
+                       (change)="onSelectAll($event)"/>
+              </th>
+              <th>ID</th>
+              <th
+                appSortable
+                [sortField]="sortableFields.USERNAME"
+                (sortChange)="onSortChange($event)">
+                {{ "USER" | translate }}
+              </th>
+              <th
+                appSortable
+                [sortField]="sortableFields.EMAIL"
+                (sortChange)="onSortChange($event)">
+                {{ "EMAIL"|translate }}
+              </th>
+              <th
+                appSortable
+                [sortField]="sortableFields.FIRST_NAME"
+                (sortChange)="onSortChange($event)">
+                {{ "FIRST_NAME"|translate }}
+              </th>
+              <th
+                appSortable
+                [sortField]="sortableFields.LAST_NAME"
+                (sortChange)="onSortChange($event)">
+                {{ "LAST_NAME"|translate }}
+              </th>
+              <th>
+                {{ "STATUS"|translate }}
+              </th>
+              <th
+                appSortable
+                [sortField]="sortableFields.CREATED_AT"
+                (sortChange)="onSortChange($event)">
+                {{ "CREATED_AT"|translate }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
               @for (user of users?.items; track $index) {
                 <tr>
                   <td>
@@ -128,10 +95,10 @@
                   <td>{{ user.createdAt | date : "HH:mm dd/MM/yyyy" }}</td>
                 </tr>
               }
-            }
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
+      }
     </div>
 
     <div class="card-footer border-0 d-flex justify-content-end">
