@@ -1,4 +1,19 @@
 .card {
+  .btn-primary {
+    color: var(--purple-contrast);
+    background-color: var(--purple-9);
+    border: none;
+  }
+
+  .btn-outline-secondary {
+    border: none;
+    color: var(--purple-9);
+
+    &:hover {
+      background-color: var(--purple-contrast);
+    }
+  }
+
   .card-footer {
     .nav-underline {
       .nav-link {

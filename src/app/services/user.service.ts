@@ -20,7 +20,19 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getBy(pageRequest?: PageRequest, sort?: Sort) {
+  getUserRoles(userId: number) {
+    return this.http.get<string[]>(`${this.USER_SERVICE_API_URL}/${userId}/roles`);
+  }
+
+  assignRoleGroup(userId: number, roleGroup: string) {
+    return this.http.patch(`${this.USER_SERVICE_API_URL}/${userId}/roles/${roleGroup}`, {});
+  }
+
+  removeRoleGroup(userId: number, roleGroup: string) {
+    return this.http.delete(`${this.USER_SERVICE_API_URL}/${userId}/roles/${roleGroup}`);
+  }
+
+  getByCriteria(pageRequest?: PageRequest, sort?: Sort) {
     return this.http.get<PagedResponse<User>>(this.USER_SERVICE_API_URL, {
       params: {
         ...pageRequest,

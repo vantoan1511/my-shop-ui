@@ -262,6 +262,10 @@
   "INACTIVE_PRODUCT": "Sản phẩm ngừng kinh doanh",
   "TOTAL_QUANTITY": "Tổng số lượng",
   "PRODUCT_STATS": "Thống kê sản phẩm",
-  "WELCOME": "Chào mừng"
+  "WELCOME": "Chào mừng",
+  "ROLES": "Vai trò",
+  "ASSIGN_ROLE": "Gán vai trò",
+  "UNASSIGN_ROLE": "Gỡ vai trò",
+  "NO": "STT"
 }
 

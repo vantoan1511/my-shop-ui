@@ -15,6 +15,7 @@ export interface User {
   gender: string
   createdAt: string
   modifiedAt: string
+  roles?: string[]
 }
 
 export interface UserRegister {

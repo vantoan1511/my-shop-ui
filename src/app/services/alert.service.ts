@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import Swal, { SweetAlertIcon } from 'sweetalert2';
+import {Injectable} from '@angular/core';
+import Swal, {SweetAlertIcon} from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,8 @@ export class AlertService {
       text: text,
       icon: type,
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Chắc chắn',
+      cancelButtonText: 'Hủy',
       confirmButtonColor: 'var(--purple-9)',
       cancelButtonColor: 'var(--gray-6)',
     }).then((result) => (result.isConfirmed ? callback() : {}));

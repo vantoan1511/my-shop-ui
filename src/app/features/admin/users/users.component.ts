@@ -55,7 +55,7 @@ export class UsersComponent implements OnInit {
 
   fetchUsers() {
     this.loading = true
-    this.userService.getBy(this.pageRequest, this.sort).subscribe({
+    this.userService.getByCriteria(this.pageRequest, this.sort).subscribe({
       next: (response) => {
         this.users = response;
         this.loading = false

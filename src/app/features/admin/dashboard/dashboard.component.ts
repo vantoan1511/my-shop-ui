@@ -150,7 +150,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotalActiveUsers() {
-    this.userService.getBy({page: 1, size: 1}).pipe(
+    this.userService.getByCriteria({page: 1, size: 1}).pipe(
       tap(() => this.totalActiveUserLoaded = true)
     ).subscribe(({totalItems}) => this.totalActiveUsers = totalItems)
   }

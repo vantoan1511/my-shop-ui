@@ -1,12 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
 import {Router, RouterLink} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {AlertService} from '../../../../services/alert.service';
 import {UserService} from '../../../../services/user.service';
 import {ValidationService} from '../../../../services/validation.service';
@@ -14,11 +9,12 @@ import {UserUpdate} from '../../../../types/user-update.type';
 import {User} from '../../../../types/user.type';
 import {PasswordReset} from '../../../../types/password-reset.type';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {ListControlsComponent} from "../../../../shared/components/list-controls/list-controls.component";
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, TranslateModule],
+  imports: [RouterLink, ReactiveFormsModule, TranslateModule, ListControlsComponent],
   templateUrl: './userdetails.component.html',
   styleUrl: './userdetails.component.scss',
 })
@@ -28,7 +24,7 @@ export class DetailsComponent implements OnInit {
   userId: number | null = null;
   user: User | null = null;
   user$: Observable<User> | null = null;
-  currentTabView: 'general' | 'credentials' = 'general';
+  currentTabView: 'general' | 'credentials' | 'roles' = 'general';
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +43,36 @@ export class DetailsComponent implements OnInit {
     this.user$?.subscribe((user) => {
       this.user = user;
       this.updateForm(user);
+    });
+  }
+
+  onUnAssignRoleButtonClick(roleGroup: string) {
+    this.alertService.showConfirmationAlert(
+      "Xác nhận",
+      `Bạn chắc chắn xóa vai trò ${roleGroup} khỏi tài khoản ${this.user?.username}?`,
+      "warning",
+      () => this.unAssignRoleGroup(roleGroup))
+  }
+
+  unAssignRoleGroup(roleGroup: string) {
+    if (roleGroup && this.userId) {
+      this.userService.removeRoleGroup(this.userId, roleGroup)
+        .pipe(tap(() => this.fetchUserRoles()))
+        .subscribe({
+          next: () => this.alertService.showSuccessToast("Phân quyền thành công!"),
+          error: () => this.alertService.showErrorToast("Phân quyền thất bại!")
+        })
+    }
+  }
+
+  fetchUserRoles() {
+    if (!this.user) {
+      return
+    }
+    this.userService.getUserRoles(this.user.id).subscribe((roles) => {
+      if (this.user) {
+        this.user.roles = roles
+      }
     });
   }
 
@@ -75,7 +101,7 @@ export class DetailsComponent implements OnInit {
       } else {
         this.userService.create(this.userForm.value).subscribe({
           next: (success) => {
-            console.log(success);
+            this.userId = success.id
             this.router.navigate(['/admin/users/', success.id]);
             this.alertService.showSuccessToast(
               `User ${success?.username} has been saved successfully`
@@ -104,7 +130,7 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  changeTab(tab: 'general' | 'credentials') {
+  changeTab(tab: 'general' | 'credentials' | 'roles') {
     this.currentTabView = tab;
   }
 
@@ -146,4 +172,6 @@ export class DetailsComponent implements OnInit {
       ...user
     });
   }
+
+  protected readonly fetch = fetch;
 }
