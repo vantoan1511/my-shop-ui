@@ -10,7 +10,6 @@ import {Sort, SortField} from "../../types/sort.type";
 import {ProductService} from "../../services/product.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {constant} from "../../shared/constant";
-import {environment} from "../../../environments/environment";
 import {ProductCardComponent} from "../../components/product-card/product-card.component";
 import {tap} from "rxjs";
 import {SkeletonComponent} from "../../components/skeleton/skeleton.component";
@@ -72,6 +71,8 @@ export class HomeComponent implements OnInit {
     this.productService.searchProducts(this.pageRequest, {
       sortBy: SortField.CREATED_AT,
       ascending: false
+    }, {
+      active: true
     }).pipe(tap(() => this.latestProductsLoading = false))
       .subscribe({
         next: (products) => this.latestProducts = products.items
@@ -83,6 +84,8 @@ export class HomeComponent implements OnInit {
     this.productService.searchProducts(this.pageRequest, {
       sortBy: SortField.VIEW_COUNT,
       ascending: false
+    }, {
+      active: true
     }).pipe(tap(() => this.mostPopularProductsLoading = false))
       .subscribe({
         next: (products) => this.mostPopularProducts = products.items

@@ -73,6 +73,7 @@ export interface SearchCriteria {
   minPrice?: number
   maxPrice?: number
   keyword?: string
+  active?: boolean
 }
 
 export interface ProductStat {

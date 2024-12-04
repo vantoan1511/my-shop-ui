@@ -8,8 +8,7 @@
   } @else {
     @for (product of recommendedProducts; track $index) {
       <div class="col mb-3">
-        <app-product-card [loading]="recommendedProductsLoading"
-                          [product]="product"
+        <app-product-card [product]="product"
                           [thumbnail]="imageUtil.createImageUrl(product.featuredImageId)"
                           [rating]="product.rating??0"/>
       </div>

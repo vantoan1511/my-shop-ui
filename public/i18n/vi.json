@@ -273,6 +273,8 @@
   "ASSIGN_ROLES_FOR_USER": "Phân quyền cho tài khoản",
   "CLOSE": "Đóng",
   "NOT_ASSIGNED_ANY_ROLES_YET": "Chưa gán bất kì vai trò nào",
-  "DISABLE_REASON": "Lý do bị khóa"
+  "DISABLE_REASON": "Lý do bị khóa",
+  "WEB_APP": "Trang ứng dụng",
+  "SEARCH_RESULT_NOT_FOUND": "Không tìm thấy bất kỳ kết quả nào"
 }
 

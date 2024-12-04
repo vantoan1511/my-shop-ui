@@ -263,7 +263,9 @@
                   {{ "PLACE_ORDER" | translate }}
                 </button>
               } @else {
-                <button class="btn checkout-btn mt-3 w-100" (click)="proceedToCheckout()">
+                <button class="btn checkout-btn mt-3 w-100"
+                        (click)="proceedToCheckout()"
+                        [disabled]="totalAmount <= 0">
                   {{ "PROCEED_TO_CHECKOUT" | translate }}
                 </button>
               }

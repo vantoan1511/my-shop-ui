@@ -8,7 +8,16 @@ import {Brand, Category, Product} from "../../types/product.type";
 import {BrandService} from "../../services/brand.service";
 import {CategoryService} from "../../services/category.service";
 import {ProductService} from "../../services/product.service";
-import {BehaviorSubject, catchError, combineLatestWith, debounceTime, distinctUntilChanged, of, switchMap} from "rxjs";
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatestWith,
+  debounceTime,
+  distinctUntilChanged,
+  of,
+  switchMap,
+  tap
+} from "rxjs";
 import {SortField} from "../../types/sort.type";
 import {FormsModule} from "@angular/forms";
 import {CardLoaderComponent} from "../../shared/components/card-loader/card-loader.component";
@@ -214,8 +223,6 @@ export class SearchComponent implements OnInit {
   }
 
   private fetchProducts() {
-    this.productLoading = true;
-
     this.keywordSubject
       .pipe(
         debounceTime(500),
@@ -226,9 +233,16 @@ export class SearchComponent implements OnInit {
           this.priceSubject.pipe(distinctUntilChanged()),
           this.sortSubject.pipe(distinctUntilChanged()),
           this.pageSubject.pipe(distinctUntilChanged())
-        ),
+        ), tap(() => this.productLoading = true),
         switchMap(([keyword, brands, categories, {minPrice, maxPrice}, sort, pageRequest]) =>
-          this.productService.searchProducts(pageRequest, sort, {keyword, brands, categories, minPrice, maxPrice})
+          this.productService.searchProducts(pageRequest, sort, {
+            keyword,
+            brands,
+            categories,
+            minPrice,
+            maxPrice,
+            active: true
+          })
         ),
         catchError((error) => of(null))
       )

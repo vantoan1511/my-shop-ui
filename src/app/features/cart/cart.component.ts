@@ -27,6 +27,7 @@ import {OrderService} from "../../services/order.service";
 import {PaymentService} from "../../services/payment.service";
 import {NgxMaskDirective} from "ngx-mask";
 import {OrderType} from "../../types/order.type";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-cart',
@@ -191,7 +192,6 @@ export class CartComponent implements OnInit {
 
   placeOrder() {
     if (this.checkoutForm.valid) {
-      console.log('Checkout Form: ', this.checkoutForm.value);
       const checkoutFormValue = this.checkoutForm.value;
       const shippingAddress = [checkoutFormValue.phone, checkoutFormValue.shippingAddress].join(', ');
       const order: OrderType = {
@@ -199,7 +199,6 @@ export class CartComponent implements OnInit {
         paymentMethod: checkoutFormValue.paymentMethod as "CASH" || "BANKING",
         items: this.cartItems
       }
-      console.log("Order request: ", order)
       this.orderService.createOrder(order).subscribe({
         next: (orderResponse) => {
           if (orderResponse.paymentMethod === 'BANKING') {
@@ -218,7 +217,8 @@ export class CartComponent implements OnInit {
               }
             })
           }
-        }
+        },
+        error: (error: HttpErrorResponse) => this.alertService.showErrorToast(`Đặt hàng thất bại`)
       })
     } else {
       this.checkoutForm.markAllAsTouched()

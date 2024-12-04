@@ -172,7 +172,7 @@
                 <app-card-loader/>
               </div>
             }
-          } @else {
+          } @else if (products.length > 0) {
             @for (product of products; track $index) {
               <div class="col-md-3">
                 <app-product-card [product]="product"
@@ -181,6 +181,8 @@
                                   [rating]="product.rating ?? 0"/>
               </div>
             }
+          } @else {
+            <div class="text-center"><span class="fst-italic">{{ "SEARCH_RESULT_NOT_FOUND" | translate }}</span></div>
           }
         </div>
 

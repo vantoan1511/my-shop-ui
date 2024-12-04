@@ -18,6 +18,11 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-lg-end">
         <li>
+          <button routerLink="/" class="dropdown-item">
+            <i class="bi bi-house"></i> {{ "WEB_APP" | translate }}
+          </button>
+        </li>
+        <li>
           <button class="dropdown-item" (click)="logout()">
             <i class="bi bi-box-arrow-right"></i> {{ "LOGOUT" | translate }}
           </button>
