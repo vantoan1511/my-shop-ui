@@ -87,8 +87,8 @@
               <span class="text-muted">{{ product?.stockQuantity }} {{ "AVAILABLE" | translate }}</span>
             </div>
           </div>
-          <div class="d-flex align-items-center mt-auto">
-            <button class="add-to-cart-btn btn btn-lg me-3 rounded-0"
+          <div class="d-flex align-items-center mt-auto gap-3">
+            <button class="add-to-cart-btn btn btn-lg rounded-0"
                     (click)="addToCart(quantity, productSlug)">
               <i class="bi bi-cart-plus me-2"></i>
               <span class="fs-6">{{ "ADD_TO_CART" | translate }}</span>
@@ -96,6 +96,12 @@
             <button class="buy-now-btn btn btn-lg rounded-0"
                     (click)="onClickBuyNow()">
               <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
+            </button>
+            <button class="btn"
+                    (click)="addFavourite(productSlug)">
+              <i class="fs-5 bi bi-heart-fill"
+                 [ngClass]="isInFavourite(productSlug) ? 'bi-heart-fill':'bi-heart'"
+                 [class.text-danger]="isInFavourite(productSlug)"></i>
             </button>
           </div>
         }

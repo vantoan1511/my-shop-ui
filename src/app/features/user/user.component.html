@@ -29,12 +29,29 @@
               <i class="bi bi-journals me-2"></i>{{ "ORDERS" | translate }}
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#favourites" data-bs-toggle="tab" (click)="getFavourites()">
+              <i class="bi bi-journals me-2"></i>{{ "FAVOURITES" | translate }}
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-4">
       <div class="tab-content p-3">
+        <!--  Favourites Section  -->
+        <div class="tab-pane fade" id="favourites">
+          <span class="fs-3 fw-lighter text-uppercase">{{ "FAVOURITES" | translate }}</span>
+          <hr/>
+          <div class="row">
+            @for (favourite of favourites; track $index) {
+              <div class="col-md-12">
+                <a [routerLink]="['/may-tinh-xach-tay', favourite.productSlug]">{{ favourite.productSlug }}</a>
+              </div>
+            }
+          </div>
+        </div>
 
         <!-- Profile information section -->
         <div class="tab-pane fade show active" id="profile">
@@ -430,22 +447,22 @@
               <i class="bi bi-star-fill" [class.active]="rating>=5"></i>
             </label>
 
-            <input type="radio" formControlName="rating"  value="4"  id="star-2" class="d-none"/>
+            <input type="radio" formControlName="rating" value="4" id="star-2" class="d-none"/>
             <label for="star-2" class="star" (click)="onStarClick(4)">
               <i class="bi bi-star-fill" [class.active]="rating>=4"></i>
             </label>
 
-            <input type="radio" formControlName="rating"  value="3"  id="star-3" class="d-none"/>
+            <input type="radio" formControlName="rating" value="3" id="star-3" class="d-none"/>
             <label for="star-3" class="star" (click)="onStarClick(3)">
               <i class="bi bi-star-fill" [class.active]="rating>=3"></i>
             </label>
 
-            <input type="radio" formControlName="rating"  value="2"  id="star-4" class="d-none"/>
+            <input type="radio" formControlName="rating" value="2" id="star-4" class="d-none"/>
             <label for="star-4" class="star" (click)="onStarClick(2)">
               <i class="bi bi-star-fill" [class.active]="rating>=2"></i>
             </label>
 
-            <input type="radio" formControlName="rating"  value="1" id="star-5" class="d-none"/>
+            <input type="radio" formControlName="rating" value="1" id="star-5" class="d-none"/>
             <label for="star-5" class="star" (click)="onStarClick(1)">
               <i class="bi bi-star-fill" [class.active]="rating>=1"></i>
             </label>

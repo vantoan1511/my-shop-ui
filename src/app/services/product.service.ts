@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {PageRequest} from "../types/page-request.type";
 import {Sort} from "../types/sort.type";
 import {PagedResponse} from "../types/response.type";
-import {Product, ProductStat, SearchCriteria} from "../types/product.type";
+import {Favourite, Product, ProductStat, SearchCriteria} from "../types/product.type";
 import {ProductImage} from "../types/image.type";
 
 @Injectable({
@@ -16,6 +16,14 @@ export class ProductService {
   protected PRODUCTS_URL = `${this.BASE_URL}/products`
 
   constructor(private http: HttpClient) {
+  }
+
+  getFavourites() {
+    return this.http.get<PagedResponse<Favourite>>(`${this.PRODUCTS_URL}/favourites`)
+  }
+
+  addFavourite(productSlug: string) {
+    return this.http.post<Favourite>(`${this.PRODUCTS_URL}/${productSlug}/favourites`, {});
   }
 
   getStats() {

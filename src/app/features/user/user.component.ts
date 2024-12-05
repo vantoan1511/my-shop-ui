@@ -17,6 +17,8 @@ import {CurrencyPipe, DatePipe} from "@angular/common";
 import {Order, OrderDetail, OrderStatus, StatusTransition} from "../../types/order.type";
 import {OrderService} from "../../services/order.service";
 import {NgxMaskDirective} from "ngx-mask";
+import {ProductService} from "../../services/product.service";
+import {Favourite} from "../../types/product.type";
 
 @Component({
   selector: 'app-user',
@@ -50,6 +52,9 @@ export class UserComponent implements OnInit, OnDestroy {
     text: ['', Validators.required]
   })
 
+  pagedFavourites: PagedResponse<Favourite> | null = null;
+  favourites: Favourite[] = [];
+
   constructor(
     private translate: TranslateService,
     private fb: FormBuilder,
@@ -60,6 +65,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private validator: ValidationService,
     private imageService: ImageService,
     private orderService: OrderService,
+    private productService: ProductService
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -69,6 +75,13 @@ export class UserComponent implements OnInit, OnDestroy {
     this.userForm = this.initUserProfileForm();
     this.passwordForm = this.initPasswordForm();
     this.getUserProfile();
+  }
+
+  getFavourites() {
+    this.productService.getFavourites().subscribe((resp) => {
+      this.pagedFavourites = resp;
+      this.favourites = resp.items;
+    })
   }
 
   viewOrderDetails(order: Order) {

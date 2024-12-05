@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductListComponent} from '../product-list/product-list.component';
 import {ProductService} from "../../services/product.service";
-import {Product} from "../../types/product.type";
-import {CurrencyPipe, DatePipe, NgOptimizedImage, SlicePipe} from "@angular/common";
+import {Favourite, Product} from "../../types/product.type";
+import {CurrencyPipe, DatePipe, NgClass, NgOptimizedImage, SlicePipe} from "@angular/common";
 import {constant} from "../../shared/constant";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -11,7 +11,6 @@ import {ReviewService} from "../../services/review.service";
 import {PageRequest} from "../../types/page-request.type";
 import {Sort, SortField} from "../../types/sort.type";
 import {Review, ReviewRequestFilter, ReviewStatistic} from "../../types/review.type";
-import {environment} from "../../../environments/environment";
 import {PagedResponse} from "../../types/response.type";
 import {CartService} from "../../services/cart.service";
 import {AlertService} from "../../services/alert.service";
@@ -23,7 +22,7 @@ import {tap} from "rxjs";
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink, RecommendedProductsListComponent],
+  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink, RecommendedProductsListComponent, NgClass],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
@@ -40,6 +39,9 @@ export class ProductDetailsComponent implements OnInit {
   filter?: ReviewRequestFilter;
   pageRequest: PageRequest = {page: 1, size: 10};
   sort: Sort = {sortBy: SortField.CREATED_AT, ascending: false};
+
+  pagedFavourites: PagedResponse<Favourite> | null = null;
+  favourites: Favourite[] = [];
 
   loading = false;
 
@@ -65,8 +67,36 @@ export class ProductDetailsComponent implements OnInit {
         this.filter = {productSlug: this.productSlug};
         this.fetchReviews();
         this.fetchReviewStatistic();
+        this.getFavourites();
       }
     });
+  }
+
+  isInFavourite(productSlug: string | null) {
+    if (!productSlug) {
+      return false;
+    }
+
+    return this.favourites.some(f => f.productSlug === productSlug);
+  }
+
+  getFavourites() {
+    this.productService.getFavourites().subscribe((resp) => {
+      this.pagedFavourites = resp;
+      this.favourites = resp.items;
+    })
+  }
+
+  addFavourite(productSlug: string | null) {
+    if (!productSlug) {
+      return;
+    }
+    this.productService.addFavourite(productSlug)
+      .pipe(tap(() => this.getFavourites()))
+      .subscribe({
+        next: () => this.alertService.showSuccessToast("Đã thêm sản phẩm vào mục ưa thích"),
+        error: () => this.alertService.showErrorToast("Lỗi")
+      })
   }
 
   private loadProductDetails(slug: string): void {

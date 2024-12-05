@@ -84,3 +84,8 @@ export interface ProductStat {
   "totalProductsByCategory": Map<string, number>
 }
 
+export interface Favourite {
+  id: number
+  productSlug: string
+  username: string
+}
