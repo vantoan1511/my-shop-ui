@@ -36,7 +36,7 @@ export class UserService {
     return this.http.delete(`${this.USER_SERVICE_API_URL}/${userId}/roles/${roleGroup}`);
   }
 
-  getByCriteria(pageRequest?: PageRequest, sort?: Sort) {
+  getByCriteria( pageRequest?: PageRequest, sort?: Sort,) {
     return this.http.get<PagedResponse<User>>(this.USER_SERVICE_API_URL, {
       params: {
         ...pageRequest,

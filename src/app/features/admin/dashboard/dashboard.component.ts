@@ -102,12 +102,13 @@ export class DashboardComponent implements OnInit {
   totalTransactionLoaded = false;
   totalCompletedOrders = 0;
   totalActiveProducts = 0;
+  totalUsers = 0;
   totalActiveUsers = 0;
   totalTransactions = 0;
 
   productStatLoaded = false;
   productStat: ProductStat | null = null;
-  productStatType: 'by-brand' | 'by-model' | 'by-category'|'by-status' = 'by-brand'
+  productStatType: 'by-brand' | 'by-model' | 'by-category' | 'by-status' = 'by-brand'
 
   constructor(
     private orderService: OrderService,
@@ -138,7 +139,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotalCompletedOrders() {
-    this.orderService.getOrders({}, {page: 1, size: 1}, {}).pipe(
+    this.orderService.getOrders({status: 'COMPLETED'}, {page: 1, size: 1}, {}).pipe(
       tap(() => this.totalCompletedOrderLoaded = true)
     ).subscribe(({totalItems}) => this.totalCompletedOrders = totalItems)
   }
@@ -150,9 +151,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getTotalActiveUsers() {
-    this.userService.getByCriteria({page: 1, size: 1}).pipe(
+    this.userService.getByCriteria({page: 1, size: Number.MAX_SAFE_INTEGER}).pipe(
       tap(() => this.totalActiveUserLoaded = true)
-    ).subscribe(({totalItems}) => this.totalActiveUsers = totalItems)
+    ).subscribe(({totalItems, items}) => {
+      this.totalUsers = totalItems
+      this.totalActiveUsers = items.filter(item => item.enabled).length
+    })
   }
 
   getTotalTransactions() {

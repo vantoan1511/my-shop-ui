@@ -276,6 +276,9 @@
   "DISABLE_REASON": "Lý do bị khóa",
   "WEB_APP": "Trang ứng dụng",
   "SEARCH_RESULT_NOT_FOUND": "Không tìm thấy bất kỳ kết quả nào",
-  "FAVOURITES": "Ưa thích"
+  "FAVOURITES": "Ưa thích",
+  "TOTAL": "Tổng",
+  "DISABLED": "Bị khóa",
+  "USER_STATS": "Thống kê tài khoản người dùng"
 }
 
