@@ -250,3 +250,33 @@ a, .rating, .breadcrumb {
     opacity: 1;
   }
 }
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.star-rating input[type="radio"] {
+  display: none; /* Hide the radio buttons */
+}
+
+.star-rating label.star {
+  font-size: 2rem;
+  color: lightgray;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.active,
+.star-rating label.star:hover,
+.star-rating label.star:hover ~ label.star {
+  color: var(--purple-9);
+}
+
+.modal-footer {
+  .btn-primary {
+    background-color: $purple-main;
+    border-color: $purple-main;
+  }
+}

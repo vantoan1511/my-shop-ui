@@ -6,7 +6,7 @@ import {CurrencyPipe, DatePipe, NgClass, NgOptimizedImage, SlicePipe} from "@ang
 import {constant} from "../../shared/constant";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ReviewService} from "../../services/review.service";
 import {PageRequest} from "../../types/page-request.type";
 import {Sort, SortField} from "../../types/sort.type";
@@ -22,7 +22,7 @@ import {tap} from "rxjs";
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink, RecommendedProductsListComponent, NgClass],
+  imports: [ProductListComponent, CurrencyPipe, NgOptimizedImage, TranslateModule, FormsModule, SlicePipe, DatePipe, RouterLink, RecommendedProductsListComponent, NgClass, ReactiveFormsModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss',
 })
@@ -45,7 +45,15 @@ export class ProductDetailsComponent implements OnInit {
 
   loading = false;
 
+  isReviewDialogOpened = false;
+  rating = 5;
+  reviewForm = this.fb.group({
+    rating: [this.rating, Validators.required],
+    text: ['', Validators.required]
+  })
+
   constructor(
+    private fb: FormBuilder,
     private translateService: TranslateService,
     private productService: ProductService,
     private route: ActivatedRoute,
@@ -53,7 +61,7 @@ export class ProductDetailsComponent implements OnInit {
     private reviewService: ReviewService,
     private cartService: CartService,
     private alertService: AlertService,
-    private authService: AuthenticationService,
+    protected authService: AuthenticationService,
     protected imageUtil: ImageUtils
   ) {
     this.translateService.setDefaultLang("vi");
@@ -70,6 +78,31 @@ export class ProductDetailsComponent implements OnInit {
         this.getFavourites();
       }
     });
+  }
+
+  onStarClick(selectedRating: number): void {
+    this.rating = selectedRating;
+    this.reviewForm.patchValue({
+      rating: this.rating
+    });
+  }
+
+  onReviewFormSubmit() {
+    console.log(this.reviewForm.value)
+    if (this.reviewForm.valid && this.productSlug) {
+      const {rating, text} = this.reviewForm.value as Review;
+      const title = text;
+      const productSlug = this.productSlug;
+      this.reviewService.createReview({rating, text, title, productSlug}).subscribe({
+        next: () => {
+          this.alertService.showSuccessToast("Đã đăng tải nhận xét");
+          this.reviews = [];
+          this.fetchReviews()
+          this.fetchReviewStatistic();
+        },
+        error: () => this.alertService.showErrorToast("Lỗi")
+      })
+    }
   }
 
   isInFavourite(productSlug: string | null) {
@@ -206,6 +239,7 @@ export class ProductDetailsComponent implements OnInit {
 
   protected onAscending(ascending: boolean) {
     this.sort.ascending = ascending;
+    this.reviews = []
     this.fetchReviews();
   }
 

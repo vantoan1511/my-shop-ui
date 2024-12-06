@@ -19,6 +19,7 @@ import {OrderService} from "../../services/order.service";
 import {NgxMaskDirective} from "ngx-mask";
 import {ProductService} from "../../services/product.service";
 import {Favourite} from "../../types/product.type";
+import {ReviewService} from "../../services/review.service";
 
 @Component({
   selector: 'app-user',
@@ -45,19 +46,11 @@ export class UserComponent implements OnInit, OnDestroy {
   page = 0;
   size = 20;
 
-  isReviewDialogOpened = false;
-  rating = 5;
-  reviewForm = this.fb.group({
-    rating: [this.rating, Validators.required],
-    text: ['', Validators.required]
-  })
-
   pagedFavourites: PagedResponse<Favourite> | null = null;
   favourites: Favourite[] = [];
 
   constructor(
     private translate: TranslateService,
-    private fb: FormBuilder,
     private userService: UserService,
     private alertService: AlertService,
     private route: ActivatedRoute,
@@ -65,7 +58,9 @@ export class UserComponent implements OnInit, OnDestroy {
     private validator: ValidationService,
     private imageService: ImageService,
     private orderService: OrderService,
-    private productService: ProductService
+    private productService: ProductService,
+    private fb: FormBuilder,
+    private reviewService: ReviewService
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -142,13 +137,6 @@ export class UserComponent implements OnInit, OnDestroy {
     })
   }
 
-  onStarClick(selectedRating: number): void {
-    this.rating = selectedRating;
-    this.reviewForm.patchValue({
-      rating: this.rating
-    });
-  }
-
   isAllowedToCancel(selectedOrder: Order) {
     const allowedTransition = StatusTransition.get(OrderStatus.CANCELED)
     return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
@@ -157,10 +145,6 @@ export class UserComponent implements OnInit, OnDestroy {
   isAllowedToComplete(selectedOrder: Order) {
     const allowedTransition = StatusTransition.get(OrderStatus.COMPLETED)
     return allowedTransition ? allowedTransition.includes(selectedOrder.orderStatus as OrderStatus) : false;
-  }
-
-  onReviewFormSubmit() {
-    console.log(this.reviewForm.value)
   }
 
   private updateCanceledOrderStatus(selectedOrder: Order) {
