@@ -10,71 +10,79 @@
     </div>
 
     <div class="card-body">
-      @if (loading) {
-        <app-table-skeleton [colCount]="10" [rowCount]="10"/>
-      } @else {
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead>
-            <tr>
-              <th>
-                <input id="selectAll"
-                       type="checkbox"
-                       class="form-check-input custom-checkbox"
-                       (change)="onSelectAll($event)"/>
-              </th>
-              <th style="width: 5%">ID</th>
-              <th style="width: 20%"
-                  appSortable
-                  [sortField]="sortableFields.NAME"
-                  (sortChange)="onSortChange($event)">
-                {{ "NAME"|translate }}
-              </th>
-              <th style="width: 20%"
-                  appSortable
-                  [sortField]="sortableFields.SLUG"
-                  (sortChange)="onSortChange($event)">
-                {{ "SLUG"|translate }}
-              </th>
-              <th style="width: 5%"
-                  appSortable
-                  [sortField]="sortableFields.STATUS"
-                  (sortChange)="onSortChange($event)">
-                {{ "STATUS"|translate }}
-              </th>
-              <th style="width: 10%"
-                  appSortable
-                  [sortField]="sortableFields.BASE_PRICE"
-                  (sortChange)="onSortChange($event)">
-                {{ "BASE_PRICE"|translate }}
-              </th>
-              <th style="width: 10%"
-                  appSortable
-                  [sortField]="sortableFields.SALE_PRICE"
-                  (sortChange)="onSortChange($event)">
-                {{ "SALE_PRICE"|translate }}
-              </th>
-              <th style="width: 10%"
-                  appSortable
-                  [sortField]="sortableFields.STOCK_QUANTITY"
-                  (sortChange)="onSortChange($event)">
-                {{ "STOCK"|translate }}
-              </th>
-              <th style="width: 10%"
-                  appSortable
-                  [sortField]="sortableFields.VIEW_COUNT"
-                  (sortChange)="onSortChange($event)">
-                {{ "VIEW_COUNT"|translate }}
-              </th>
-              <th style="width: 10%"
-                  appSortable
-                  [sortField]="sortableFields.CREATED_AT"
-                  (sortChange)="onSortChange($event)">
-                {{ "CREATED_AT"|translate }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+          <tr>
+            <th>
+              <input id="selectAll"
+                     type="checkbox"
+                     class="form-check-input custom-checkbox"
+                     (change)="onSelectAll($event)"/>
+            </th>
+            <th style="width: 5%">ID</th>
+            <th style="width: 20%"
+                appSortable
+                [sortField]="sortableFields.NAME"
+                (sortChange)="onSortChange($event)">
+              {{ "NAME"|translate }}
+            </th>
+            <th style="width: 20%"
+                appSortable
+                [sortField]="sortableFields.SLUG"
+                (sortChange)="onSortChange($event)">
+              {{ "SLUG"|translate }}
+            </th>
+            <th style="width: 5%"
+                appSortable
+                [sortField]="sortableFields.STATUS"
+                (sortChange)="onSortChange($event)">
+              {{ "STATUS"|translate }}
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.BASE_PRICE"
+                (sortChange)="onSortChange($event)">
+              {{ "BASE_PRICE"|translate }}
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.SALE_PRICE"
+                (sortChange)="onSortChange($event)">
+              {{ "SALE_PRICE"|translate }}
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.STOCK_QUANTITY"
+                (sortChange)="onSortChange($event)">
+              {{ "STOCK"|translate }}
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.VIEW_COUNT"
+                (sortChange)="onSortChange($event)">
+              {{ "VIEW_COUNT"|translate }}
+            </th>
+            <th style="width: 10%"
+                appSortable
+                [sortField]="sortableFields.CREATED_AT"
+                (sortChange)="onSortChange($event)">
+              {{ "CREATED_AT"|translate }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            @if (loading) {
+              @for (i of Array(10); track $index) {
+                <tr>
+                  @for (i of Array(10); track $index) {
+                    <td>
+                      <app-skeleton [fluid]="true"/>
+                    </td>
+                  }
+                </tr>
+              }
+            } @else {
               @for (product of products; track $index) {
                 <tr>
                   <td>
@@ -112,10 +120,10 @@
                   <td>{{ product.createdAt | date : "HH:mm dd-MM-yyyy" }}</td>
                 </tr>
               }
-            </tbody>
-          </table>
-        </div>
-      }
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div class="card-footer border-0 d-flex justify-content-end">
