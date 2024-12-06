@@ -33,9 +33,15 @@
         </a>
 
         <ul class="shadow border-0 dropdown-menu dropdown-menu-lg-end">
-          @if (authService.isAdmin || authService.isStaff) {
+          @if (authService.isAdmin) {
             <li>
               <a routerLink="admin" class="dropdown-item">
+                <i class="bi bi-columns-gap"></i> {{ "ADMIN_CONSOLE"|translate }}
+              </a>
+            </li>
+          } @else if (authService.isStaff) {
+            <li>
+              <a routerLink="admin/orders" class="dropdown-item">
                 <i class="bi bi-columns-gap"></i> {{ "ADMIN_CONSOLE"|translate }}
               </a>
             </li>

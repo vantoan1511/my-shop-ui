@@ -1,41 +1,54 @@
-<main class="container">
-  <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/">Shopbee</a></li>
-        <li class="breadcrumb-item"><a routerLink="/may-tinh-xach-tay">{{ "LAPTOP" | translate }}</a></li>
-        <li class="breadcrumb-item" aria-current="page">{{ product?.category?.name }}</li>
-      </ol>
-    </nav>
-  </div>
-  <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
-    <div class="row">
-      <div class="col-md-4">
-        <img [ngSrc]="heroUrl"
-             priority
-             width="450"
-             height="450"
-             alt="product-hero"
-             class="figure-img img-fluid rounded border border-1 p-2"/>
-        <div class="d-flex gap-2 overflow-auto">
-          @for (imageId of product?.imageIds; track $index) {
-            <img [src]="imageUtil.createImageUrl(imageId)"
-                 width="82"
-                 height="82"
-                 alt="product-thumbnails"
-                 class="product-thumbnail rounded border border-1"
-                 (mouseover)="onHoverThumbnail(imageId)"/>
-          }
-        </div>
+@if (productNotFound) {
+  <main class="container">
+    <div class="mt-3 p-3 bg-white rounded-3 shadow-sm vh-100">
+      <div class="d-flex flex-column gap-5 align-items-center h-100 justify-content-center">
+        <span class="fs-2 ">{{ "PRODUCT_NOT_FOUND" | translate }}</span>
+        <button class="buy-now-btn btn btn-lg rounded-0"
+                routerLink="/">
+          <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
+        </button>
       </div>
-      <div class="col-md-8">
-        <h3 class="fw-lighter">
-          {{ product?.name }}
-        </h3>
-        <div class="d-flex gap-3">
-          <div class="rating">
-            <span class="fs-5 me-1">{{ reviewStatistic?.averageRating || 0 }}</span>
-            <span>
+    </div>
+  </main>
+} @else {
+  <main class="container">
+    <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/">Shopbee</a></li>
+          <li class="breadcrumb-item"><a routerLink="/may-tinh-xach-tay">{{ "LAPTOP" | translate }}</a></li>
+          <li class="breadcrumb-item" aria-current="page">{{ product?.category?.name }}</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
+      <div class="row">
+        <div class="col-md-4">
+          <img [ngSrc]="heroUrl"
+               priority
+               width="450"
+               height="450"
+               alt="product-hero"
+               class="figure-img img-fluid rounded border border-1 p-2"/>
+          <div class="d-flex gap-2 overflow-auto">
+            @for (imageId of product?.imageIds; track $index) {
+              <img [src]="imageUtil.createImageUrl(imageId)"
+                   width="82"
+                   height="82"
+                   alt="product-thumbnails"
+                   class="product-thumbnail rounded border border-1"
+                   (mouseover)="onHoverThumbnail(imageId)"/>
+            }
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h3 class="fw-lighter">
+            {{ product?.name }}
+          </h3>
+          <div class="d-flex gap-3">
+            <div class="rating">
+              <span class="fs-5 me-1">{{ reviewStatistic?.averageRating || 0 }}</span>
+              <span>
             @for (i of [1, 2, 3, 4, 5]; track $index) {
               <i class="bi"
                  [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
@@ -44,402 +57,404 @@
               </i>
             }
           </span>
+            </div>
+            <div class="border-end"></div>
+            <div class="sold">
+              <span class="fs-5">1k+ {{ 'SOLD' | translate }}</span>
+            </div>
           </div>
-          <div class="border-end"></div>
-          <div class="sold">
-            <span class="fs-5">1k+ {{ 'SOLD' | translate }}</span>
+          @if (product && !product.active) {
+            <div class="inactive-product p-3 mt-3">
+              <span class="fs-4 fw-bolder text-uppercase">{{ "INACTIVE_PRODUCT" | translate }}</span>
+            </div>
+          } @else {
+            <div class="price d-flex align-items-center gap-3 p-3 mt-2">
+              <span class="sale-price fs-4"><del>{{ product?.basePrice | currency:'VND' }}</del></span>
+              <span class="fs-2 fw-bold">{{ product?.salePrice | currency:'VND' }}</span>
+              <span class="discount-percentage badge">{{ discount }}% {{ "DISCOUNT" | translate }}</span>
+            </div>
+            <div class="row mt-3 p-3">
+              <div class="col-md-3">
+                <label for="quantity" class="text-muted">{{ "QUANTITY" | translate }}</label>
+              </div>
+              <div class="col-md-9 d-flex gap-1 align-items-center">
+                <button class="btn quantity-input-btn"
+                        [disabled]="quantity <= 0"
+                        (click)="decreaseQuantity()">
+                  <i class="bi bi-dash-lg"></i>
+                </button>
+                <div>
+                  <input id="quantity"
+                         type="number"
+                         [min]="0"
+                         [max]="product?.stockQuantity || 0"
+                         [(ngModel)]="quantity"
+                         (change)="validateQuantity()"
+                         class="form-control text-center" value="1"/>
+                </div>
+                <button class="btn quantity-input-btn"
+                        (click)="increaseQuantity()"
+                        [disabled]="quantity >= product!.stockQuantity">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+                <span class="text-muted">{{ product?.stockQuantity }} {{ "AVAILABLE" | translate }}</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center mt-auto gap-3">
+              <button class="add-to-cart-btn btn btn-lg rounded-0"
+                      (click)="addToCart(quantity, productSlug)">
+                <i class="bi bi-cart-plus me-2"></i>
+                <span class="fs-6">{{ "ADD_TO_CART" | translate }}</span>
+              </button>
+              <button class="buy-now-btn btn btn-lg rounded-0"
+                      (click)="onClickBuyNow()">
+                <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
+              </button>
+              <button class="btn"
+                      (click)="addFavourite(productSlug)">
+                <i class="fs-5 bi bi-heart-fill"
+                   [ngClass]="isInFavourite(productSlug) ? 'bi-heart-fill':'bi-heart'"
+                   [class.text-danger]="isInFavourite(productSlug)"></i>
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
+      <div class="p-3 bg-body-tertiary">
+        <span class="fs-2 fw-light">{{ "PRODUCT_DETAILS" | translate }}</span>
+      </div>
+      <div class="mx-3 mt-3 text-muted">
+        <div class="row">
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "CATEGORY" | translate }}</span>
+            </div>
+            <div class="col">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item">
+                    <a routerLink="/">Shopbee</a>
+                  </li>
+                  <li class="breadcrumb-item">
+                    <a routerLink="/">Laptop</a>
+                  </li>
+                  <li class="breadcrumb-item">{{ product?.category?.name }}</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "BRAND" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.model?.brand?.name }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "MODEL" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.model?.name }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "STOCK" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.stockQuantity }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "COLOR" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.color }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "STORAGE" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.storageType }} {{ product?.storageCapacity }} GB</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>CPU</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.processor }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>RAM</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.ram }}GB</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "Monitor" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.screenSize }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "OS" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.os }}</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "WEIGHT" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.weight }}Kg</span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-2">
+              <span>{{ "CAPACITY" | translate }}</span>
+            </div>
+            <div class="col">
+              <span>{{ product?.batteryCapacity }}Wh</span>
+            </div>
           </div>
         </div>
-        @if (product && !product.active) {
-          <div class="inactive-product p-3 mt-3">
-            <span class="fs-4 fw-bolder text-uppercase">{{ "INACTIVE_PRODUCT" | translate }}</span>
-          </div>
-        } @else {
-          <div class="price d-flex align-items-center gap-3 p-3 mt-2">
-            <span class="sale-price fs-4"><del>{{ product?.basePrice | currency:'VND' }}</del></span>
-            <span class="fs-2 fw-bold">{{ product?.salePrice | currency:'VND' }}</span>
-            <span class="discount-percentage badge">{{ discount }}% {{ "DISCOUNT" | translate }}</span>
-          </div>
-          <div class="row mt-3 p-3">
-            <div class="col-md-3">
-              <label for="quantity" class="text-muted">{{ "QUANTITY" | translate }}</label>
-            </div>
-            <div class="col-md-9 d-flex gap-1 align-items-center">
-              <button class="btn quantity-input-btn"
-                      [disabled]="quantity <= 0"
-                      (click)="decreaseQuantity()">
-                <i class="bi bi-dash-lg"></i>
-              </button>
-              <div>
-                <input id="quantity"
-                       type="number"
-                       [min]="0"
-                       [max]="product?.stockQuantity || 0"
-                       [(ngModel)]="quantity"
-                       (change)="validateQuantity()"
-                       class="form-control text-center" value="1"/>
-              </div>
-              <button class="btn quantity-input-btn"
-                      (click)="increaseQuantity()"
-                      [disabled]="quantity >= product!.stockQuantity">
-                <i class="bi bi-plus-lg"></i>
-              </button>
-              <span class="text-muted">{{ product?.stockQuantity }} {{ "AVAILABLE" | translate }}</span>
-            </div>
-          </div>
-          <div class="d-flex align-items-center mt-auto gap-3">
-            <button class="add-to-cart-btn btn btn-lg rounded-0"
-                    (click)="addToCart(quantity, productSlug)">
-              <i class="bi bi-cart-plus me-2"></i>
-              <span class="fs-6">{{ "ADD_TO_CART" | translate }}</span>
-            </button>
-            <button class="buy-now-btn btn btn-lg rounded-0"
-                    (click)="onClickBuyNow()">
-              <i class="bi bi-bag-check me-2"></i><span class="fs-6">{{ "BUY_NOW" | translate }}</span>
-            </button>
-            <button class="btn"
-                    (click)="addFavourite(productSlug)">
-              <i class="fs-5 bi bi-heart-fill"
-                 [ngClass]="isInFavourite(productSlug) ? 'bi-heart-fill':'bi-heart'"
-                 [class.text-danger]="isInFavourite(productSlug)"></i>
+      </div>
+
+      <div class="p-3 bg-body-tertiary">
+        <span class="fs-2 fw-light">{{ "DESCRIPTION" | translate }}</span>
+      </div>
+
+      <div class="col-12 mx-3 mt-3 text-muted">
+        @if (product?.description) {
+          <div
+            [innerHTML]="showFullDescription ? product?.description : (product?.description | slice:0:5000) + '...'"></div>
+
+          <div class="text-center mt-2">
+            <button class="btn read-more-btn" (click)="toggleShowFullDescription()">
+              {{ (showFullDescription ? 'LESS' : 'MORE') | translate }}
             </button>
           </div>
         }
       </div>
     </div>
-  </div>
 
-  <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
-    <div class="p-3 bg-body-tertiary">
-      <span class="fs-2 fw-light">{{ "PRODUCT_DETAILS" | translate }}</span>
-    </div>
-    <div class="mx-3 mt-3 text-muted">
-      <div class="row">
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "CATEGORY" | translate }}</span>
-          </div>
-          <div class="col">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item">
-                  <a routerLink="/">Shopbee</a>
-                </li>
-                <li class="breadcrumb-item">
-                  <a routerLink="/">Laptop</a>
-                </li>
-                <li class="breadcrumb-item">{{ product?.category?.name }}</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "BRAND" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.model?.brand?.name }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "MODEL" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.model?.name }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "STOCK" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.stockQuantity }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "COLOR" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.color }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "STORAGE" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.storageType }} {{ product?.storageCapacity }} GB</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>CPU</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.processor }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>RAM</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.ram }}GB</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "Monitor" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.screenSize }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "OS" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.os }}</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "WEIGHT" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.weight }}Kg</span>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2">
-            <span>{{ "CAPACITY" | translate }}</span>
-          </div>
-          <div class="col">
-            <span>{{ product?.batteryCapacity }}Wh</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
+      <div class="p-3 bg-body-tertiary">
+        <span class="fs-2 fw-light me-2">{{ "REVIEWS" | translate }}</span>
+        @if (authService.isAuthenticated) {
+          <button class="btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#reviewDialog"
+                  (click)="isReviewDialogOpened = true">
+            {{ "LEAVE_REVIEW" | translate }}
+          </button>
+        }
 
-    <div class="p-3 bg-body-tertiary">
-      <span class="fs-2 fw-light">{{ "DESCRIPTION" | translate }}</span>
-    </div>
-
-    <div class="col-12 mx-3 mt-3 text-muted">
-      @if (product?.description) {
-        <div
-          [innerHTML]="showFullDescription ? product?.description : (product?.description | slice:0:5000) + '...'"></div>
-
-        <div class="text-center mt-2">
-          <button class="btn read-more-btn" (click)="toggleShowFullDescription()">
-            {{ (showFullDescription ? 'LESS' : 'MORE') | translate }}
-          </button>
-        </div>
-      }
-    </div>
-  </div>
-
-  <div class="mt-3 p-3 bg-white rounded-3 shadow-sm">
-    <div class="p-3 bg-body-tertiary">
-      <span class="fs-2 fw-light me-2">{{ "REVIEWS" | translate }}</span>
-      @if (authService.isAuthenticated) {
-        <button class="btn"
-                data-bs-toggle="modal"
-                data-bs-target="#reviewDialog"
-                (click)="isReviewDialogOpened = true">
-          {{ "LEAVE_REVIEW" | translate }}
-        </button>
-      }
-
-    </div>
-
-    <div class="mx-3 mt-3 text-muted">
-      <div class="rating d-flex gap-3 p-3">
-        <div class="text-center fs-4">
-          <div>{{ reviewStatistic?.averageRating || 0 }} / 5</div>
-          <div class="star-rating">
-            @for (i of [1, 2, 3, 4, 5]; track $index) {
-              <i class="bi"
-                 [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
-                 [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
-                 [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
-              </i>
-            }
-          </div>
-
-        </div>
-        <div class="d-flex align-items-center justify-content-around gap-3">
-          <button [class.active]="!filter?.rating"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating()">{{ "ALL" | translate }}
-          </button>
-          <button [class.active]="filter?.rating===5"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating(5)">
-            5 {{ "STAR" | translate }} ({{ reviewStatistic?.totalFiveStars }})
-          </button>
-          <button [class.active]="filter?.rating===4"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating(4)">
-            4 {{ "STAR" | translate }} ({{ reviewStatistic?.totalFourStars }})
-          </button>
-          <button [class.active]="filter?.rating===3"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating(3)">
-            3 {{ "STAR" | translate }} ({{ reviewStatistic?.totalThreeStars }})
-          </button>
-          <button [class.active]="filter?.rating===2"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating(2)">
-            2 {{ "STAR" | translate }} ({{ reviewStatistic?.totalTwoStars }})
-          </button>
-          <button [class.active]="filter?.rating===1"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onRating(1)">
-            1 {{ "STAR" | translate }} ({{ reviewStatistic?.totalOneStars }})
-          </button>
-          <button [class.active]="!sort.ascending"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onAscending(false)">{{ "LATEST" | translate }}
-          </button>
-          <button [class.active]="sort.ascending"
-                  class="review-filter-btn btn rounded-0"
-                  (click)="onAscending(true)">{{ "OLDEST" | translate }}
-          </button>
-        </div>
       </div>
 
-      @if (!reviewResponse?.items) {
-        <div class="col-12 mx-3 mt-3 text-muted">
-          <span>Chưa có bình luận nào</span>
-        </div>
-      } @else {
-        <div class="reviews-container">
-          <div class="reviews">
-            @if (loading) {
-              @for (i of Array(10); track $index) {
-                <div class="review-item-skeleton d-flex gap-3 align-items-start mb-4">
-                  <div class="skeleton-avatar"></div>
-                  <div class="skeleton-details flex-grow-1">
-                    <div class="skeleton-text skeleton-username"></div>
-                    <div class="skeleton-stars">
-                      @for (i of [1, 2, 3, 4, 5]; track $index) {
-                        <div class="skeleton-star"></div>
-                      }
-                    </div>
-                    <div class="skeleton-text skeleton-date"></div>
-                    <div class="skeleton-text skeleton-review"></div>
-                    <div class="skeleton-helpful"></div>
-                  </div>
-                </div>
+      <div class="mx-3 mt-3 text-muted">
+        <div class="rating d-flex gap-3 p-3">
+          <div class="text-center fs-4">
+            <div>{{ reviewStatistic?.averageRating || 0 }} / 5</div>
+            <div class="star-rating">
+              @for (i of [1, 2, 3, 4, 5]; track $index) {
+                <i class="bi"
+                   [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
+                   [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
+                   [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
+                </i>
               }
-            } @else {
-              @for (review of reviews; track review.id) {
-                <div class="review-item d-flex gap-3 align-items-start mb-4">
-                  <div class="avatar-container">
-                    <img class="user-avatar rounded-circle"
-                         src="https://placehold.co/80x80"
-                         alt="user-avatar"
-                         width="48"
-                         height="48"/>
-                  </div>
-                  <div class="review-details flex-grow-1">
-                    <div class="review-header d-flex flex-column">
-                      <div class="username fs-5 fw-bold">{{ review.username }}</div>
-                      <span class="text-muted fs-6">{{ review.createdAt | date:"HH:mm dd/MM/yyyy" }}</span>
-                    </div>
+            </div>
 
-                    <div class="rating fs-6">
-                      @for (i of [1, 2, 3, 4, 5]; track $index) {
-                        <i class="bi"
-                           [class.bi-star-fill]="i <= review.rating"
-                           [class.bi-star]="i > review.rating">
-                        </i>
-                      }
-                    </div>
-
-                    <div class="review-text mb-3">{{ review.text }}</div>
-                    <div class="helpful">
-                      <button class="helpful-btn border-0 bg-transparent p-0">
-                        <i class="bi bi-hand-thumbs-up me-2"></i><span>{{ review.helpfulCount }}</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              }
-
-              @if (reviewResponse?.hasNext) {
-                <div class="text-center mt-3">
-                  <button class="btn load-more-review-btn" (click)="loadMoreReviews()">
-                    {{ 'MORE' | translate }}
-                  </button>
-                </div>
-              }
-            }
           </div>
-
+          <div class="d-flex align-items-center justify-content-around gap-3">
+            <button [class.active]="!filter?.rating"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating()">{{ "ALL" | translate }}
+            </button>
+            <button [class.active]="filter?.rating===5"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating(5)">
+              5 {{ "STAR" | translate }} ({{ reviewStatistic?.totalFiveStars }})
+            </button>
+            <button [class.active]="filter?.rating===4"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating(4)">
+              4 {{ "STAR" | translate }} ({{ reviewStatistic?.totalFourStars }})
+            </button>
+            <button [class.active]="filter?.rating===3"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating(3)">
+              3 {{ "STAR" | translate }} ({{ reviewStatistic?.totalThreeStars }})
+            </button>
+            <button [class.active]="filter?.rating===2"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating(2)">
+              2 {{ "STAR" | translate }} ({{ reviewStatistic?.totalTwoStars }})
+            </button>
+            <button [class.active]="filter?.rating===1"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onRating(1)">
+              1 {{ "STAR" | translate }} ({{ reviewStatistic?.totalOneStars }})
+            </button>
+            <button [class.active]="!sort.ascending"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onAscending(false)">{{ "LATEST" | translate }}
+            </button>
+            <button [class.active]="sort.ascending"
+                    class="review-filter-btn btn rounded-0"
+                    (click)="onAscending(true)">{{ "OLDEST" | translate }}
+            </button>
+          </div>
         </div>
-      }
 
-    </div>
+        @if (!reviewResponse?.items) {
+          <div class="col-12 mx-3 mt-3 text-muted">
+            <span>Chưa có bình luận nào</span>
+          </div>
+        } @else {
+          <div class="reviews-container">
+            <div class="reviews">
+              @if (loading) {
+                @for (i of Array(10); track $index) {
+                  <div class="review-item-skeleton d-flex gap-3 align-items-start mb-4">
+                    <div class="skeleton-avatar"></div>
+                    <div class="skeleton-details flex-grow-1">
+                      <div class="skeleton-text skeleton-username"></div>
+                      <div class="skeleton-stars">
+                        @for (i of [1, 2, 3, 4, 5]; track $index) {
+                          <div class="skeleton-star"></div>
+                        }
+                      </div>
+                      <div class="skeleton-text skeleton-date"></div>
+                      <div class="skeleton-text skeleton-review"></div>
+                      <div class="skeleton-helpful"></div>
+                    </div>
+                  </div>
+                }
+              } @else {
+                @for (review of reviews; track review.id) {
+                  <div class="review-item d-flex gap-3 align-items-start mb-4">
+                    <div class="avatar-container">
+                      <img class="user-avatar rounded-circle"
+                           src="https://placehold.co/80x80"
+                           alt="user-avatar"
+                           width="48"
+                           height="48"/>
+                    </div>
+                    <div class="review-details flex-grow-1">
+                      <div class="review-header d-flex flex-column">
+                        <div class="username fs-5 fw-bold">{{ review.username }}</div>
+                        <span class="text-muted fs-6">{{ review.createdAt | date:"HH:mm dd/MM/yyyy" }}</span>
+                      </div>
 
-  </div>
-  <div class=" mt-3 p-3 bg-white rounded-3 shadow-sm">
-    <div class="p-3 bg-body-tertiary">
-      <span class="fs-2 fw-light">{{ "YOU_MAY_ALSO_LIKE" | translate }}</span>
-    </div>
-    <app-recommended-products-list/>
-  </div>
-</main>
+                      <div class="rating fs-6">
+                        @for (i of [1, 2, 3, 4, 5]; track $index) {
+                          <i class="bi"
+                             [class.bi-star-fill]="i <= review.rating"
+                             [class.bi-star]="i > review.rating">
+                          </i>
+                        }
+                      </div>
 
-<!-- Review dialog -->
-<div class="modal fade " id="reviewDialog" tabindex="-1" aria-labelledby="reviewDialogLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="reviewDialogLabel">{{ "LEAVE_YOUR_REVIEW" | translate }}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <div class="review-text mb-3">{{ review.text }}</div>
+                      <div class="helpful">
+                        <button class="helpful-btn border-0 bg-transparent p-0">
+                          <i class="bi bi-hand-thumbs-up me-2"></i><span>{{ review.helpfulCount }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                @if (reviewResponse?.hasNext) {
+                  <div class="text-center mt-3">
+                    <button class="btn load-more-review-btn" (click)="loadMoreReviews()">
+                      {{ 'MORE' | translate }}
+                    </button>
+                  </div>
+                }
+              }
+            </div>
+
+          </div>
+        }
+
       </div>
-      <form [formGroup]="reviewForm" (ngSubmit)="onReviewFormSubmit()">
-        <div class="modal-body">
-          <div class="star-rating">
-            <input type="radio" formControlName="rating" value="5" id="star-1" class="d-none"/>
-            <label for="star-1" class="star" (click)="onStarClick(5)">
-              <i class="bi bi-star-fill" [class.active]="rating>=5"></i>
-            </label>
 
-            <input type="radio" formControlName="rating" value="4" id="star-2" class="d-none"/>
-            <label for="star-2" class="star" (click)="onStarClick(4)">
-              <i class="bi bi-star-fill" [class.active]="rating>=4"></i>
-            </label>
+    </div>
+    <div class=" mt-3 p-3 bg-white rounded-3 shadow-sm">
+      <div class="p-3 bg-body-tertiary">
+        <span class="fs-2 fw-light">{{ "YOU_MAY_ALSO_LIKE" | translate }}</span>
+      </div>
+      <app-recommended-products-list/>
+    </div>
+  </main>
 
-            <input type="radio" formControlName="rating" value="3" id="star-3" class="d-none"/>
-            <label for="star-3" class="star" (click)="onStarClick(3)">
-              <i class="bi bi-star-fill" [class.active]="rating>=3"></i>
-            </label>
-
-            <input type="radio" formControlName="rating" value="2" id="star-4" class="d-none"/>
-            <label for="star-4" class="star" (click)="onStarClick(2)">
-              <i class="bi bi-star-fill" [class.active]="rating>=2"></i>
-            </label>
-
-            <input type="radio" formControlName="rating" value="1" id="star-5" class="d-none"/>
-            <label for="star-5" class="star" (click)="onStarClick(1)">
-              <i class="bi bi-star-fill" [class.active]="rating>=1"></i>
-            </label>
-          </div>
-          <div class="mb-3">
-            <label for="review">{{ 'YOUR_REVIEW' | translate }}</label>
-            <textarea id="review" class="form-control" formControlName="text"></textarea>
-          </div>
+  <!-- Review dialog -->
+  <div class="modal fade " id="reviewDialog" tabindex="-1" aria-labelledby="reviewDialogLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="reviewDialogLabel">{{ "LEAVE_YOUR_REVIEW" | translate }}</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary">{{ 'SUBMIT' | translate }}</button>
-        </div>
-      </form>
+        <form [formGroup]="reviewForm" (ngSubmit)="onReviewFormSubmit()">
+          <div class="modal-body">
+            <div class="star-rating">
+              <input type="radio" formControlName="rating" value="5" id="star-1" class="d-none"/>
+              <label for="star-1" class="star" (click)="onStarClick(5)">
+                <i class="bi bi-star-fill" [class.active]="rating>=5"></i>
+              </label>
+
+              <input type="radio" formControlName="rating" value="4" id="star-2" class="d-none"/>
+              <label for="star-2" class="star" (click)="onStarClick(4)">
+                <i class="bi bi-star-fill" [class.active]="rating>=4"></i>
+              </label>
+
+              <input type="radio" formControlName="rating" value="3" id="star-3" class="d-none"/>
+              <label for="star-3" class="star" (click)="onStarClick(3)">
+                <i class="bi bi-star-fill" [class.active]="rating>=3"></i>
+              </label>
+
+              <input type="radio" formControlName="rating" value="2" id="star-4" class="d-none"/>
+              <label for="star-4" class="star" (click)="onStarClick(2)">
+                <i class="bi bi-star-fill" [class.active]="rating>=2"></i>
+              </label>
+
+              <input type="radio" formControlName="rating" value="1" id="star-5" class="d-none"/>
+              <label for="star-5" class="star" (click)="onStarClick(1)">
+                <i class="bi bi-star-fill" [class.active]="rating>=1"></i>
+              </label>
+            </div>
+            <div class="mb-3">
+              <label for="review">{{ 'YOUR_REVIEW' | translate }}</label>
+              <textarea id="review" class="form-control" formControlName="text"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary">{{ 'SUBMIT' | translate }}</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
+
+}

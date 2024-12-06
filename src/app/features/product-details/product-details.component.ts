@@ -52,6 +52,8 @@ export class ProductDetailsComponent implements OnInit {
     text: ['', Validators.required]
   })
 
+  productNotFound = false;
+
   constructor(
     private fb: FormBuilder,
     private translateService: TranslateService,
@@ -124,6 +126,10 @@ export class ProductDetailsComponent implements OnInit {
     if (!productSlug) {
       return;
     }
+    if (!this.authService.isAuthenticated) {
+      this.alertService.showErrorToast("Cần đăng nhập trước")
+      return;
+    }
     this.productService.addFavourite(productSlug)
       .pipe(tap(() => this.getFavourites()))
       .subscribe({
@@ -133,9 +139,12 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   private loadProductDetails(slug: string): void {
-    this.productService.getBySlug(slug).subscribe(product => {
-      this.product = product;
-      this.heroUrl = this.imageUtil.createImageUrl(product.featuredImageId)
+    this.productService.getBySlug(slug).subscribe({
+      next: product => {
+        this.product = product;
+        this.heroUrl = this.imageUtil.createImageUrl(product.featuredImageId)
+      },
+      error: () => this.productNotFound = true
     });
   }
 
