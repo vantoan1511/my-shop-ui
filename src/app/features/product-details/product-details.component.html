@@ -49,19 +49,16 @@
             <div class="rating">
               <span class="fs-5 me-1">{{ reviewStatistic?.averageRating || 0 }}</span>
               <span>
-            @for (i of [1, 2, 3, 4, 5]; track $index) {
-              <i class="bi"
-                 [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
-                 [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
-                 [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
-              </i>
-            }
-          </span>
+                @for (i of [1, 2, 3, 4, 5]; track $index) {
+                  <i class="bi"
+                     [class.bi-star-fill]="i <= (reviewStatistic?.averageRating || 0)"
+                     [class.bi-star-half]="i > (reviewStatistic?.averageRating || 0) && i - 0.5 <= (reviewStatistic?.averageRating || 0)"
+                     [class.bi-star]="i > (reviewStatistic?.averageRating || 0) + 0.5">
+                  </i>
+                }
+              </span>
             </div>
             <div class="border-end"></div>
-            <div class="sold">
-              <span class="fs-5">1k+ {{ 'SOLD' | translate }}</span>
-            </div>
           </div>
           @if (product && !product.active) {
             <div class="inactive-product p-3 mt-3">

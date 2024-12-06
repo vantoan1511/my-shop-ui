@@ -25,9 +25,6 @@ export const StatusTransition = new Map<OrderStatus, OrderStatus[]>([
     OrderStatus.CREATED,
     OrderStatus.PENDING,
     OrderStatus.ACCEPTED,
-    OrderStatus.DECLINED,
-    OrderStatus.AWAITING_PICKUP,
-    OrderStatus.AWAITING_SHIPPING,
   ]]
 ]);
 

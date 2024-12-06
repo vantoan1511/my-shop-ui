@@ -142,7 +142,7 @@
           <app-table-skeleton [colCount]="2" [rowCount]="5"/>
         } @else {
           <table class="table table-hover">
-            <thead class="sticky-top bg-white">
+            <thead class="sticky-top bg-white z-1">
               @if (productStatType === 'by-brand') {
                 <th>{{ "BRANDS" | translate }}</th>
               } @else if (productStatType === 'by-model') {
