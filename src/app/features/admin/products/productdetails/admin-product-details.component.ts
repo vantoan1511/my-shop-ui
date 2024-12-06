@@ -1,9 +1,9 @@
 import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {BehaviorSubject, catchError, Observable, Subject, switchMap, takeUntil, tap} from "rxjs";
 import {AlertService} from "../../../../services/alert.service";
-import {Category, Model, Product} from "../../../../types/product.type";
+import {Brand, Category, Model, Product} from "../../../../types/product.type";
 import {ProductService} from "../../../../services/product.service";
 import {ModelService} from "../../../../services/model.service";
 import {PagedResponse} from "../../../../types/response.type";
@@ -17,6 +17,7 @@ import {constant} from "../../../../shared/constant";
 import {environment} from "../../../../../environments/environment";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {NgxMaskDirective} from "ngx-mask";
+import {BrandService} from "../../../../services/brand.service";
 
 @Component({
   selector: 'admin-product-details',
@@ -28,7 +29,8 @@ import {NgxMaskDirective} from "ngx-mask";
     ContextMenuComponent,
     NgxEditorModule,
     TranslateModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    FormsModule
   ],
   templateUrl: './admin-product-details.component.html',
   styleUrl: './admin-product-details.component.scss'
@@ -49,7 +51,6 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
   product: Product | null = null;
   productSlug?: string;
   products$: Observable<Product> | null = null;
-  models$: Observable<PagedResponse<Model>> | null = null;
   categories$: Observable<PagedResponse<Category>> | null = null;
 
   heroImageUrl = constant.defaultHeroImageUrl
@@ -59,6 +60,10 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
 
   private productImagesSubject = new BehaviorSubject<ProductImage[]>([]);
   productImages$ = this.productImagesSubject.asObservable()
+
+  brands: Brand[] = [];
+  models: Model[] = []
+  filterModels: Model[] = [];
 
   @ViewChild('contextMenu') contextMenu?: ContextMenuComponent;
 
@@ -73,6 +78,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private router: Router,
     private translate: TranslateService,
+    private brandService: BrandService,
   ) {
     this.translate.setDefaultLang("vi");
   }
@@ -87,14 +93,36 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
+    this.getBrands();
+    this.getModels();
     this.products$
       ?.pipe(takeUntil(this.destroy$), tap(product => this.getProductImages(product)))
       .subscribe(product => {
         this.product = product;
         this.updateForm(product);
       });
-    this.models$ = this.modelService.getAll();
     this.categories$ = this.categoryService.getAll();
+  }
+
+  onSelectedBrandChange() {
+    this.filterModelsByBrand(this.productForm.get('brand')?.value)
+  }
+
+  filterModelsByBrand(brand: string) {
+    this.filterModels = this.models.filter(model =>
+      model.brand.slug === brand
+    )
+  }
+
+  getBrands() {
+    this.brandService.getBy({size: 100, page: 1}).subscribe((resp) => this.brands = resp.items)
+  }
+
+  getModels() {
+    this.modelService.getBy({size: 100, page: 1}).subscribe((resp) => {
+      this.models = resp.items
+      this.filterModels = resp.items
+    })
   }
 
   getProductImages(product: Product) {
@@ -239,6 +267,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
       viewCount: [0],
       userId: [],
       model: [''],
+      brand: [''],
       category: ['']
     });
   }
@@ -247,6 +276,7 @@ export class AdminProductDetailsComponent implements OnInit, OnDestroy {
     this.productForm.patchValue({
       ...product,
       model: product.model.slug,
+      brand: product.model.brand.slug,
       category: product.category.slug
     });
   }

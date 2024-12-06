@@ -164,6 +164,27 @@
 
                 <div class="row g-3 align-items-center mt-1">
                   <div class="col-3">
+                    <label for="brand" class="col-form-label">{{ "BRAND"|translate }}</label>
+                  </div>
+                  <div class="col-auto">
+                    <select id="brand"
+                            class="form-select"
+                            formControlName="brand"
+                            (change)="onSelectedBrandChange()">
+                      <option value="" disabled selected>
+                        {{ "CHOOSE_BRAND"|translate }}
+                      </option>
+                      @for (brand of brands; track $index) {
+                        <option [value]="brand.slug">
+                          {{ brand.name }}
+                        </option>
+                      }
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row g-3 align-items-center mt-1">
+                  <div class="col-3">
                     <label for="model" class="col-form-label">{{ "MODEL"|translate }}</label>
                   </div>
                   <div class="col-auto">
@@ -171,7 +192,7 @@
                       <option value="" disabled selected>
                         {{ "CHOOSE_MODEL"|translate }}
                       </option>
-                      @for (model of (models$|async)?.items; track $index) {
+                      @for (model of filterModels; track $index) {
                         <option [value]="model.slug">
                           {{ model.name }}
                         </option>
