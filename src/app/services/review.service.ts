@@ -34,4 +34,12 @@ export class ReviewService {
   public createReview(review: CreateReviewRequest) {
     return this.http.post<Review>(`${this.BASE_URL}/reviews`, review)
   }
+
+  public check(productSlug: string) {
+    return this.http.get(`${this.BASE_URL}/reviews/check`, {
+      params: {
+        productSlug: productSlug
+      }
+    })
+  }
 }

@@ -18,6 +18,7 @@ import {AuthenticationService} from "../../services/authentication.service";
 import {RecommendedProductsListComponent} from "../recommended-products-list/recommended-products-list.component";
 import {ImageUtils} from "../../shared/services/Image.utils";
 import {tap} from "rxjs";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-product-details',
@@ -53,6 +54,7 @@ export class ProductDetailsComponent implements OnInit {
   })
 
   productNotFound = false;
+  hasReviewed = false;
 
   constructor(
     private fb: FormBuilder,
@@ -78,8 +80,17 @@ export class ProductDetailsComponent implements OnInit {
         this.fetchReviews();
         this.fetchReviewStatistic();
         this.getFavourites();
+        this.checkReview();
       }
     });
+  }
+
+  checkReview() {
+    if (this.productSlug)
+      this.reviewService.check(this.productSlug).subscribe({
+        next: () => this.hasReviewed = false,
+        error: () => this.hasReviewed = true
+      })
   }
 
   onStarClick(selectedRating: number): void {
@@ -95,15 +106,17 @@ export class ProductDetailsComponent implements OnInit {
       const {rating, text} = this.reviewForm.value as Review;
       const title = text;
       const productSlug = this.productSlug;
-      this.reviewService.createReview({rating, text, title, productSlug}).subscribe({
-        next: () => {
-          this.alertService.showSuccessToast("Đã đăng tải nhận xét");
-          this.reviews = [];
-          this.fetchReviews()
-          this.fetchReviewStatistic();
-        },
-        error: () => this.alertService.showErrorToast("Lỗi")
-      })
+      this.reviewService.createReview({rating, text, title, productSlug})
+        .pipe(tap(() => this.isReviewDialogOpened = false))
+        .subscribe({
+          next: () => {
+            this.alertService.showSuccessToast("Đã đăng tải nhận xét");
+            this.reviews = [];
+            this.fetchReviews()
+            this.fetchReviewStatistic();
+          },
+          error: (error: HttpErrorResponse) => this.alertService.showErrorToast("Chưa mua hàng hoặc đã nhận xét rồi"),
+        })
     }
   }
 
